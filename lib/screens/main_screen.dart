@@ -39,14 +39,40 @@ class _MainScreenState extends State<MainScreen> {
 
     for (String sectionTitle in sectionList) {
       final sectionContainer = new Container(
+        padding: const EdgeInsets.only(left: 5.0, right: 5.0, top: 2.0, bottom: 2.0),
+        height: 156.0,
+        child: new Card(
+          color: new Color(0xFF53D2F7),
           child: new Center(
-        child: new Column(
-          children: [
-            new Text("01"),
-            new Text(sectionTitle),
-          ],
+            child: new Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new Text(
+                  "01",
+                  style: new TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 10.0,
+                    color: Colors.white,
+                  ),
+                ),
+                new Padding(
+                  padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 7.0),
+                  child: new Text(
+                    sectionTitle,
+                    textAlign: TextAlign.center,
+                    style: new TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-      ));
+      );
       sectionCells.add(sectionContainer);
     }
     return sectionCells;
@@ -55,17 +81,38 @@ class _MainScreenState extends State<MainScreen> {
   Widget _contentWidget() {
     return new Column(
       children: [
-        new DecoratedBox(
-          decoration: new BoxDecoration(
-            backgroundColor: Colors.white,
+        new Container(
+          height: 64.0,
+          child: new DecoratedBox(
+            decoration: new BoxDecoration(
+              backgroundColor: Colors.white,
+            ),
+            child: new Stack(
+              children: [
+                new Positioned(
+                  left: 50.0,
+                  top: 32.0,
+                  child: new Text(
+                    "Flutter Gallery",
+                    style: new TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20.0,
+                      color: new Color(0xFF29B6F6),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          child: new Row(children: []),
         ),
         new Expanded(
-          child: new Padding(
-            padding: new EdgeInsets.only(top: 20.0),
-            child: new ListView(
-              children: _cells,
+          child: new Container(
+            color: Colors.white,
+            child: new Padding(
+              padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+              child: new ListView(
+                children: _cells,
+              ),
             ),
           ),
         ),

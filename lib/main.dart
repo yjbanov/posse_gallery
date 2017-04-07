@@ -58,6 +58,6 @@ class _GalleryAppState extends State<GalleryApp> {
 
   @override
   Widget build(BuildContext context) {
-    return mainWidget;
+    return new MainScreen();
   }
 }
