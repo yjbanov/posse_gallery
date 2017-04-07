@@ -37,9 +37,10 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> _loadSections() {
     List<Widget> sectionCells = [];
 
+    int sectionNumber = 1;
     for (String sectionTitle in sectionList) {
       final sectionContainer = new Container(
-        padding: const EdgeInsets.only(left: 5.0, right: 5.0, top: 2.0, bottom: 2.0),
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 2.0, bottom: 2.0),
         height: 156.0,
         child: new Card(
           color: new Color(0xFF53D2F7),
@@ -49,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 new Text(
-                  "01",
+                  "$sectionNumber",
                   style: new TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 10.0,
@@ -74,6 +75,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
       );
       sectionCells.add(sectionContainer);
+      sectionNumber += 1;
     }
     return sectionCells;
   }
@@ -89,6 +91,13 @@ class _MainScreenState extends State<MainScreen> {
             ),
             child: new Stack(
               children: [
+                new Positioned(
+                  left: 8.0,
+                  child: new Image(
+                    image: new AssetImage("assets/icons/ic_flutter_logo.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
                 new Positioned(
                   left: 50.0,
                   top: 32.0,
