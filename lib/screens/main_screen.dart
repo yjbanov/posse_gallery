@@ -92,15 +92,16 @@ class _MainScreenState extends State<MainScreen> {
             child: new Stack(
               children: [
                 new Positioned(
-                  left: 8.0,
+                  left: 12.0,
+                  top: 32.0,
                   child: new Image(
                     image: new AssetImage("assets/icons/ic_flutter_logo.png"),
                     fit: BoxFit.cover,
                   ),
                 ),
                 new Positioned(
-                  left: 50.0,
-                  top: 32.0,
+                  left: 52.0,
+                  top: 35.0,
                   child: new Text(
                     "Flutter Gallery",
                     style: new TextStyle(
@@ -108,6 +109,14 @@ class _MainScreenState extends State<MainScreen> {
                       fontSize: 20.0,
                       color: new Color(0xFF29B6F6),
                     ),
+                  ),
+                ),
+                new Positioned(
+                  right: 12.0,
+                  top: 36.0,
+                  child: new Image(
+                    image: new AssetImage("assets/icons/ic_search.png"),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ],
