@@ -5,9 +5,11 @@
 import 'package:flutter/painting.dart';
 
 class AppSection {
-  AppSection({this.title, this.color});
+  AppSection({this.title, this.leftShapeColor, this.centerShapeColor, this.rightShapeColor});
 
   // properties
   final String title;
-  final Color color;
+  final Color leftShapeColor;
+  final Color centerShapeColor;
+  final Color rightShapeColor;
 }
