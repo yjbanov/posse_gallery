@@ -25,15 +25,6 @@ class _MainScreenState extends State<MainScreen> {
     "Design Components".toUpperCase(),
   ];
 
-  @override
-  void initState() {
-    super.initState();
-
-    _configureUI();
-  }
-
-  void _configureUI() {}
-
   List<Widget> _loadSections() {
     List<Widget> sectionCells = [];
 
@@ -81,53 +72,57 @@ class _MainScreenState extends State<MainScreen> {
     return sectionCells;
   }
 
-  Widget _contentWidget() {
+  Widget _appBarWidget() {
     Image searchIcon = new Image(
-        image: new AssetImage("assets/icons/ic_search.png"),
-        fit: BoxFit.cover,
+      image: new AssetImage("assets/icons/ic_search.png"),
+      fit: BoxFit.cover,
     );
+    return new Container(
+      height: 64.0,
+      child: new DecoratedBox(
+        decoration: new BoxDecoration(
+          backgroundColor: Colors.white,
+        ),
+        child: new Stack(
+          children: [
+            new Positioned(
+              left: 12.0,
+              top: 32.0,
+              child: new Image(
+                image: new AssetImage("assets/icons/ic_flutter_logo.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            new Positioned(
+              left: 52.0,
+              top: 35.0,
+              child: new Text(
+                "Flutter Gallery",
+                style: new TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 20.0,
+                  color: new Color(0xFF29B6F6),
+                ),
+              ),
+            ),
+            new Positioned(
+              right: 0.0,
+              top: 23.0,
+              child: new IconButton(
+                icon: searchIcon,
+                onPressed: () {},
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _contentWidget() {
     return new Column(
       children: [
-        new Container(
-          height: 64.0,
-          child: new DecoratedBox(
-            decoration: new BoxDecoration(
-              backgroundColor: Colors.white,
-            ),
-            child: new Stack(
-              children: [
-                new Positioned(
-                  left: 12.0,
-                  top: 32.0,
-                  child: new Image(
-                    image: new AssetImage("assets/icons/ic_flutter_logo.png"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                new Positioned(
-                  left: 52.0,
-                  top: 35.0,
-                  child: new Text(
-                    "Flutter Gallery",
-                    style: new TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 20.0,
-                      color: new Color(0xFF29B6F6),
-                    ),
-                  ),
-                ),
-                new Positioned(
-                  right: 0.0,
-                  top: 23.0,
-                  child: new IconButton(
-                    icon: searchIcon,
-                    onPressed: null,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        _appBarWidget(),
         new Expanded(
           child: new Container(
             color: Colors.white,
