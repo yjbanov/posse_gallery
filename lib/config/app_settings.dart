@@ -10,12 +10,6 @@ enum SettingsEncodeType {
   decode,
 }
 
-enum SettingsReadStatus {
-  notready,
-  fail,
-  success,
-}
-
 enum SettingsPersistStatus {
   success,
   fail,
@@ -72,7 +66,6 @@ abstract class AppSettingsProvider<T> {
 class InMemoryAppSettings extends AppSettingsProvider<Object> {
   // In-memory storage of application default values.
   Map<String, Object> _valuesCache = <String, Object>{};
-
   bool hasValue(String key) => _valuesCache.containsKey(key);
   Object value(String key) => _valuesCache[key];
   void setValue(String key, Object value) {
@@ -87,7 +80,22 @@ class InMemoryAppSettings extends AppSettingsProvider<Object> {
     if (val == null || !(val is bool)) {
       return defaultValue;
     }
-    bool returnVal = val;
+    return val;
+  }
+
+  String stringValue(String key, {String defaultValue = null}) {
+    Object val = _valuesCache[key];
+    if (val == null || !(val is String)) {
+      return defaultValue;
+    }
+    return val;
+  }
+
+  int intValue(String key, {int defaultValue = 0}) {
+    Object val = _valuesCache[key];
+    if (val == null || !(val is int)) {
+      return defaultValue;
+    }
     return val;
   }
 
@@ -115,34 +123,29 @@ class PersistedAppSettings extends InMemoryAppSettings {
   }
 
   Future<PersistedAppSettings> load() async {
-    return _retrievePersistedValues().then((Map<String, Object> settings) {
-      _valuesCache = settings ?? <String, Object>{};
-      _isUpToDate = true;
-      return this;
-    });
+    Map<String, Object> settings = await _retrievePersistedValues();
+    _valuesCache = settings ?? <String, Object>{};
+    _isUpToDate = true;
+    return this;
   }
 
   Future<Map<String, Object>> _retrievePersistedValues() async {
-    File settingsFile = await _getLocalFile();
-    return settingsFile.exists().then((exists) {
-      if (exists) {
-        settingsFile.readAsString().then((String jsonString) {
-          Map<String, Object> outMap;
-          if (jsonString.length > 0) {
-            Map<String, Object> jsonObj = JSON.decode(jsonString);
-            if (jsonObj != null) {
-              outMap = _processInputMap(source: jsonObj, encodeType: SettingsEncodeType.decode);
-            }
-          }
-          return outMap ?? <String, Object>{};
-        }, onError: (e) {
-          print("Error accessing settings file: $e");
-          throw e;
-        });
-      } else {
-        return <String, Object>{};
-      }
+    Map<String, Object> outMap = <String, Object>{};
+    File settingsFile = await _getLocalFile().catchError((err) {
+      print("Error accessing settings file: $err");
+      throw err;
     });
+    bool fileExists = await settingsFile.exists();
+    if (fileExists) {
+      String jsonString = await settingsFile.readAsString();
+      if (jsonString.length > 0) {
+        Map<String, Object> jsonObj = JSON.decode(jsonString);
+        if (jsonObj != null) {
+          outMap = _processInputMap(source: jsonObj, encodeType: SettingsEncodeType.decode);
+        }
+      }
+    }
+    return outMap;
   }
 
   // get a reference to the file that will store the serialized application
@@ -225,26 +228,19 @@ class PersistedAppSettings extends InMemoryAppSettings {
   }
 
   @override
-  Future<SettingsPersistStatus> persist({Function completed, bool force = false}) async {
+  Future<SettingsPersistStatus> persist({bool force = false}) async {
     if (_isUpToDate && force == false) {
       return SettingsPersistStatus.skipped;
     }
-    return super.persist().then((_) async {
-      Map<String, Object> jsonObject = _processInputMap(source: _valuesCache, encodeType: SettingsEncodeType.encode);
-      String json = JSON.encode(jsonObject);
-      File settingsFile = await _getLocalFile();
-      settingsFile.writeAsString(json).then((_) {
-        SettingsPersistStatus status = SettingsPersistStatus.success;
-        return status;
-      }, onError: (e) {
-        print("Settings write failed: $e");
-        return SettingsPersistStatus.fail;
-      }).then((status) {
-        if (completed != null) {
-          Function.apply(completed, [status]);
-        }
-      });
+    await super.persist();
+    Map<String, Object> jsonObject = _processInputMap(source: _valuesCache, encodeType: SettingsEncodeType.encode);
+    String json = JSON.encode(jsonObject);
+    File settingsFile = await _getLocalFile();
+    await settingsFile.writeAsString(json).catchError((err) {
+      print("Settings write failed: $err");
+      return SettingsPersistStatus.fail;
     });
+    return SettingsPersistStatus.success;
   }
 
   @override
