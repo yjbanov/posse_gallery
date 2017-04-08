@@ -17,7 +17,7 @@ class _MainScreenState extends State<MainScreen> {
 
   List<Widget> _cells;
 
-  final List<AppSection> sectionsList = [
+  final List<AppSection> sectionList = [
     new AppSection(title: "CUSTOMIZED DESIGN", color: new Color(0xFF00A2EE)),
     new AppSection(title: "LAYOUT & POSITIONING", color: new Color(0xFF45D2F9)),
     new AppSection(title: "ANIMATION & UI MOTION", color: new Color(0xFF25C3BC)),
@@ -26,20 +26,10 @@ class _MainScreenState extends State<MainScreen> {
     new AppSection(title: "DESIGN COMPONENTS", color: new Color(0xFFA1CB39)),
   ];
 
-  final List<String> sectionList = [
-    "Customized Design".toUpperCase(),
-    "Layout & Positioning".toUpperCase(),
-    "Animation & UI Motion".toUpperCase(),
-    "UI Patterns".toUpperCase(),
-    "Plug Ins".toUpperCase(),
-    "Design Components".toUpperCase(),
-  ];
-
   List<Widget> _loadSections() {
     List<Widget> sectionCells = [];
-
     int sectionNumber = 1;
-    for (AppSection section in sectionsList) {
+    for (AppSection section in sectionList) {
       final sectionContainer = new Container(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 2.0, bottom: 2.0),
         height: 156.0,
