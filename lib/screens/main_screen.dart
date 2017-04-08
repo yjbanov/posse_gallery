@@ -63,7 +63,8 @@ class _MainScreenState extends State<MainScreen> {
                     sectionTitle,
                     textAlign: TextAlign.center,
                     style: new TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.7,
                       fontSize: 20.0,
                       color: Colors.white,
                     ),
@@ -81,6 +82,10 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _contentWidget() {
+    Image searchIcon = new Image(
+        image: new AssetImage("assets/icons/ic_search.png"),
+        fit: BoxFit.cover,
+    );
     return new Column(
       children: [
         new Container(
@@ -112,11 +117,11 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
                 new Positioned(
-                  right: 12.0,
-                  top: 36.0,
-                  child: new Image(
-                    image: new AssetImage("assets/icons/ic_search.png"),
-                    fit: BoxFit.cover,
+                  right: 0.0,
+                  top: 23.0,
+                  child: new IconButton(
+                    icon: searchIcon,
+                    onPressed: null,
                   ),
                 ),
               ],
