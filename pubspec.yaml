@@ -16,4 +16,5 @@ flutter:
     - assets/icons/ic_flutter_logo.png
     - assets/icons/ic_search.png
     - assets/images/bg_main_screen.png
-    - assets/images/section_cell_left_angle.png
+    - assets/images/section_cell_left.png
+    - assets/images/section_cell_right.png
