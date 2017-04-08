@@ -17,7 +17,7 @@ class _MainScreenState extends State<MainScreen> {
 
   List<Widget> _cells;
 
-  final List<AppSection> sectionList = [
+  final List<AppSection> _sectionList = [
     new AppSection(title: "CUSTOMIZED DESIGN", color: new Color(0xFF00A2EE)),
     new AppSection(title: "LAYOUT & POSITIONING", color: new Color(0xFF45D2F9)),
     new AppSection(title: "ANIMATION & UI MOTION", color: new Color(0xFF25C3BC)),
@@ -29,7 +29,7 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> _loadSections() {
     List<Widget> sectionCells = [];
     int sectionNumber = 1;
-    for (AppSection section in sectionList) {
+    for (AppSection section in _sectionList) {
       final sectionContainer = new Container(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 2.0, bottom: 2.0),
         height: 156.0,
@@ -37,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
           color: section.color,
           child: new Center(
             child: new Column(
-              mainAxisSize: MainAxisSize.max,
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 new Text(
