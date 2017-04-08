@@ -1,5 +1,5 @@
 name: posse_gallery
-description: A new flutter project.
+description: Posse's fancy new gallery for Flutter.
 
 dependencies:
   flutter:
