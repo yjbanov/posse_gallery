@@ -88,9 +88,7 @@ class _MainScreenState extends State<MainScreen> {
     return new Container(
       height: 64.0,
       child: new DecoratedBox(
-        decoration: new BoxDecoration(
-          backgroundColor: Colors.white,
-        ),
+        decoration: new BoxDecoration(),
         child: new Stack(
           children: [
             new Positioned(
@@ -117,7 +115,7 @@ class _MainScreenState extends State<MainScreen> {
               right: 0.0,
               top: 23.0,
               child: new Material(
-                color: Colors.white,
+                color: new Color(0x00FFFFFF),
                 child: new IconButton(
                   padding: EdgeInsets.zero,
                   icon: searchIcon,
@@ -132,18 +130,31 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _contentWidget() {
-    return new Column(
+    return new Stack(
       children: [
-        _appBarWidget(),
-        new Expanded(
-          child: new Container(
-            color: Colors.white,
-            child: new Padding(
-              padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-              child: new ListView(
-                children: _cells,
+        new Positioned(
+          top: 0.0,
+          right: 0.0,
+          child: new Image(
+            image: new AssetImage("assets/images/bg_main_screen.png"),
+          ),
+        ),
+        new Positioned(
+          child: new Column(
+            children: [
+              _appBarWidget(),
+              new Expanded(
+                child: new Container(
+                  color: new Color(0x00FFFFFF),
+                  child: new Padding(
+                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    child: new ListView(
+                      children: _cells,
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],
@@ -153,6 +164,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return new Material(
+      color: Colors.white,
       child: new Center(
         child: _contentWidget(),
       ),
