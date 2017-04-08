@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:posse_gallery/config/app_settings.dart';
 import 'package:posse_gallery/config/application.dart';
 import 'package:posse_gallery/screens/main_screen.dart';
+import 'package:posse_gallery/screens/search_screen.dart';
 import 'package:posse_gallery/screens/warm_welcome_screen.dart';
 
 void main() {
@@ -51,6 +52,9 @@ class _GalleryAppState extends State<GalleryApp> {
         primarySwatch: Colors.blue,
       ),
       home: launchScreen,
+      routes: <String, WidgetBuilder> {
+        '/search': (BuildContext context) => new SearchScreen(),
+      }
     );
   }
 
