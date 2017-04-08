@@ -15,7 +15,7 @@
 /* Begin PBXFileReference section */
 		1230911B0B1C1A5E00676A90606DE300 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1E631AC9676BE84AEB52F7D6520E4684 /* Pods-Runner-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Runner-dummy.m"; sourceTree = "<group>"; };
-		2AC4387F85B56B6508D8A0D754D36E27 /* Flutter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Flutter.framework; sourceTree = "<group>"; };
+		5777FC23D5DC34982492B6F10CBC595A /* Flutter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Flutter.framework; sourceTree = "<group>"; };
 		5EB571A3ABC7BF67A4642C216D6F0E21 /* Pods-Runner-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Runner-resources.sh"; sourceTree = "<group>"; };
 		60BA499A645871628CFA2E5806E78269 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		63BC99522783D0218755FDE8464650E4 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
@@ -41,20 +41,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0882E5A3852A044BD81BF48899849A9B /* Frameworks */ = {
+		2339913D523537D8C8F888B2201E957E /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
-				2AC4387F85B56B6508D8A0D754D36E27 /* Flutter.framework */,
+				3F9E93218C9ACA32750B790E1CA5DF60 /* Frameworks */,
+			);
+			name = Flutter;
+			path = /Users/albertlardizabal/dev/flutter/bin/cache/artifacts/engine/ios;
+			sourceTree = "<absolute>";
+		};
+		3F9E93218C9ACA32750B790E1CA5DF60 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5777FC23D5DC34982492B6F10CBC595A /* Flutter.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		219FA3EAB9D184F6383B256D114C37EF /* Development Pods */ = {
-			isa = PBXGroup;
-			children = (
-				FE1EED28C1CA4FD4767907E88596F41A /* Flutter */,
-			);
-			name = "Development Pods";
 			sourceTree = "<group>";
 		};
 		5673AF524858203D702268A4F4844CFD /* Products */ = {
@@ -77,7 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
-				219FA3EAB9D184F6383B256D114C37EF /* Development Pods */,
+				E0E0088614AE0010685A14C600BF3F2C /* Development Pods */,
 				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
 				5673AF524858203D702268A4F4844CFD /* Products */,
 				B88D6092221BFC46BA797811AC7C0DEC /* Targets Support Files */,
@@ -100,6 +101,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E0E0088614AE0010685A14C600BF3F2C /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2339913D523537D8C8F888B2201E957E /* Flutter */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
 		ECC1486D1F14EC5BA692C079D9D06161 /* Pods-Runner */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,15 +126,6 @@
 			name = "Pods-Runner";
 			path = "Target Support Files/Pods-Runner";
 			sourceTree = "<group>";
-		};
-		FE1EED28C1CA4FD4767907E88596F41A /* Flutter */ = {
-			isa = PBXGroup;
-			children = (
-				0882E5A3852A044BD81BF48899849A9B /* Frameworks */,
-			);
-			name = Flutter;
-			path = "/Users/luke/Development/third-party/flutter/bin/cache/artifacts/engine/ios";
-			sourceTree = "<absolute>";
 		};
 /* End PBXGroup section */
 

@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 
-class AppSection {
-  AppSection({this.title, this.color});
+class MainSectionCell extends StatelessWidget {
 
-  // properties
-  final String title;
-  final Color color;
+  @override
+  Widget build(BuildContext context) {
+    return new Column();
+  }
 }
