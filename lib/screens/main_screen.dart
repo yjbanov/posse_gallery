@@ -132,7 +132,7 @@ class _MainScreenState extends State<MainScreen> {
               textAlign: TextAlign.center,
               style: new TextStyle(
                 fontWeight: FontWeight.w700,
-                letterSpacing: 1.7,
+                letterSpacing: 1.6,
                 height: 1.3,
                 fontSize: 20.0,
                 color: Colors.white,
@@ -178,13 +178,12 @@ class _MainScreenState extends State<MainScreen> {
             new Positioned(
               right: 0.0,
               top: 23.0,
-              child: new Material(
-                color: new Color(0x00FFFFFF),
-                child: new IconButton(
-                  padding: EdgeInsets.zero,
-                  icon: searchIcon,
-                  onPressed: () {},
-                ),
+              child: new IconButton(
+                padding: EdgeInsets.zero,
+                icon: searchIcon,
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/search');
+                },
               ),
             ),
           ],
