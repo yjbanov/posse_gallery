@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:posse_gallery/models/app_section.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -15,6 +16,15 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   List<Widget> _cells;
+
+  final List<AppSection> sectionsList = [
+    new AppSection(title: "CUSTOMIZED DESIGN", color: new Color(0xFF00A2EE)),
+    new AppSection(title: "LAYOUT & POSITIONING", color: new Color(0xFF45D2F9)),
+    new AppSection(title: "ANIMATION & UI MOTION", color: new Color(0xFF25C3BC)),
+    new AppSection(title: "UI PATTERNS", color: new Color(0xFFFFAC18)),
+    new AppSection(title: "PLUG INS", color: new Color(0xFFFF6941)),
+    new AppSection(title: "DESIGN COMPONENTS", color: new Color(0xFFA1CB39)),
+  ];
 
   final List<String> sectionList = [
     "Customized Design".toUpperCase(),
@@ -29,12 +39,12 @@ class _MainScreenState extends State<MainScreen> {
     List<Widget> sectionCells = [];
 
     int sectionNumber = 1;
-    for (String sectionTitle in sectionList) {
+    for (AppSection section in sectionsList) {
       final sectionContainer = new Container(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 2.0, bottom: 2.0),
         height: 156.0,
         child: new Card(
-          color: new Color(0xFF53D2F7),
+          color: section.color,
           child: new Center(
             child: new Column(
               mainAxisSize: MainAxisSize.max,
@@ -51,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
                 new Padding(
                   padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 7.0),
                   child: new Text(
-                    sectionTitle,
+                    section.title,
                     textAlign: TextAlign.center,
                     style: new TextStyle(
                       fontWeight: FontWeight.w700,
