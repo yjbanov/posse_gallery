@@ -34,34 +34,42 @@ class _MainScreenState extends State<MainScreen> {
         padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 2.0, bottom: 2.0),
         height: 156.0,
         child: new Card(
-          color: section.color,
-          child: new Center(
-            child: new Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                new Text(
-                  "$sectionNumber",
-                  style: new TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 10.0,
-                    color: Colors.white,
-                  ),
-                ),
-                new Padding(
-                  padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 7.0),
-                  child: new Text(
-                    section.title,
-                    textAlign: TextAlign.center,
-                    style: new TextStyle(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.7,
-                      fontSize: 20.0,
-                      color: Colors.white,
+          child: new Material(
+            color: section.color,
+            child: new InkWell(
+              highlightColor: Colors.white.withAlpha(30),
+              splashColor: Colors.white.withAlpha(20),
+              onTap: () {},
+              child: new Center(
+                child: new Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    new Text(
+                      "$sectionNumber",
+                      style: new TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 10.0,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
+                    new Padding(
+                      padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 7.0),
+                      child: new Text(
+                        section.title,
+                        textAlign: TextAlign.center,
+                        style: new TextStyle(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.7,
+                          height: 1.3,
+                          fontSize: 20.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -108,9 +116,13 @@ class _MainScreenState extends State<MainScreen> {
             new Positioned(
               right: 0.0,
               top: 23.0,
-              child: new IconButton(
-                icon: searchIcon,
-                onPressed: () {},
+              child: new Material(
+                color: Colors.white,
+                child: new IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: searchIcon,
+                  onPressed: () {},
+                ),
               ),
             ),
           ],
