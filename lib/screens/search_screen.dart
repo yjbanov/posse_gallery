@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:posse_gallery/views/cells/circular_reveal.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -113,9 +114,21 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return new Material(
-      color: new Color(0xFF43C2FD),
-      child: new Center(
-        child: _contentWidget(),
+      color: new Color(0x80FFFFFF),
+      child: new Stack(
+        children: [
+          new Positioned.fill(
+            child: new Center(
+              child: new CircularReveal(
+                  color: new Color(0xFF43C2FD),
+                  duration: new Duration(milliseconds: 2000),
+                  startPosition: PainterStartPosition.center),
+            ),
+          ),
+          new Positioned.fill(
+            child: _contentWidget(),
+          ),
+        ],
       ),
     );
   }
