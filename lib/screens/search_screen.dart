@@ -38,7 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return resultCells;
   }
 
-  Widget _appBarWidget() {
+  Widget _buildAppBar() {
     Image closeIcon = new Image(
       image: new AssetImage("assets/icons/ic_close.png"),
       fit: BoxFit.cover,
@@ -61,7 +61,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget _inputWidget() {
+  Widget _buildInputWidget() {
     return new Container(
       padding: const EdgeInsets.only(left: 25.0, right: 26.0),
       height: 64.0,
@@ -104,8 +104,8 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _contentWidget() {
     return new Column(
       children: [
-        _appBarWidget(),
-        _inputWidget(),
+        _buildAppBar(),
+        _buildInputWidget(),
         _resultsViewWidget(),
       ],
     );

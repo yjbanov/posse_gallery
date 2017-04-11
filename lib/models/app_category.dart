@@ -3,23 +3,23 @@
 // found in the LICENSE file.
 
 import 'package:flutter/painting.dart';
-import 'package:posse_gallery/models/section_feature.dart';
+import 'package:posse_gallery/models/category_item.dart';
 
-class AppSection {
-  AppSection(
+class AppCategory {
+  AppCategory(
       {this.title,
       this.subtitle,
       this.leftShapeColor,
       this.centerShapeColor,
       this.rightShapeColor,
-      this.sectionColors,
-      this.sectionFeatures});
+      this.categoryColors,
+      this.categoryItems});
 
   final String title;
   final String subtitle;
   final Color leftShapeColor;
   final Color centerShapeColor;
   final Color rightShapeColor;
-  final List<Color> sectionColors;
-  final List<SectionFeature> sectionFeatures;
+  final List<Color> categoryColors;
+  final List<CategoryItem> categoryItems;
 }

@@ -8,7 +8,7 @@ import 'package:posse_gallery/config/app_settings.dart';
 import 'package:posse_gallery/config/application.dart';
 import 'package:posse_gallery/screens/main_screen.dart';
 import 'package:posse_gallery/screens/search_screen.dart';
-import 'package:posse_gallery/screens/section_screen.dart';
+import 'package:posse_gallery/screens/category_screen.dart';
 import 'package:posse_gallery/screens/warm_welcome_screen.dart';
 
 void main() {
@@ -55,7 +55,7 @@ class _GalleryAppState extends State<GalleryApp> {
       home: launchScreen,
       routes: <String, WidgetBuilder> {
         '/search': (BuildContext context) => new SearchScreen(),
-        '/section': (BuildContext context) => new SectionScreen(),
+        '/category': (BuildContext context) => new CategoryScreen(),
       }
     );
   }

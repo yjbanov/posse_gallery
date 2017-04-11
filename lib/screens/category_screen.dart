@@ -1,91 +1,97 @@
 import 'package:flutter/material.dart';
-import 'package:posse_gallery/models/app_section.dart';
-import 'package:posse_gallery/models/section_feature.dart';
+import 'package:posse_gallery/models/app_category.dart';
+import 'package:posse_gallery/models/category_item.dart';
 
-class SectionScreen extends StatefulWidget {
-  SectionScreen({
-    AppSection appSection,
+class CategoryScreen extends StatefulWidget {
+  CategoryScreen({
+    AppCategory appCategory,
   })
-      : _appSection = appSection;
+      : _appCategory = appCategory;
 
-  final AppSection _appSection;
+  final AppCategory _appCategory;
 
   @override
-  _SectionScreenState createState() =>
-      new _SectionScreenState(appSection: _appSection);
+  _CategoryScreenState createState() =>
+      new _CategoryScreenState(appCategory: _appCategory);
 }
 
-class _SectionScreenState extends State<SectionScreen>
+class _CategoryScreenState extends State<CategoryScreen>
     with SingleTickerProviderStateMixin {
-  _SectionScreenState({
-    AppSection appSection,
+  _CategoryScreenState({
+    AppCategory appCategory,
   })
-      : _appSection = new AppSection(
+      : _appCategory = new AppCategory(
           title: "CUSTOMIZED DESIGN",
           subtitle: "BRAND FIRST EXPERIENCES",
           leftShapeColor: new Color(0xFF19AAEE),
           centerShapeColor: new Color(0xFF00A2EE),
           rightShapeColor: new Color(0xFF1AA3E4),
-          sectionColors: [
+          categoryColors: [
             new Color(0xFF19AAEE),
             new Color(0xFF009FEA),
             new Color(0xFF0084EA),
             Colors.white
           ],
-          sectionFeatures: [
-            new SectionFeature(
+          categoryItems: [
+            new CategoryItem(
                 title: "CUSTOMIZED BRAND DESIGN",
                 iconUrl: "assets/icons/ic_customized_brand_design.png"),
-            new SectionFeature(
+            new CategoryItem(
                 title: "ASSETS & THEMES",
                 iconUrl: "assets/icons/ic_customized_assets.png"),
-            new SectionFeature(
+            new CategoryItem(
                 title: "PAINTING",
                 iconUrl: "assets/icons/ic_customized_painting.png"),
-            new SectionFeature(
+            new CategoryItem(
                 title: "COMPONENTS", iconUrl: "assets/icons/ic_components.png"),
           ],
         );
 
-  AppSection _appSection;
+  AppCategory _appCategory;
   List<Widget> _cells;
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      _cells = _loadFeatures();
+      _cells = _loadItems();
     });
   }
 
-  List<Widget> _loadFeatures() {
+  List<Widget> _loadItems() {
     List<Widget> cells = [];
-    for (int i = 0; i < _appSection.sectionFeatures.length; i++) {
-      SectionFeature feature = _appSection.sectionFeatures[i];
-      Color color = _appSection.sectionColors[i];
+    for (int i = 0; i < _appCategory.categoryItems.length; i++) {
+      CategoryItem item = _appCategory.categoryItems[i];
+      Color color = _appCategory.categoryColors[i];
+      Color textColor =
+          item.title == "COMPONENTS" ? Colors.black : Colors.white;
       final cellContainer = new Container(
         color: color,
         height: 163.0,
-        child: new Stack(
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            new Positioned(
-              left: 12.0,
+            new Padding(
+              padding: const EdgeInsets.only(left: 40.0),
               child: new Image(
-                image: new AssetImage(feature.iconUrl),
+                image: new AssetImage(item.iconUrl),
                 fit: BoxFit.cover,
               ),
             ),
-            new Positioned(
-              right: 12.0,
-              child: new Text(
-                  feature.title,
+            new Expanded(
+              child: new Padding(
+                padding: const EdgeInsets.only(left: 40.0, right: 10.0),
+                child: new Text(
+                  item.title,
                   style: new TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 14.0,
-                    color: Colors.white,
+                    color: textColor,
                   ),
                 ),
               ),
+            ),
           ],
         ),
       );
@@ -94,7 +100,7 @@ class _SectionScreenState extends State<SectionScreen>
     return cells;
   }
 
-  Widget _appBarWidget() {
+  Widget _buildAppBar() {
     Image backIcon = new Image(
       image: new AssetImage("assets/icons/ic_back_arrow.png"),
       fit: BoxFit.cover,
@@ -134,27 +140,25 @@ class _SectionScreenState extends State<SectionScreen>
     );
   }
 
-  Widget _contentWidget() {
-    return new Stack(
-      children: [
-        new Positioned(
-          child: new Column(
-            children: [
-              _appBarWidget(),
-              new Expanded(
-                child: new Container(
-                  color: new Color(0x00FFFFFF),
-                  child: new Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                    child: new ListView(
-                      children: _cells,
-                    ),
-                  ),
+  Widget _buildListView() {
+    return new Expanded(
+        child: new Container(
+            color: new Color(0x00FFFFFF),
+            child: new Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: new ListView(
+                    children: _cells,
                 ),
-              ),
-            ],
-          ),
+            ),
         ),
+    );
+  }
+
+  Widget _contentWidget() {
+    return new Column(
+      children: [
+        _buildAppBar(),
+        _buildListView(),
       ],
     );
   }
