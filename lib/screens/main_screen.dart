@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:posse_gallery/models/app_section.dart';
+import 'package:posse_gallery/models/section_feature.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -19,35 +20,116 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<AppSection> _sectionList = [
     new AppSection(
-        title: "CUSTOMIZED DESIGN",
-        leftShapeColor: new Color(0xFF19AAEE),
-        centerShapeColor: new Color(0xFF00A2EE),
-        rightShapeColor: new Color(0xFF1AA3E4)),
+      title: "CUSTOMIZED DESIGN",
+      subtitle: "BRAND FIRST EXPERIENCES",
+      leftShapeColor: new Color(0xFF19AAEE),
+      centerShapeColor: new Color(0xFF00A2EE),
+      rightShapeColor: new Color(0xFF1AA3E4),
+      sectionColors: [
+        new Color(0xFF19AAEE),
+        new Color(0x009FEA),
+        new Color(0x0084EA),
+        Colors.white
+      ],
+      sectionFeatures: [
+        new SectionFeature(title: "CUSTOMIZED BRAND DESIGN", iconUrl: "a.png"),
+        new SectionFeature(title: "ASSETS & THEMES", iconUrl: "a.png"),
+        new SectionFeature(title: "PAINTING", iconUrl: "a.png"),
+        new SectionFeature(title: "COMPONENTS", iconUrl: "a.png"),
+      ],
+    ),
     new AppSection(
-        title: "LAYOUT & POSITIONING",
-        leftShapeColor: new Color(0xFF5BDBFF),
-        centerShapeColor: new Color(0xFF45D2F9),
-        rightShapeColor: new Color(0xFF53D2F7)),
+      title: "LAYOUT & POSITIONING",
+      subtitle: "EASY TO COMPOSE",
+      leftShapeColor: new Color(0xFF5BDBFF),
+      centerShapeColor: new Color(0xFF45D2F9),
+      rightShapeColor: new Color(0xFF53D2F7),
+      sectionColors: [
+        new Color(0xFF19AAEE),
+        new Color(0x009FEA),
+        new Color(0x0084EA),
+        Colors.white
+      ],
+      sectionFeatures: [
+        new SectionFeature(title: "FLEX", iconUrl: "a.png"),
+        new SectionFeature(title: "STACK", iconUrl: "a.png"),
+        new SectionFeature(title: "SCROLL", iconUrl: "a.png"),
+        new SectionFeature(title: "COMPONENTS", iconUrl: "a.png"),
+      ],
+    ),
     new AppSection(
-        title: "ANIMATION & UI MOTION",
-        leftShapeColor: new Color(0xFF38D3CD),
-        centerShapeColor: new Color(0xFF25C3BC),
-        rightShapeColor: new Color(0xFF3BBCB7)),
+      title: "ANIMATION & UI MOTION",
+      subtitle: "MADE FOR MOTION",
+      leftShapeColor: new Color(0xFF38D3CD),
+      centerShapeColor: new Color(0xFF25C3BC),
+      rightShapeColor: new Color(0xFF3BBCB7),
+      sectionColors: [
+        new Color(0xFF19AAEE),
+        new Color(0x009FEA),
+        new Color(0x0084EA),
+        Colors.white
+      ],
+      sectionFeatures: [
+        new SectionFeature(title: "TWEENS", iconUrl: "a.png"),
+        new SectionFeature(title: "CHAINS/FRAME", iconUrl: "a.png"),
+        new SectionFeature(title: "GESTURES", iconUrl: "a.png"),
+        new SectionFeature(title: "COMPONENTS", iconUrl: "a.png"),
+      ],
+    ),
     new AppSection(
-        title: "UI PATTERNS",
-        leftShapeColor: new Color(0xFFF9B640),
-        centerShapeColor: new Color(0xFFFFAC18),
-        rightShapeColor: new Color(0xFFFFB02C)),
+      title: "UI PATTERNS",
+      subtitle: "NATURAL AND PRODUCTIVE",
+      leftShapeColor: new Color(0xFFF9B640),
+      centerShapeColor: new Color(0xFFFFAC18),
+      rightShapeColor: new Color(0xFFFFB02C),
+      sectionColors: [
+        new Color(0xFF19AAEE),
+        new Color(0x009FEA),
+        new Color(0x0084EA),
+        Colors.white
+      ],
+      sectionFeatures: [
+        new SectionFeature(title: "MAKE A LIST", iconUrl: "a.png"),
+        new SectionFeature(title: "WALKTHROUGH", iconUrl: "a.png"),
+        new SectionFeature(title: "EDIT AN IMAGE", iconUrl: "a.png"),
+      ],
+    ),
     new AppSection(
-        title: "PLUG INS",
-        leftShapeColor: new Color(0xFFFD734E),
-        centerShapeColor: new Color(0xFFFF6941),
-        rightShapeColor: new Color(0xFFFA724E)),
+      title: "PLUG INS",
+      subtitle: "UNIFIED BUILDING BLOCKS",
+      leftShapeColor: new Color(0xFFFD734E),
+      centerShapeColor: new Color(0xFFFF6941),
+      rightShapeColor: new Color(0xFFFA724E),
+      sectionColors: [
+        new Color(0xFF19AAEE),
+        new Color(0x009FEA),
+        new Color(0x0084EA),
+        Colors.white
+      ],
+      sectionFeatures: [
+        new SectionFeature(title: "TAKE A PHOTO", iconUrl: "a.png"),
+        new SectionFeature(title: "CURRENT LOCATION", iconUrl: "a.png"),
+        new SectionFeature(title: "DEVICE MOTION", iconUrl: "a.png"),
+        new SectionFeature(title: "CUSTOM SERVICE PLUG-INS", iconUrl: "a.png"),
+      ],
+    ),
     new AppSection(
-        title: "DESIGN COMPONENTS",
-        leftShapeColor: new Color(0xFFAFD84C),
-        centerShapeColor: new Color(0xFFA1CB39),
-        rightShapeColor: new Color(0xFFA3CA4B)),
+      title: "DESIGN COMPONENTS",
+      subtitle: "HIGH FIDELITY TOOLKIT",
+      leftShapeColor: new Color(0xFFAFD84C),
+      centerShapeColor: new Color(0xFFA1CB39),
+      rightShapeColor: new Color(0xFFA3CA4B),
+      sectionColors: [
+        new Color(0xFF19AAEE),
+        new Color(0x009FEA),
+        new Color(0x0084EA),
+        Colors.white
+      ],
+      sectionFeatures: [
+        new SectionFeature(title: "IOS CONTROLS", iconUrl: "a.png"),
+        new SectionFeature(title: "MATERIAL CONTROLS", iconUrl: "a.png"),
+      ],
+    ),
   ];
 
   List<Widget> _loadSections() {
@@ -55,7 +137,8 @@ class _MainScreenState extends State<MainScreen> {
     int sectionIndex = 1;
     for (AppSection section in _sectionList) {
       final sectionContainer = new Container(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 2.0, bottom: 2.0),
+        padding:
+            const EdgeInsets.only(left: 8.0, right: 8.0, top: 2.0, bottom: 2.0),
         height: 156.0,
         child: new Card(
           child: new Stack(
@@ -96,7 +179,7 @@ class _MainScreenState extends State<MainScreen> {
                   highlightColor: Colors.white.withAlpha(30),
                   splashColor: Colors.white.withAlpha(20),
                   onTap: () {
-                    print("tapped cell");
+                    Navigator.of(context).pushNamed('/section');
                   },
                 ),
               ),
