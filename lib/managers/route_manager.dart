@@ -1,3 +1,7 @@
+// Copyright 2017 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'package:flutter/widgets.dart';
 import 'package:posse_gallery/managers/category_manager.dart';
 import 'package:posse_gallery/models/app_category.dart';
@@ -17,9 +21,9 @@ class RouteManager {
     return _routes;
   }
 
-  static AppCategory _retrieveCategory(String type) {
+  static AppCategory _retrieveCategory(String routeName) {
     for (AppCategory category in _categories) {
-      if (category.categoryType == type) {
+      if (category.routeName == routeName) {
         return category;
       }
     }

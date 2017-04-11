@@ -7,7 +7,7 @@ import 'package:posse_gallery/models/category_item.dart';
 
 class AppCategory {
   AppCategory({
-    this.categoryType,
+    this.routeName,
     this.title,
     this.subtitle,
     this.leftShapeColor,
@@ -17,7 +17,7 @@ class AppCategory {
     this.categoryItems,
   });
 
-  final String categoryType;
+  final String routeName;
   final String title;
   final String subtitle;
   final Color leftShapeColor;

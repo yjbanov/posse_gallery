@@ -23,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
     int categoryIndex = 1;
     List<AppCategory> categories = new CategoryManager().categories();
     for (AppCategory category in categories) {
-      String categoryType = category.categoryType;
+      String routeName = category.routeName;
       final categoryContainer = new Container(
         padding:
             const EdgeInsets.only(left: 8.0, right: 8.0, top: 2.0, bottom: 2.0),
@@ -68,7 +68,7 @@ class _MainScreenState extends State<MainScreen> {
                   highlightColor: Colors.white.withAlpha(30),
                   splashColor: Colors.white.withAlpha(20),
                   onTap: () {
-                    Navigator.of(context).pushNamed('/category/$categoryType');
+                    Navigator.of(context).pushNamed('/category/$routeName');
                   },
                 ),
               ),

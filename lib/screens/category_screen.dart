@@ -1,3 +1,7 @@
+// Copyright 2017 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'package:flutter/material.dart';
 import 'package:posse_gallery/models/app_category.dart';
 import 'package:posse_gallery/models/category_item.dart';
@@ -50,15 +54,16 @@ class _CategoryScreenState extends State<CategoryScreen>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 new Padding(
-                  padding: const EdgeInsets.only(left: 40.0),
+                  padding: const EdgeInsets.only(left: 50.0),
                   child: new Image(
+                    width: 50.0,
                     image: new AssetImage(item.iconUrl),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.scaleDown,
                   ),
                 ),
                 new Expanded(
                   child: new Padding(
-                    padding: const EdgeInsets.only(left: 40.0, right: 10.0),
+                    padding: const EdgeInsets.only(left: 50.0, right: 20.0),
                     child: new Text(
                       item.title,
                       style: new TextStyle(

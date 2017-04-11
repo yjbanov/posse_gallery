@@ -1,3 +1,7 @@
+// Copyright 2017 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:posse_gallery/models/app_category.dart';
@@ -16,7 +20,7 @@ class CategoryManager {
 
   final List<AppCategory> _categoryList = [
     new AppCategory(
-      categoryType: "customized_design",
+      routeName: "customized_design",
       title: "CUSTOMIZED DESIGN",
       subtitle: "BRAND FIRST EXPERIENCES",
       leftShapeColor: new Color(0xFF19AAEE),
@@ -29,14 +33,21 @@ class CategoryManager {
         Colors.white,
       ],
       categoryItems: [
-        new CategoryItem(title: "CUSTOMIZED BRAND DESIGN", iconUrl: "assets/icons/ic_customized_brand_design.png"),
-        new CategoryItem(title: "ASSETS & THEMES", iconUrl: "assets/icons/ic_customized_assets.png"),
-        new CategoryItem(title: "PAINTING", iconUrl: "assets/icons/ic_customized_painting.png"),
-        new CategoryItem(title: "COMPONENTS", iconUrl: "assets/icons/ic_components.png"),
+        new CategoryItem(
+            title: "CUSTOMIZED BRAND DESIGN",
+            iconUrl: "assets/icons/ic_customized_brand_design.png"),
+        new CategoryItem(
+            title: "ASSETS & THEMES",
+            iconUrl: "assets/icons/ic_customized_assets.png"),
+        new CategoryItem(
+            title: "PAINTING",
+            iconUrl: "assets/icons/ic_customized_painting.png"),
+        new CategoryItem(
+            title: "COMPONENTS", iconUrl: "assets/icons/ic_components.png"),
       ],
     ),
     new AppCategory(
-      categoryType: "layout_positioning",
+      routeName: "layout_positioning",
       title: "LAYOUT & POSITIONING",
       subtitle: "EASY TO COMPOSE",
       leftShapeColor: new Color(0xFF5BDBFF),
@@ -49,14 +60,18 @@ class CategoryManager {
         Colors.white,
       ],
       categoryItems: [
-        new CategoryItem(title: "FLEX", iconUrl: "assets/icons/ic_layout_flex.png"),
-        new CategoryItem(title: "STACK", iconUrl: "assets/icons/ic_layout_stack.png"),
-        new CategoryItem(title: "SCROLL", iconUrl: "assets/icons/ic_layout_scroll.png"),
-        new CategoryItem(title: "COMPONENTS", iconUrl: "assets/icons/ic_components.png"),
+        new CategoryItem(
+            title: "FLEX", iconUrl: "assets/icons/ic_layout_flex.png"),
+        new CategoryItem(
+            title: "STACK", iconUrl: "assets/icons/ic_layout_stack.png"),
+        new CategoryItem(
+            title: "SCROLL", iconUrl: "assets/icons/ic_layout_scroll.png"),
+        new CategoryItem(
+            title: "COMPONENTS", iconUrl: "assets/icons/ic_components.png"),
       ],
     ),
     new AppCategory(
-      categoryType: "animation",
+      routeName: "animation",
       title: "ANIMATION & UI MOTION",
       subtitle: "MADE FOR MOTION",
       leftShapeColor: new Color(0xFF38D3CD),
@@ -69,14 +84,20 @@ class CategoryManager {
         Colors.white,
       ],
       categoryItems: [
-        new CategoryItem(title: "TWEENS", iconUrl: "assets/icons/ic_animation_tweens.png"),
-        new CategoryItem(title: "CHAINS/FRAME", iconUrl: "assets/icons/ic_animation_chains.png"),
-        new CategoryItem(title: "GESTURES", iconUrl: "assets/icons/ic_animation_gestures.png"),
-        new CategoryItem(title: "COMPONENTS", iconUrl: "assets/icons/ic_components.png"),
+        new CategoryItem(
+            title: "TWEENS", iconUrl: "assets/icons/ic_animation_tweens.png"),
+        new CategoryItem(
+            title: "CHAINS/FRAME",
+            iconUrl: "assets/icons/ic_animation_chains.png"),
+        new CategoryItem(
+            title: "GESTURES",
+            iconUrl: "assets/icons/ic_animation_gestures.png"),
+        new CategoryItem(
+            title: "COMPONENTS", iconUrl: "assets/icons/ic_components.png"),
       ],
     ),
     new AppCategory(
-      categoryType: "patterns",
+      routeName: "patterns",
       title: "UI PATTERNS",
       subtitle: "NATURAL AND PRODUCTIVE",
       leftShapeColor: new Color(0xFFF9B640),
@@ -88,13 +109,18 @@ class CategoryManager {
         new Color(0xFFFF4A2D),
       ],
       categoryItems: [
-        new CategoryItem(title: "MAKE A LIST", iconUrl: "assets/icons/ic_patterns_list.png"),
-        new CategoryItem(title: "WALKTHROUGH", iconUrl: "assets/icons/ic_patterns_walkthrough.png"),
-        new CategoryItem(title: "EDIT AN IMAGE", iconUrl: "assets/icons/ic_pattern_edit_image.png"),
+        new CategoryItem(
+            title: "MAKE A LIST", iconUrl: "assets/icons/ic_patterns_list.png"),
+        new CategoryItem(
+            title: "WALKTHROUGH",
+            iconUrl: "assets/icons/ic_patterns_walkthrough.png"),
+        new CategoryItem(
+            title: "EDIT AN IMAGE",
+            iconUrl: "assets/icons/ic_pattern_edit_image.png"),
       ],
     ),
     new AppCategory(
-      categoryType: "plug_ins",
+      routeName: "plug_ins",
       title: "PLUG INS",
       subtitle: "UNIFIED BUILDING BLOCKS",
       leftShapeColor: new Color(0xFFFD734E),
@@ -107,14 +133,22 @@ class CategoryManager {
         new Color(0xFFBA0000),
       ],
       categoryItems: [
-        new CategoryItem(title: "TAKE A PHOTO", iconUrl: "assets/icons/ic_plug_in_photo.png"),
-        new CategoryItem(title: "CURRENT LOCATION", iconUrl: "assets/icons/ic_plug_in_location.png"),
-        new CategoryItem(title: "DEVICE MOTION", iconUrl: "assets/icons/ic_plug_in_motion.png"),
-        new CategoryItem(title: "CUSTOM SERVICE PLUG-INS", iconUrl: "assets/icons/ic_plug_in_service.png"),
+        new CategoryItem(
+            title: "TAKE A PHOTO",
+            iconUrl: "assets/icons/ic_plug_in_photo.png"),
+        new CategoryItem(
+            title: "CURRENT LOCATION",
+            iconUrl: "assets/icons/ic_plug_in_location.png"),
+        new CategoryItem(
+            title: "DEVICE MOTION",
+            iconUrl: "assets/icons/ic_plug_in_motion.png"),
+        new CategoryItem(
+            title: "CUSTOM SERVICE PLUG-INS",
+            iconUrl: "assets/icons/ic_plug_in_service.png"),
       ],
     ),
     new AppCategory(
-      categoryType: "design_components",
+      routeName: "design_components",
       title: "DESIGN COMPONENTS",
       subtitle: "HIGH FIDELITY TOOLKIT",
       leftShapeColor: new Color(0xFFAFD84C),
@@ -125,8 +159,12 @@ class CategoryManager {
         new Color(0xFF6AAD10),
       ],
       categoryItems: [
-        new CategoryItem(title: "IOS CONTROLS", iconUrl: "assets/icons/ic_design_components_controls.png"),
-        new CategoryItem(title: "MATERIAL CONTROLS", iconUrl: "assets/icons/ic_design_components_material.png"),
+        new CategoryItem(
+            title: "IOS CONTROLS",
+            iconUrl: "assets/icons/ic_design_components_controls.png"),
+        new CategoryItem(
+            title: "MATERIAL CONTROLS",
+            iconUrl: "assets/icons/ic_design_components_material.png"),
       ],
     ),
   ];
