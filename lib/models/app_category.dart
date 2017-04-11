@@ -6,15 +6,18 @@ import 'package:flutter/painting.dart';
 import 'package:posse_gallery/models/category_item.dart';
 
 class AppCategory {
-  AppCategory(
-      {this.title,
-      this.subtitle,
-      this.leftShapeColor,
-      this.centerShapeColor,
-      this.rightShapeColor,
-      this.categoryColors,
-      this.categoryItems});
+  AppCategory({
+    this.categoryType,
+    this.title,
+    this.subtitle,
+    this.leftShapeColor,
+    this.centerShapeColor,
+    this.rightShapeColor,
+    this.categoryColors,
+    this.categoryItems,
+  });
 
+  final String categoryType;
   final String title;
   final String subtitle;
   final Color leftShapeColor;

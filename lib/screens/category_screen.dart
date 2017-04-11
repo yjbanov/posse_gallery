@@ -20,32 +20,7 @@ class _CategoryScreenState extends State<CategoryScreen>
   _CategoryScreenState({
     AppCategory appCategory,
   })
-      : _appCategory = new AppCategory(
-          title: "CUSTOMIZED DESIGN",
-          subtitle: "BRAND FIRST EXPERIENCES",
-          leftShapeColor: new Color(0xFF19AAEE),
-          centerShapeColor: new Color(0xFF00A2EE),
-          rightShapeColor: new Color(0xFF1AA3E4),
-          categoryColors: [
-            new Color(0xFF19AAEE),
-            new Color(0xFF009FEA),
-            new Color(0xFF0084EA),
-            Colors.white
-          ],
-          categoryItems: [
-            new CategoryItem(
-                title: "CUSTOMIZED BRAND DESIGN",
-                iconUrl: "assets/icons/ic_customized_brand_design.png"),
-            new CategoryItem(
-                title: "ASSETS & THEMES",
-                iconUrl: "assets/icons/ic_customized_assets.png"),
-            new CategoryItem(
-                title: "PAINTING",
-                iconUrl: "assets/icons/ic_customized_painting.png"),
-            new CategoryItem(
-                title: "COMPONENTS", iconUrl: "assets/icons/ic_components.png"),
-          ],
-        );
+      : _appCategory = appCategory;
 
   AppCategory _appCategory;
   List<Widget> _cells;
@@ -68,28 +43,42 @@ class _CategoryScreenState extends State<CategoryScreen>
       final cellContainer = new Container(
         color: color,
         height: 163.0,
-        child: new Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: new Stack(
           children: [
-            new Padding(
-              padding: const EdgeInsets.only(left: 40.0),
-              child: new Image(
-                image: new AssetImage(item.iconUrl),
-                fit: BoxFit.cover,
-              ),
-            ),
-            new Expanded(
-              child: new Padding(
-                padding: const EdgeInsets.only(left: 40.0, right: 10.0),
-                child: new Text(
-                  item.title,
-                  style: new TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14.0,
-                    color: textColor,
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                new Padding(
+                  padding: const EdgeInsets.only(left: 40.0),
+                  child: new Image(
+                    image: new AssetImage(item.iconUrl),
+                    fit: BoxFit.cover,
                   ),
                 ),
+                new Expanded(
+                  child: new Padding(
+                    padding: const EdgeInsets.only(left: 40.0, right: 10.0),
+                    child: new Text(
+                      item.title,
+                      style: new TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14.0,
+                        color: textColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            new Material(
+              color: new Color(0x00FFFFFF),
+              child: new InkWell(
+                highlightColor: Colors.white.withAlpha(30),
+                splashColor: Colors.white.withAlpha(20),
+                onTap: () {
+                  print("tapped cell");
+                },
               ),
             ),
           ],
@@ -142,15 +131,15 @@ class _CategoryScreenState extends State<CategoryScreen>
 
   Widget _buildListView() {
     return new Expanded(
-        child: new Container(
-            color: new Color(0x00FFFFFF),
-            child: new Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: new ListView(
-                    children: _cells,
-                ),
-            ),
+      child: new Container(
+        color: new Color(0x00FFFFFF),
+        child: new Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: new ListView(
+            children: _cells,
+          ),
         ),
+      ),
     );
   }
 

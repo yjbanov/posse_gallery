@@ -3,12 +3,12 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:posse_gallery/config/app_settings.dart';
 import 'package:posse_gallery/config/application.dart';
+import 'package:posse_gallery/managers/route_manager.dart';
 import 'package:posse_gallery/screens/main_screen.dart';
-import 'package:posse_gallery/screens/search_screen.dart';
-import 'package:posse_gallery/screens/category_screen.dart';
 import 'package:posse_gallery/screens/warm_welcome_screen.dart';
 
 void main() {
@@ -18,17 +18,15 @@ void main() {
 class GalleryApp extends StatefulWidget {
   @override
   _GalleryAppState createState() => new _GalleryAppState();
-
 }
 
 class _GalleryAppState extends State<GalleryApp> {
-
   Widget mainWidget;
 
   _GalleryAppState() {
     mainWidget = loadingWidget();
     configureApp().then((Widget configuredWidget) {
-      setState((){
+      setState(() {
         mainWidget = configuredWidget;
       });
     });
@@ -45,18 +43,17 @@ class _GalleryAppState extends State<GalleryApp> {
   }
 
   Widget configureUI() {
-    bool hasSeenWelcome = Application.settings.boolValue("has_shown_welcome", defaultValue: true);
-    Widget launchScreen = !hasSeenWelcome ? new WarmWelcomeScreen() : new MainScreen();
+    bool hasSeenWelcome =
+        Application.settings.boolValue("has_shown_welcome", defaultValue: true);
+    Widget launchScreen =
+        !hasSeenWelcome ? new WarmWelcomeScreen() : new MainScreen();
     return new MaterialApp(
       title: 'Flutter Gallery',
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: launchScreen,
-      routes: <String, WidgetBuilder> {
-        '/search': (BuildContext context) => new SearchScreen(),
-        '/category': (BuildContext context) => new CategoryScreen(),
-      }
+      routes: new RouteManager().routes(),
     );
   }
 
