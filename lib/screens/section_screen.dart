@@ -28,16 +28,22 @@ class _SectionScreenState extends State<SectionScreen>
           rightShapeColor: new Color(0xFF1AA3E4),
           sectionColors: [
             new Color(0xFF19AAEE),
-            new Color(0x009FEA),
-            new Color(0x0084EA),
+            new Color(0xFF009FEA),
+            new Color(0xFF0084EA),
             Colors.white
           ],
           sectionFeatures: [
             new SectionFeature(
-                title: "CUSTOMIZED BRAND DESIGN", iconUrl: "a.png"),
-            new SectionFeature(title: "ASSETS & THEMES", iconUrl: "a.png"),
-            new SectionFeature(title: "PAINTING", iconUrl: "a.png"),
-            new SectionFeature(title: "COMPONENTS", iconUrl: "a.png"),
+                title: "CUSTOMIZED BRAND DESIGN",
+                iconUrl: "assets/icons/ic_customized_brand_design.png"),
+            new SectionFeature(
+                title: "ASSETS & THEMES",
+                iconUrl: "assets/icons/ic_customized_assets.png"),
+            new SectionFeature(
+                title: "PAINTING",
+                iconUrl: "assets/icons/ic_customized_painting.png"),
+            new SectionFeature(
+                title: "COMPONENTS", iconUrl: "assets/icons/ic_components.png"),
           ],
         );
 
@@ -54,25 +60,32 @@ class _SectionScreenState extends State<SectionScreen>
 
   List<Widget> _loadFeatures() {
     List<Widget> cells = [];
-    for (SectionFeature feature in _appSection.sectionFeatures) {
+    for (int i = 0; i < _appSection.sectionFeatures.length; i++) {
+      SectionFeature feature = _appSection.sectionFeatures[i];
+      Color color = _appSection.sectionColors[i];
       final cellContainer = new Container(
-        color: Colors.blue,
+        color: color,
         height: 163.0,
         child: new Stack(
           children: [
             new Positioned(
               left: 12.0,
-              top: 32.0,
               child: new Image(
-                image: new AssetImage("assets/icons/ic_back_arrow.png"),
+                image: new AssetImage(feature.iconUrl),
                 fit: BoxFit.cover,
               ),
             ),
             new Positioned(
               right: 12.0,
-              top: 32.0,
-              child: new Text("FEATURE TITLE"),
-            ),
+              child: new Text(
+                  feature.title,
+                  style: new TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
           ],
         ),
       );
@@ -82,8 +95,8 @@ class _SectionScreenState extends State<SectionScreen>
   }
 
   Widget _appBarWidget() {
-    Image searchIcon = new Image(
-      image: new AssetImage("assets/icons/ic_search.png"),
+    Image backIcon = new Image(
+      image: new AssetImage("assets/icons/ic_back_arrow.png"),
       fit: BoxFit.cover,
     );
     return new Container(
@@ -95,32 +108,24 @@ class _SectionScreenState extends State<SectionScreen>
             new Positioned(
               left: 12.0,
               top: 32.0,
-              child: new Image(
-                image: new AssetImage("assets/icons/ic_flutter_logo.png"),
-                fit: BoxFit.cover,
+              child: new IconButton(
+                padding: EdgeInsets.zero,
+                icon: backIcon,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
             ),
             new Positioned(
               left: 52.0,
               top: 35.0,
               child: new Text(
-                "Flutter Gallery",
+                "",
                 style: new TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 20.0,
                   color: new Color(0xFF29B6F6),
                 ),
-              ),
-            ),
-            new Positioned(
-              right: 0.0,
-              top: 23.0,
-              child: new IconButton(
-                padding: EdgeInsets.zero,
-                icon: searchIcon,
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/search');
-                },
               ),
             ),
           ],
