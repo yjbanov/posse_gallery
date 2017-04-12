@@ -117,7 +117,7 @@ class _MainScreenState extends State<MainScreen> {
       fit: BoxFit.cover,
     );
     return new Container(
-      height: 70.0,
+      height: 76.0,
       child: new DecoratedBox(
         decoration: new BoxDecoration(),
         child: new Stack(

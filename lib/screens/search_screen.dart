@@ -46,8 +46,8 @@ class _SearchScreenState extends State<SearchScreen> {
     return new Material(
       color: new Color(0x00FFFFFF),
       child: new Container(
-        height: 90.0,
-        padding: const EdgeInsets.only(left: 10.0, top: 20.0),
+        height: 86.0,
+        padding: const EdgeInsets.only(left: 10.0, top: 15.0),
         child: new Align(
           alignment: FractionalOffset.centerLeft,
           child: new Container(
@@ -128,7 +128,10 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
           new Positioned.fill(
-            child: _contentWidget(),
+            child: new Container(
+              color: new Color(0xFF00A2EE),
+              child: _contentWidget(),
+            ),
           ),
         ],
       ),

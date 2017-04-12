@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 class CategoryItem {
-  CategoryItem({this.title, this.iconUrl});
+  CategoryItem({this.title, this.iconUri});
 
   final String title;
-  final String iconUrl;
+  final String iconUri;
 }

@@ -46,15 +46,15 @@ class CategoryManager {
       categoryItems: [
         new CategoryItem(
             title: "CUSTOMIZED BRAND DESIGN",
-            iconUrl: "assets/icons/ic_customized_brand_design.png"),
+            iconUri: "assets/icons/ic_customized_brand_design.png"),
         new CategoryItem(
             title: "ASSETS & THEMES",
-            iconUrl: "assets/icons/ic_customized_assets.png"),
+            iconUri: "assets/icons/ic_customized_assets.png"),
         new CategoryItem(
             title: "PAINTING",
-            iconUrl: "assets/icons/ic_customized_painting.png"),
+            iconUri: "assets/icons/ic_customized_painting.png"),
         new CategoryItem(
-            title: "COMPONENTS", iconUrl: "assets/icons/ic_components.png"),
+            title: "COMPONENTS", iconUri: "assets/icons/ic_components.png"),
       ],
     ),
     new AppCategory(
@@ -72,13 +72,13 @@ class CategoryManager {
       ],
       categoryItems: [
         new CategoryItem(
-            title: "FLEX", iconUrl: "assets/icons/ic_layout_flex.png"),
+            title: "FLEX", iconUri: "assets/icons/ic_layout_flex.png"),
         new CategoryItem(
-            title: "STACK", iconUrl: "assets/icons/ic_layout_stack.png"),
+            title: "STACK", iconUri: "assets/icons/ic_layout_stack.png"),
         new CategoryItem(
-            title: "SCROLL", iconUrl: "assets/icons/ic_layout_scroll.png"),
+            title: "SCROLL", iconUri: "assets/icons/ic_layout_scroll.png"),
         new CategoryItem(
-            title: "COMPONENTS", iconUrl: "assets/icons/ic_components.png"),
+            title: "COMPONENTS", iconUri: "assets/icons/ic_components.png"),
       ],
     ),
     new AppCategory(
@@ -96,15 +96,15 @@ class CategoryManager {
       ],
       categoryItems: [
         new CategoryItem(
-            title: "TWEENS", iconUrl: "assets/icons/ic_animation_tweens.png"),
+            title: "TWEENS", iconUri: "assets/icons/ic_animation_tweens.png"),
         new CategoryItem(
             title: "CHAINS/FRAME",
-            iconUrl: "assets/icons/ic_animation_chains.png"),
+            iconUri: "assets/icons/ic_animation_chains.png"),
         new CategoryItem(
             title: "GESTURES",
-            iconUrl: "assets/icons/ic_animation_gestures.png"),
+            iconUri: "assets/icons/ic_animation_gestures.png"),
         new CategoryItem(
-            title: "COMPONENTS", iconUrl: "assets/icons/ic_components.png"),
+            title: "COMPONENTS", iconUri: "assets/icons/ic_components.png"),
       ],
     ),
     new AppCategory(
@@ -121,13 +121,13 @@ class CategoryManager {
       ],
       categoryItems: [
         new CategoryItem(
-            title: "MAKE A LIST", iconUrl: "assets/icons/ic_patterns_list.png"),
+            title: "MAKE A LIST", iconUri: "assets/icons/ic_patterns_list.png"),
         new CategoryItem(
             title: "WALKTHROUGH",
-            iconUrl: "assets/icons/ic_patterns_walkthrough.png"),
+            iconUri: "assets/icons/ic_patterns_walkthrough.png"),
         new CategoryItem(
             title: "EDIT AN IMAGE",
-            iconUrl: "assets/icons/ic_pattern_edit_image.png"),
+            iconUri: "assets/icons/ic_pattern_edit_image.png"),
       ],
     ),
     new AppCategory(
@@ -146,16 +146,16 @@ class CategoryManager {
       categoryItems: [
         new CategoryItem(
             title: "TAKE A PHOTO",
-            iconUrl: "assets/icons/ic_plug_in_photo.png"),
+            iconUri: "assets/icons/ic_plug_in_photo.png"),
         new CategoryItem(
             title: "CURRENT LOCATION",
-            iconUrl: "assets/icons/ic_plug_in_location.png"),
+            iconUri: "assets/icons/ic_plug_in_location.png"),
         new CategoryItem(
             title: "DEVICE MOTION",
-            iconUrl: "assets/icons/ic_plug_in_motion.png"),
+            iconUri: "assets/icons/ic_plug_in_motion.png"),
         new CategoryItem(
             title: "CUSTOM SERVICE PLUG-INS",
-            iconUrl: "assets/icons/ic_plug_in_service.png"),
+            iconUri: "assets/icons/ic_plug_in_service.png"),
       ],
     ),
     new AppCategory(
@@ -172,10 +172,10 @@ class CategoryManager {
       categoryItems: [
         new CategoryItem(
             title: "IOS CONTROLS",
-            iconUrl: "assets/icons/ic_design_components_controls.png"),
+            iconUri: "assets/icons/ic_design_components_controls.png"),
         new CategoryItem(
             title: "MATERIAL CONTROLS",
-            iconUrl: "assets/icons/ic_design_components_material.png"),
+            iconUri: "assets/icons/ic_design_components_material.png"),
       ],
     ),
   ];

@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:posse_gallery/managers/category_manager.dart';
 import 'package:posse_gallery/models/app_category.dart';
 import 'package:posse_gallery/screens/category_screen.dart';
+import 'package:posse_gallery/screens/item_screen.dart';
 import 'package:posse_gallery/screens/search_screen.dart';
 
 class RouteManager {
@@ -46,5 +47,6 @@ class RouteManager {
         new CategoryScreen(appCategory: _retrieveCategory("plug_ins")),
     '/category/design_components': (BuildContext context) =>
         new CategoryScreen(appCategory: _retrieveCategory("design_components")),
+    '/item': (BuildContext context) => new ItemScreen(),
   };
 }

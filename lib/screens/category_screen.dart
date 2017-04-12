@@ -58,7 +58,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                   padding: const EdgeInsets.only(left: 50.0),
                   child: new Image(
                     width: 50.0,
-                    image: new AssetImage(item.iconUrl),
+                    image: new AssetImage(item.iconUri),
                     fit: BoxFit.scaleDown,
                   ),
                 ),
@@ -83,7 +83,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                 highlightColor: Colors.white.withAlpha(30),
                 splashColor: Colors.white.withAlpha(20),
                 onTap: () {
-                  print("tapped cell");
+                  Navigator.of(context).pushNamed('/item');
                 },
               ),
             ),
