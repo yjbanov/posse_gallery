@@ -37,8 +37,7 @@ class RouteManager {
     '/category/customized_design': (BuildContext context) =>
         new CategoryScreen(category: _retrieveCategory("customized_design")),
     '/category/layout_positioning': (BuildContext context) =>
-        new CategoryScreen(
-            category: _retrieveCategory("layout_positioning")),
+        new CategoryScreen(category: _retrieveCategory("layout_positioning")),
     '/category/animation': (BuildContext context) =>
         new CategoryScreen(category: _retrieveCategory("animation")),
     '/category/patterns': (BuildContext context) =>

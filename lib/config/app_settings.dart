@@ -1,6 +1,10 @@
+// Copyright 2017 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'dart:async';
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
@@ -23,7 +27,8 @@ abstract class AppSettingsProvider<T> {
   /// Registers an encoder and decoder for a specific type name. By default, only 'native' types
   /// (String, bool, num, etc) and Maps/Lists of native types will be serialized. Any functions
   /// registered here will be available for all AppSettingsProviders (if they use them).
-  static void registerTypeCoding(String kind, {@required Function decoder, @required Function encoder}) {
+  static void registerTypeCoding(String kind,
+      {@required Function decoder, @required Function encoder}) {
     if (_registeredDecoders == null) {
       _registeredDecoders = <String, Function>{};
     }
@@ -54,7 +59,8 @@ abstract class AppSettingsProvider<T> {
   /// Persist the values (if supported by the provider). Note: calling persist could have
   /// serious implications on the performance of your app so be careful calling it too
   /// often. Check the documentation of each specific provider for details.
-  Future<SettingsPersistStatus> persist() async => SettingsPersistStatus.skipped;
+  Future<SettingsPersistStatus> persist() async =>
+      SettingsPersistStatus.skipped;
 
   /// Clear all of the stored values.
   Future<SettingsPersistStatus> clear() async => SettingsPersistStatus.skipped;
@@ -100,7 +106,8 @@ class InMemoryAppSettings extends AppSettingsProvider<Object> {
   }
 
   @override
-  Future<SettingsPersistStatus> persist() async => SettingsPersistStatus.success;
+  Future<SettingsPersistStatus> persist() async =>
+      SettingsPersistStatus.success;
 
   @override
   Future<SettingsPersistStatus> clear() async {
@@ -141,7 +148,8 @@ class PersistedAppSettings extends InMemoryAppSettings {
       if (jsonString.length > 0) {
         Map<String, Object> jsonObj = JSON.decode(jsonString);
         if (jsonObj != null) {
-          outMap = _processInputMap(source: jsonObj, encodeType: SettingsEncodeType.decode);
+          outMap = _processInputMap(
+              source: jsonObj, encodeType: SettingsEncodeType.decode);
         }
       }
     }
@@ -161,7 +169,8 @@ class PersistedAppSettings extends InMemoryAppSettings {
     if (value is String || value is bool || value is num) {
       outValue = value;
     } else if (value is Map) {
-      outValue = _processInputMap(source: value, encodeType: SettingsEncodeType.encode);
+      outValue = _processInputMap(
+          source: value, encodeType: SettingsEncodeType.encode);
     } else if (!(value is List || value is Set)) {
       String kind = value.runtimeType.toString().toLowerCase();
       Function encoder = AppSettingsProvider._registeredEncoders[kind];
@@ -172,7 +181,8 @@ class PersistedAppSettings extends InMemoryAppSettings {
         }
       }
     } else {
-      print("Skipping value because '${value.runtimeType}' isn't able to be serialized.");
+      print(
+          "Skipping value because '${value.runtimeType}' isn't able to be serialized.");
     }
     return <String, Object>{
       "kind": kind,
@@ -187,7 +197,8 @@ class PersistedAppSettings extends InMemoryAppSettings {
     if (kind == "string" || kind == "bool" || kind == "num") {
       outValue = prefValue;
     } else if (kind == "map") {
-      outValue = _processInputMap(source: prefValue, encodeType: SettingsEncodeType.decode);
+      outValue = _processInputMap(
+          source: prefValue, encodeType: SettingsEncodeType.decode);
     } else if (kind != "list" && kind != "set") {
       Function decodeFunction = AppSettingsProvider._registeredDecoders[kind];
       if (decodeFunction != null) {
@@ -209,16 +220,18 @@ class PersistedAppSettings extends InMemoryAppSettings {
       if (value is List) {
         List<Object> valueList = <Object>[];
         value.forEach((listValue) {
-          Object convertedValue =
-          encodeType == SettingsEncodeType.encode ? _serializedValue(listValue) : _deserializedValue(listValue);
+          Object convertedValue = encodeType == SettingsEncodeType.encode
+              ? _serializedValue(listValue)
+              : _deserializedValue(listValue);
           if (convertedValue != null) {
             valueList.add(convertedValue);
           }
         });
         outMap[key] = valueList;
       } else {
-        Object convertedValue =
-        encodeType == SettingsEncodeType.encode ? _serializedValue(value) : _deserializedValue(value);
+        Object convertedValue = encodeType == SettingsEncodeType.encode
+            ? _serializedValue(value)
+            : _deserializedValue(value);
         if (convertedValue != null) {
           outMap[key] = convertedValue;
         }
@@ -233,7 +246,8 @@ class PersistedAppSettings extends InMemoryAppSettings {
       return SettingsPersistStatus.skipped;
     }
     await super.persist();
-    Map<String, Object> jsonObject = _processInputMap(source: _valuesCache, encodeType: SettingsEncodeType.encode);
+    Map<String, Object> jsonObject = _processInputMap(
+        source: _valuesCache, encodeType: SettingsEncodeType.encode);
     String json = JSON.encode(jsonObject);
     File settingsFile = await _getLocalFile();
     await settingsFile.writeAsString(json).catchError((err) {

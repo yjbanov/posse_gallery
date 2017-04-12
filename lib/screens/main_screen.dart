@@ -41,7 +41,8 @@ class _MainScreenState extends State<MainScreen> {
                   height: 200.0,
                   width: 300.0,
                   color: category.rightShapeColor,
-                  image: new AssetImage("assets/images/section_cell_right.png"),
+                  image: new AssetImage(
+                      "assets/images/category_cell_right_shape.png"),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -52,7 +53,8 @@ class _MainScreenState extends State<MainScreen> {
                   height: 250.0,
                   width: 210.0,
                   color: category.leftShapeColor,
-                  image: new AssetImage("assets/images/section_cell_left.png"),
+                  image: new AssetImage(
+                      "assets/images/category_cell_left_shape.png"),
                   fit: BoxFit.cover,
                 ),
               ),

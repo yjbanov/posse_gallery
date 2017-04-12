@@ -26,7 +26,7 @@ class CategoryManager {
         return adjustedIndex.toString().padLeft(2, '0');
       }
     }
-    return null;
+    return "";
   }
 
   final List<AppCategory> _categoryList = [

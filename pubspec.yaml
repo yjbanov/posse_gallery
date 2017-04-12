@@ -16,8 +16,6 @@ flutter:
     - assets/icons/ic_animation_chains.png
     - assets/icons/ic_animation_gestures.png
     - assets/icons/ic_animation_tweens.png
-    - assets/icons/ic_back_arrow.png
-    - assets/icons/ic_close.png
     - assets/icons/ic_components.png
     - assets/icons/ic_customized_assets.png
     - assets/icons/ic_customized_brand_design.png
@@ -36,6 +34,7 @@ flutter:
     - assets/icons/ic_plug_in_photo.png
     - assets/icons/ic_plug_in_service.png
     - assets/icons/ic_search.png
+    - assets/images/bg_flutter_welcome.png
     - assets/images/bg_main_screen.png
-    - assets/images/section_cell_left.png
-    - assets/images/section_cell_right.png
+    - assets/images/category_cell_left_shape.png
+    - assets/images/category_cell_right_shape.png

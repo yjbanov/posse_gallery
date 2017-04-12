@@ -170,7 +170,8 @@ class _CategoryScreenState extends State<CategoryScreen>
                   height: 300.0,
                   width: 300.0,
                   color: _category.rightShapeColor,
-                  image: new AssetImage("assets/images/section_cell_right.png"),
+                  image: new AssetImage(
+                      "assets/images/category_cell_right_shape.png"),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -181,7 +182,8 @@ class _CategoryScreenState extends State<CategoryScreen>
                   height: 300.0,
                   width: 350.0,
                   color: _category.leftShapeColor,
-                  image: new AssetImage("assets/images/section_cell_left.png"),
+                  image: new AssetImage(
+                      "assets/images/category_cell_left_shape.png"),
                   fit: BoxFit.cover,
                 ),
               ),
