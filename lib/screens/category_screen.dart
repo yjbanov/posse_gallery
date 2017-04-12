@@ -27,7 +27,7 @@ class _CategoryScreenState extends State<CategoryScreen>
   })
       : _category = category;
 
-  AppCategory _category;
+  final AppCategory _category;
   List<Widget> _cells;
 
   @override
