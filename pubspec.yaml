@@ -16,6 +16,9 @@ flutter:
   # the Icons class.
   uses-material-design: true
 
+  assets:
+    - assets/backgrounds/bg_welcome.png
+
   # To add assets to your application, add an assets section here, in
   # this "flutter" section, as in:
   # assets:

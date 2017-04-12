@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:posse_gallery/config/app_settings.dart';
 import 'package:posse_gallery/config/application.dart';
+import 'package:posse_gallery/config/constants.dart';
 import 'package:posse_gallery/screens/main_screen.dart';
 import 'package:posse_gallery/screens/warm_welcome_screen.dart';
 
@@ -43,7 +44,7 @@ class _GalleryAppState extends State<GalleryApp> {
   }
 
   Widget configureUI() {
-    bool hasSeenWelcome = Application.settings.boolValue("has_shown_welcome", defaultValue: false);
+    bool hasSeenWelcome = Application.settings.boolValue(Constants.ConfigKeySeenWelcome, defaultValue: false);
     Widget launchScreen = !hasSeenWelcome ? new WarmWelcomeScreen() : new MainScreen();
     return new MaterialApp(
       title: 'Flutter Gallery',
