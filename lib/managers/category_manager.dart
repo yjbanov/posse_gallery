@@ -18,6 +18,17 @@ class CategoryManager {
     return _categories;
   }
 
+  String indexOfCategory(AppCategory category) {
+    for (int i = 0; i < _categories.length; i++) {
+      AppCategory tempCategory = _categories[i];
+      if (tempCategory.title == category.title) {
+        int adjustedIndex = i + 1;
+        return adjustedIndex.toString().padLeft(2, '0');
+      }
+    }
+    return null;
+  }
+
   final List<AppCategory> _categoryList = [
     new AppCategory(
       routeName: "customized_design",

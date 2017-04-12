@@ -24,7 +24,7 @@ class _SearchScreenState extends State<SearchScreen> {
     List<Widget> resultCells = [];
     for (int i = 0; i < 12; i++) {
       final resultContainer = new Container(
-        padding: new EdgeInsets.only(left: 25.0, right: 25.0, top: 20.0),
+        padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 20.0),
         height: 64.0,
         child: new Text("Search Result",
             style: new TextStyle(
@@ -43,18 +43,20 @@ class _SearchScreenState extends State<SearchScreen> {
       image: new AssetImage("assets/icons/ic_close.png"),
       fit: BoxFit.cover,
     );
-    return new Container(
-      padding: const EdgeInsets.only(left: 10.0),
-      height: 64.0,
-      child: new Align(
-        alignment: FractionalOffset.bottomLeft,
-        child: new Container(
-          child: new IconButton(
-            padding: EdgeInsets.zero,
-            icon: closeIcon,
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+    return new Material(
+      color: new Color(0x00FFFFFF),
+      child: new Container(
+        height: 90.0,
+        padding: const EdgeInsets.only(left: 10.0, top: 20.0),
+        child: new Align(
+          alignment: FractionalOffset.centerLeft,
+          child: new Container(
+            child: new IconButton(
+              icon: closeIcon,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           ),
         ),
       ),
@@ -114,7 +116,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return new Material(
-      color: new Color(0x80FFFFFF),
+      color: new Color(0x00FFFFFF),
       child: new Stack(
         children: [
           new Positioned.fill(

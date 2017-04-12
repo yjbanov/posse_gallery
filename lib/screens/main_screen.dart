@@ -31,11 +31,7 @@ class _MainScreenState extends State<MainScreen> {
         child: new Card(
           child: new Stack(
             children: [
-              new Positioned(
-                left: 0.0,
-                right: 0.0,
-                top: 0.0,
-                bottom: 0.0,
+              new Positioned.fill(
                 child: new Container(color: category.centerShapeColor),
               ),
               new Positioned(
@@ -43,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
                 top: -45.0,
                 child: new Image(
                   height: 200.0,
-                  width: 200.0,
+                  width: 300.0,
                   color: category.rightShapeColor,
                   image: new AssetImage("assets/images/section_cell_right.png"),
                   fit: BoxFit.cover,
@@ -83,12 +79,13 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _categoryTextWidget({category: AppCategory, categoryIndex: int}) {
+    String formattedIndex = categoryIndex.toString().padLeft(2, '0');
     return new Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         new Text(
-          "$categoryIndex",
+          formattedIndex,
           textAlign: TextAlign.center,
           style: new TextStyle(
             fontWeight: FontWeight.w600,
@@ -120,14 +117,14 @@ class _MainScreenState extends State<MainScreen> {
       fit: BoxFit.cover,
     );
     return new Container(
-      height: 64.0,
+      height: 70.0,
       child: new DecoratedBox(
         decoration: new BoxDecoration(),
         child: new Stack(
           children: [
             new Positioned(
               left: 12.0,
-              top: 32.0,
+              top: 35.0,
               child: new Image(
                 image: new AssetImage("assets/icons/ic_flutter_logo.png"),
                 fit: BoxFit.cover,
@@ -135,7 +132,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             new Positioned(
               left: 52.0,
-              top: 35.0,
+              top: 38.0,
               child: new Text(
                 "Flutter Gallery",
                 style: new TextStyle(
@@ -146,8 +143,8 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             new Positioned(
-              right: 0.0,
-              top: 23.0,
+              right: 8.0,
+              top: 26.0,
               child: new IconButton(
                 padding: EdgeInsets.zero,
                 icon: searchIcon,
