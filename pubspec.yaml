@@ -38,3 +38,4 @@ flutter:
     - assets/images/bg_main_screen.png
     - assets/images/category_cell_left_shape.png
     - assets/images/category_cell_right_shape.png
+    - assets/backgrounds/bg_welcome.png
