@@ -35,18 +35,18 @@ class RouteManager {
     '/search': (BuildContext context) => new SearchScreen(),
     '/category': (BuildContext context) => new CategoryScreen(),
     '/category/customized_design': (BuildContext context) =>
-        new CategoryScreen(appCategory: _retrieveCategory("customized_design")),
+        new CategoryScreen(category: _retrieveCategory("customized_design")),
     '/category/layout_positioning': (BuildContext context) =>
         new CategoryScreen(
-            appCategory: _retrieveCategory("layout_positioning")),
+            category: _retrieveCategory("layout_positioning")),
     '/category/animation': (BuildContext context) =>
-        new CategoryScreen(appCategory: _retrieveCategory("animation")),
+        new CategoryScreen(category: _retrieveCategory("animation")),
     '/category/patterns': (BuildContext context) =>
-        new CategoryScreen(appCategory: _retrieveCategory("patterns")),
+        new CategoryScreen(category: _retrieveCategory("patterns")),
     '/category/plug_ins': (BuildContext context) =>
-        new CategoryScreen(appCategory: _retrieveCategory("plug_ins")),
+        new CategoryScreen(category: _retrieveCategory("plug_ins")),
     '/category/design_components': (BuildContext context) =>
-        new CategoryScreen(appCategory: _retrieveCategory("design_components")),
+        new CategoryScreen(category: _retrieveCategory("design_components")),
     '/item': (BuildContext context) => new ItemScreen(),
   };
 }

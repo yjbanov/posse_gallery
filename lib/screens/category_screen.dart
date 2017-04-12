@@ -9,25 +9,25 @@ import 'package:posse_gallery/models/category_item.dart';
 
 class CategoryScreen extends StatefulWidget {
   CategoryScreen({
-    AppCategory appCategory,
+    AppCategory category,
   })
-      : _appCategory = appCategory;
+      : _category = category;
 
-  final AppCategory _appCategory;
+  final AppCategory _category;
 
   @override
   _CategoryScreenState createState() =>
-      new _CategoryScreenState(appCategory: _appCategory);
+      new _CategoryScreenState(category: _category);
 }
 
 class _CategoryScreenState extends State<CategoryScreen>
     with SingleTickerProviderStateMixin {
   _CategoryScreenState({
-    AppCategory appCategory,
+    AppCategory category,
   })
-      : _appCategory = appCategory;
+      : _category = category;
 
-  AppCategory _appCategory;
+  AppCategory _category;
   List<Widget> _cells;
 
   @override
@@ -40,9 +40,9 @@ class _CategoryScreenState extends State<CategoryScreen>
 
   List<Widget> _loadItems() {
     List<Widget> cells = [];
-    for (int i = 0; i < _appCategory.categoryItems.length; i++) {
-      CategoryItem item = _appCategory.categoryItems[i];
-      Color color = _appCategory.categoryColors[i];
+    for (int i = 0; i < _category.categoryItems.length; i++) {
+      CategoryItem item = _category.categoryItems[i];
+      Color color = _category.categoryColors[i];
       Color textColor =
           item.title == "COMPONENTS" ? Colors.black : Colors.white;
       final cellContainer = new Container(
@@ -96,7 +96,7 @@ class _CategoryScreenState extends State<CategoryScreen>
   }
 
   Widget _appBarCategoryView() {
-    String categoryIndex = new CategoryManager().indexOfCategory(_appCategory);
+    String categoryIndex = new CategoryManager().indexOfCategory(_category);
     return new Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -117,7 +117,7 @@ class _CategoryScreenState extends State<CategoryScreen>
           padding: const EdgeInsets.only(
               left: 30.0, right: 30.0, top: 15.0, bottom: 15.0),
           child: new Text(
-            _appCategory.title,
+            _category.title,
             textAlign: TextAlign.center,
             style: new TextStyle(
               fontWeight: FontWeight.w700,
@@ -136,7 +136,7 @@ class _CategoryScreenState extends State<CategoryScreen>
         new Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
           child: new Text(
-            _appCategory.subtitle,
+            _category.subtitle,
             textAlign: TextAlign.center,
             style: new TextStyle(
               fontWeight: FontWeight.w700,
@@ -152,10 +152,6 @@ class _CategoryScreenState extends State<CategoryScreen>
   }
 
   Widget _buildAppBar() {
-    Image backIcon = new Image(
-      image: new AssetImage("assets/icons/ic_back_arrow.png"),
-      fit: BoxFit.cover,
-    );
     return new Container(
       height: 256.0,
       child: new Material(
@@ -165,7 +161,7 @@ class _CategoryScreenState extends State<CategoryScreen>
           child: new Stack(
             children: [
               new Positioned.fill(
-                child: new Container(color: _appCategory.centerShapeColor),
+                child: new Container(color: _category.centerShapeColor),
               ),
               new Positioned(
                 right: -20.0,
@@ -173,7 +169,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                 child: new Image(
                   height: 300.0,
                   width: 300.0,
-                  color: _appCategory.rightShapeColor,
+                  color: _category.rightShapeColor,
                   image: new AssetImage("assets/images/section_cell_right.png"),
                   fit: BoxFit.cover,
                 ),
@@ -184,13 +180,13 @@ class _CategoryScreenState extends State<CategoryScreen>
                 child: new Image(
                   height: 300.0,
                   width: 350.0,
-                  color: _appCategory.leftShapeColor,
+                  color: _category.leftShapeColor,
                   image: new AssetImage("assets/images/section_cell_left.png"),
                   fit: BoxFit.cover,
                 ),
               ),
               new Positioned(
-                top: 20.0,
+                top: 14.0,
                 child: new Container(
                   height: 70.0,
                   width: 70.0,
@@ -198,7 +194,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                     color: new Color(0x00FFFFFF),
                     child: new IconButton(
                       padding: EdgeInsets.zero,
-                      icon: backIcon,
+                      icon: new Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -242,7 +238,7 @@ class _CategoryScreenState extends State<CategoryScreen>
   @override
   Widget build(BuildContext context) {
     return new Material(
-      color: _appCategory.centerShapeColor,
+      color: _category.centerShapeColor,
       child: new Center(
         child: _contentWidget(),
       ),

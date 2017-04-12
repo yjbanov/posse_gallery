@@ -22,10 +22,6 @@ class _ItemScreenState extends State<ItemScreen>
 
   Widget _buildAppBar(String title) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    Image backIcon = new Image(
-      image: new AssetImage("assets/icons/ic_back_arrow.png"),
-      fit: BoxFit.cover,
-    );
     return new Container(
       height: 76.0,
       padding: new EdgeInsets.only(left: 8.0, top: statusBarHeight, right: 8.0),
@@ -34,7 +30,10 @@ class _ItemScreenState extends State<ItemScreen>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             new IconButton(
-              icon: backIcon,
+              icon: new Icon(
+                Icons.close,
+                color: Colors.white,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },

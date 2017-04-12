@@ -22,7 +22,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   List<Widget> _loadResults() {
     List<Widget> resultCells = [];
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 3; i++) {
       final resultContainer = new Container(
         padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 20.0),
         height: 64.0,
@@ -39,10 +39,6 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildAppBar() {
-    Image closeIcon = new Image(
-      image: new AssetImage("assets/icons/ic_close.png"),
-      fit: BoxFit.cover,
-    );
     return new Material(
       color: new Color(0x00FFFFFF),
       child: new Container(
@@ -52,7 +48,10 @@ class _SearchScreenState extends State<SearchScreen> {
           alignment: FractionalOffset.centerLeft,
           child: new Container(
             child: new IconButton(
-              icon: closeIcon,
+              icon: new Icon(
+                Icons.close,
+                color: Colors.white,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
