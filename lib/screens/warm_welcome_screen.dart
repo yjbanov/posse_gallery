@@ -125,7 +125,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               color: new Color(0xFF222222),
             ),
           ),
-        )
+        ),
       ],
     );
   }
