@@ -19,6 +19,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   Animation<double> _firstFadeAnimation;
   Animation<double> _secondFadeAnimation;
+  Animation<double> _backgroundParallaxAnimation;
   AnimationController _titleFadeAnimationController;
 
   List<WelcomeStep> _steps;
@@ -51,6 +52,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.easeOut);
     _secondFadeAnimation =
         _initTitleAnimation(from: 0.0, to: 1.0, curve: Curves.easeIn);
+    _backgroundParallaxAnimation = _initTitleAnimation(from: 0.0, to: 1.0, curve: Curves.linear);
   }
 
   Animation<double> _initTitleAnimation(
@@ -63,6 +65,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   Widget _buildBackgroundView() {
+    int parallaxAnimationDuration = _kAnimationDuration;
     return new Stack(
       children: [
         new DecoratedBox(
@@ -79,10 +82,11 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             ),
           ),
         ),
-        new Positioned(
+        new AnimatedPositioned(
           top: 0.0,
           bottom: 0.0,
           left: _bgOffset,
+          duration: new Duration(milliseconds: parallaxAnimationDuration),
           child: new Image(
             height: MediaQuery.of(context).size.height,
             image: new AssetImage("assets/images/bg_flutter_welcome.png"),
@@ -211,32 +215,28 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           _swipeAmount += details.delta.distance.abs();
           bool didSwipe = (_swipeAmount >= _kSwipeThreshold);
           if (didSwipe) {
-            // TODO - parallax background
-            // TODO - animate content?
             nextStep += movingNext ? 1 : -1;
             setState(() {
               if (nextStep >= 0 && nextStep < _steps.length) {
                 _nextTitle = _steps[nextStep].title;
                 _nextSubtitle = _steps[nextStep].subtitle;
               }
+              if (movingNext && _currentStep + 1 < _steps.length) {
+                _currentStep += 1;
+                _bgOffset -= MediaQuery.of(context).size.width / 5;
+              } else if (!movingNext && _currentStep - 1 >= 0) {
+                _currentStep -= 1;
+                _bgOffset += MediaQuery.of(context).size.width / 5;
+              }
+              if (_currentStep >= 0 && _currentStep < _steps.length) {
+                _title = _steps[_currentStep].title;
+                _subtitle = _steps[_currentStep].subtitle;
+              }
             });
             // animate the title
             _titleFadeAnimationController.forward().whenComplete(() {
 //              print("finished animation");
               _titleFadeAnimationController.value = 0.0;
-              if (movingNext && _currentStep + 1 < _steps.length) {
-                _currentStep += 1;
-                _bgOffset -= MediaQuery.of(context).size.width / 2;
-              } else if (!movingNext && _currentStep - 1 >= 0) {
-                _currentStep -= 1;
-                _bgOffset += MediaQuery.of(context).size.width / 2;
-              }
-              setState(() {
-                if (_currentStep >= 0 && _currentStep < _steps.length) {
-                  _title = _steps[_currentStep].title;
-                  _subtitle = _steps[_currentStep].subtitle;
-                }
-              });
             });
           }
         }
