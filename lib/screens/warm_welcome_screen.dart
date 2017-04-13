@@ -16,7 +16,6 @@ class WarmWelcomeScreen extends StatefulWidget {
 class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     with TickerProviderStateMixin {
   String _title, _subtitle, _nextTitle, _nextSubtitle;
-  Image _currentImage, _nextImage;
 
   Animation<double> _firstFadeAnimation;
   Animation<double> _secondFadeAnimation;
@@ -31,7 +30,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   _WarmWelcomeScreenState() {
     _steps = new WelcomeManager().steps();
-    print("steps $_steps");
     if (_steps[_currentStep] != null) {
       _title = _steps[_currentStep].title;
       _subtitle = _steps[_currentStep].subtitle;
@@ -63,7 +61,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
-  // ok
   Widget _buildBackgroundView() {
     return new Stack(
       children: [
@@ -85,7 +82,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     );
   }
 
-  // ok
   Widget _buildTitleSection(
       {@required String title, @required String subtitle}) {
     return new Column(
@@ -115,7 +111,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     );
   }
 
-  // ok
   Widget _buildBottomSection() {
     return new Align(
       alignment: FractionalOffset.bottomCenter,
@@ -140,7 +135,13 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     );
   }
 
-  Widget _buildAnimatedContentView() {
+  Widget _buildAnimatedContentView({int nextStep, bool movingNext}) {
+    String nextTitle = _title;
+    String nextSubtitle = _subtitle;
+    if (movingNext && _steps[nextStep] != null) {
+      nextTitle = _nextTitle;
+      nextSubtitle = _nextSubtitle;
+    }
     return new Positioned(
       left: 30.0,
       right: 30.0,
@@ -170,14 +171,14 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             opacity: _secondFadeAnimation,
             child: new Column(
               children: [
-                _buildTitleSection(title: _nextTitle, subtitle: _nextSubtitle),
+                _buildTitleSection(title: nextTitle, subtitle: nextSubtitle),
                 new Padding(
                   padding: const EdgeInsets.only(top: 30.0),
                   child: new Center(
                     child: new Image(
                       width: 240.0,
                       height: 240.0,
-                      image: new AssetImage(_steps[_currentStep + 1].imageUri),
+                      image: new AssetImage(_steps[nextStep].imageUri),
                     ),
                   ),
                 ),
@@ -190,34 +191,36 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   Widget _buildGestureDetector() {
+    int nextStep = _currentStep;
+    bool movingNext = false;
     return new GestureDetector(
       onHorizontalDragUpdate: (details) {
         if (_swipeAmount < _kSwipeThreshold) {
-          print(details.delta.dx);
-          bool movingNext = details.delta.dx <= 0;
+//          print(details.delta.dx);
+          movingNext = details.delta.dx <= 0;
           _swipeAmount += details.delta.distance.abs();
           bool didSwipe = (_swipeAmount >= _kSwipeThreshold);
           if (didSwipe) {
             // TODO - parallax background
             // TODO - animate content?
-            // debug
-            if (movingNext && _currentStep != _steps.length - 1) {
-              _currentStep += 1;
-            } else if (!movingNext && _currentStep != 0) {
-              _currentStep -= 1;
-            }
+            nextStep += movingNext ? 1 : -1;
             setState(() {
-              if (_steps[_currentStep + 1] != null) {
-                _nextTitle = _steps[_currentStep + 1].title;
-                _nextSubtitle = _steps[_currentStep + 1].subtitle;
+              if (nextStep >= 0 && nextStep < _steps.length) {
+                _nextTitle = _steps[nextStep].title;
+                _nextSubtitle = _steps[nextStep].subtitle;
               }
             });
             // animate the title
             _titleFadeAnimationController.forward().whenComplete(() {
-              print("finished animation");
+//              print("finished animation");
               _titleFadeAnimationController.value = 0.0;
+              if (movingNext && _currentStep + 1 < _steps.length) {
+                _currentStep += 1;
+              } else if (!movingNext && _currentStep - 1 >= 0) {
+                _currentStep -= 1;
+              }
               setState(() {
-                if (_steps[_currentStep] != null) {
+                if (_currentStep >= 0 && _currentStep < _steps.length) {
                   _title = _steps[_currentStep].title;
                   _subtitle = _steps[_currentStep].subtitle;
                 }
@@ -234,7 +237,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           new Positioned.fill(
             child: _buildBackgroundView(),
           ),
-          _buildAnimatedContentView(),
+          _buildAnimatedContentView(nextStep: nextStep, movingNext: movingNext),
           _buildBottomSection(),
         ],
       ),
