@@ -19,7 +19,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   Animation<double> _firstFadeAnimation;
   Animation<double> _secondFadeAnimation;
-  Animation<double> _backgroundParallaxAnimation;
+  Animation<double> _firstScaleAnimation;
+  Animation<double> _secondScaleAnimation;
   AnimationController _titleFadeAnimationController;
 
   List<WelcomeStep> _steps;
@@ -52,7 +53,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.easeOut);
     _secondFadeAnimation =
         _initTitleAnimation(from: 0.0, to: 1.0, curve: Curves.easeIn);
-    _backgroundParallaxAnimation = _initTitleAnimation(from: 0.0, to: 1.0, curve: Curves.linear);
+    _firstScaleAnimation =
+        _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
+    _secondScaleAnimation =
+        _initTitleAnimation(from: 0.7, to: 1.0, curve: Curves.easeOut);
   }
 
   Animation<double> _initTitleAnimation(
@@ -87,6 +91,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           bottom: 0.0,
           left: _bgOffset,
           duration: new Duration(milliseconds: parallaxAnimationDuration),
+          curve: Curves.easeOut,
           child: new Image(
             height: MediaQuery.of(context).size.height,
             image: new AssetImage("assets/images/bg_flutter_welcome.png"),
@@ -156,6 +161,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       nextTitle = _nextTitle;
       nextSubtitle = _nextSubtitle;
     }
+    double imageSize = MediaQuery.of(context).size.width * 0.85;
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      imageSize = MediaQuery.of(context).size.height * 0.25;
+    }
     return new Positioned(
       left: 30.0,
       right: 30.0,
@@ -171,10 +180,13 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                 new Padding(
                   padding: const EdgeInsets.only(top: 40.0),
                   child: new Center(
-                    child: new Image(
-                      width: 240.0,
-                      height: 240.0,
-                      image: new AssetImage(_steps[nextStep].imageUri),
+                    child: new ScaleTransition(
+                      scale: _firstScaleAnimation,
+                      child: new Image(
+                        width: imageSize,
+                        height: imageSize,
+                        image: new AssetImage(_steps[nextStep].imageUri),
+                      ),
                     ),
                   ),
                 ),
@@ -189,10 +201,13 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                 new Padding(
                   padding: const EdgeInsets.only(top: 40.0),
                   child: new Center(
-                    child: new Image(
-                      width: 240.0,
-                      height: 240.0,
-                      image: new AssetImage(_steps[nextStep].imageUri),
+                    child: new ScaleTransition(
+                      scale: _secondScaleAnimation,
+                      child: new Image(
+                        width: imageSize,
+                        height: imageSize,
+                        image: new AssetImage(_steps[nextStep].imageUri),
+                      ),
                     ),
                   ),
                 ),
@@ -233,9 +248,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                 _subtitle = _steps[_currentStep].subtitle;
               }
             });
-            // animate the title
             _titleFadeAnimationController.forward().whenComplete(() {
-//              print("finished animation");
               _titleFadeAnimationController.value = 0.0;
             });
           }
