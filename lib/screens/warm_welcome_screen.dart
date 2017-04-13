@@ -23,9 +23,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   List<WelcomeStep> _steps;
   int _currentStep = 0;
+  double _bgOffset = 0.0;
 
   static const double _kSwipeThreshold = 150.0;
-  static const int _kAnimationDuration = 1000;
+  static const int _kAnimationDuration = 700;
   double _swipeAmount = 0.0;
 
   _WarmWelcomeScreenState() {
@@ -76,6 +77,15 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               end: FractionalOffset.bottomCenter,
               stops: [0.0, 0.35, 1.0],
             ),
+          ),
+        ),
+        new Positioned(
+          top: 0.0,
+          bottom: 0.0,
+          left: _bgOffset,
+          child: new Image(
+            height: MediaQuery.of(context).size.height,
+            image: new AssetImage("assets/images/bg_flutter_welcome.png"),
           ),
         ),
       ],
@@ -155,12 +165,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               children: [
                 _buildTitleSection(title: _title, subtitle: _subtitle),
                 new Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
+                  padding: const EdgeInsets.only(top: 40.0),
                   child: new Center(
                     child: new Image(
                       width: 240.0,
                       height: 240.0,
-                      image: new AssetImage(_steps[_currentStep].imageUri),
+                      image: new AssetImage(_steps[nextStep].imageUri),
                     ),
                   ),
                 ),
@@ -173,7 +183,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               children: [
                 _buildTitleSection(title: nextTitle, subtitle: nextSubtitle),
                 new Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
+                  padding: const EdgeInsets.only(top: 40.0),
                   child: new Center(
                     child: new Image(
                       width: 240.0,
@@ -216,8 +226,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               _titleFadeAnimationController.value = 0.0;
               if (movingNext && _currentStep + 1 < _steps.length) {
                 _currentStep += 1;
+                _bgOffset -= MediaQuery.of(context).size.width / 2;
               } else if (!movingNext && _currentStep - 1 >= 0) {
                 _currentStep -= 1;
+                _bgOffset += MediaQuery.of(context).size.width / 2;
               }
               setState(() {
                 if (_currentStep >= 0 && _currentStep < _steps.length) {
