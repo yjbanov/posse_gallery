@@ -136,7 +136,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       child: new Container(
         width: 180.0,
         height: 46.0,
-        margin: new EdgeInsets.only(bottom: 50.0),
+        margin: new EdgeInsets.only(bottom: 40.0),
         child: new RaisedButton(
           color: new Color(Constants.ColorPrimary),
           child: new Text(
@@ -229,7 +229,13 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           movingNext = details.delta.dx <= 0;
           _swipeAmount += details.delta.distance.abs();
           bool didSwipe = (_swipeAmount >= _kSwipeThreshold);
-          if (didSwipe) {
+          bool hasReachedBounds = true;
+          if (movingNext && _currentStep + 1 < _steps.length) {
+            hasReachedBounds = false;
+          } else if (!movingNext && _currentStep - 1 >= 0) {
+            hasReachedBounds = false;
+          }
+          if (didSwipe && !hasReachedBounds) {
             nextStep += movingNext ? 1 : -1;
             setState(() {
               if (nextStep >= 0 && nextStep < _steps.length) {
