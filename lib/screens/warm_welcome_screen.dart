@@ -5,38 +5,57 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:posse_gallery/config/constants.dart';
+import 'package:posse_gallery/managers/welcome_manager.dart';
+import 'package:posse_gallery/models/welcome_step.dart';
 
 class WarmWelcomeScreen extends StatefulWidget {
   @override
   _WarmWelcomeScreenState createState() => new _WarmWelcomeScreenState();
 }
 
-class _WarmWelcomeScreenState extends State<WarmWelcomeScreen> with TickerProviderStateMixin {
-
-  String title, subtitle, nextTitle, nextSubtitle;
-  int item = 0;
+class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
+    with TickerProviderStateMixin {
+  String _title, _subtitle, _nextTitle, _nextSubtitle;
+  Image _currentImage, _nextImage;
 
   Animation<double> _firstFadeAnimation;
   Animation<double> _secondFadeAnimation;
   AnimationController _titleFadeAnimationController;
 
-  final double kSwipeThreshold = 150.0;
-  double swipeAmount = 0.0;
+  List<WelcomeStep> _steps;
+  int _currentStep = 0;
+
+  static const double _kSwipeThreshold = 150.0;
+  static const int _kAnimationDuration = 1000;
+  double _swipeAmount = 0.0;
 
   _WarmWelcomeScreenState() {
-    title = "Welcome to Flutter";
-    subtitle = "Flutter is a mobile app SDK for building high-performance, high-fidelity, apps for iOS and Android.";
-    nextTitle = "Something";
-    nextSubtitle = "This is the next subtitle";
-    _titleFadeAnimationController = new AnimationController(
-      duration: new Duration(milliseconds: 1200),
-      vsync: this,
-    );
-    _firstFadeAnimation = _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.easeOut);
-    _secondFadeAnimation = _initTitleAnimation(from: 0.0, to: 1.0, curve: Curves.easeIn);
+    _steps = new WelcomeManager().steps();
+    print("steps $_steps");
+    if (_steps[_currentStep] != null) {
+      _title = _steps[_currentStep].title;
+      _subtitle = _steps[_currentStep].subtitle;
+    }
+    if (_steps[_currentStep + 1] != null) {
+      _nextTitle = _steps[_currentStep + 1].title;
+      _nextSubtitle = _steps[_currentStep + 1].subtitle;
+    }
+    _configureAnimation();
   }
 
-  Animation<double> _initTitleAnimation({@required double from, @required double to, @required Curve curve}) {
+  void _configureAnimation() {
+    _titleFadeAnimationController = new AnimationController(
+      duration: new Duration(milliseconds: _kAnimationDuration),
+      vsync: this,
+    );
+    _firstFadeAnimation =
+        _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.easeOut);
+    _secondFadeAnimation =
+        _initTitleAnimation(from: 0.0, to: 1.0, curve: Curves.easeIn);
+  }
+
+  Animation<double> _initTitleAnimation(
+      {@required double from, @required double to, @required Curve curve}) {
     final CurvedAnimation animation = new CurvedAnimation(
       parent: _titleFadeAnimationController,
       curve: curve,
@@ -44,7 +63,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen> with TickerProvid
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
-  Widget backgroundView() {
+  // ok
+  Widget _buildBackgroundView() {
     return new Stack(
       children: [
         new DecoratedBox(
@@ -65,7 +85,9 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen> with TickerProvid
     );
   }
 
-  Widget titleSection({@required String title, @required String subtitle}) {
+  // ok
+  Widget _buildTitleSection(
+      {@required String title, @required String subtitle}) {
     return new Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -93,7 +115,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen> with TickerProvid
     );
   }
 
-  Widget bottomSection() {
+  // ok
+  Widget _buildBottomSection() {
     return new Align(
       alignment: FractionalOffset.bottomCenter,
       child: new Container(
@@ -109,8 +132,111 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen> with TickerProvid
               fontSize: 12.0,
             ),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed('/main');
+          },
         ),
+      ),
+    );
+  }
+
+  Widget _buildAnimatedContentView() {
+    return new Positioned(
+      left: 30.0,
+      right: 30.0,
+      top: 55.0,
+      bottom: 0.0,
+      child: new Stack(
+        children: [
+          new FadeTransition(
+            opacity: _firstFadeAnimation,
+            child: new Column(
+              children: [
+                _buildTitleSection(title: _title, subtitle: _subtitle),
+                new Padding(
+                  padding: const EdgeInsets.only(top: 30.0),
+                  child: new Center(
+                    child: new Image(
+                      width: 240.0,
+                      height: 240.0,
+                      image: new AssetImage(_steps[_currentStep].imageUri),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          new FadeTransition(
+            opacity: _secondFadeAnimation,
+            child: new Column(
+              children: [
+                _buildTitleSection(title: _nextTitle, subtitle: _nextSubtitle),
+                new Padding(
+                  padding: const EdgeInsets.only(top: 30.0),
+                  child: new Center(
+                    child: new Image(
+                      width: 240.0,
+                      height: 240.0,
+                      image: new AssetImage(_steps[_currentStep + 1].imageUri),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGestureDetector() {
+    return new GestureDetector(
+      onHorizontalDragUpdate: (details) {
+        if (_swipeAmount < _kSwipeThreshold) {
+          print(details.delta.dx);
+          bool movingNext = details.delta.dx <= 0;
+          _swipeAmount += details.delta.distance.abs();
+          bool didSwipe = (_swipeAmount >= _kSwipeThreshold);
+          if (didSwipe) {
+            // TODO - parallax background
+            // TODO - animate content?
+            // debug
+            if (movingNext && _currentStep != _steps.length - 1) {
+              _currentStep += 1;
+            } else if (!movingNext && _currentStep != 0) {
+              _currentStep -= 1;
+            }
+            setState(() {
+              if (_steps[_currentStep + 1] != null) {
+                _nextTitle = _steps[_currentStep + 1].title;
+                _nextSubtitle = _steps[_currentStep + 1].subtitle;
+              }
+            });
+            // animate the title
+            _titleFadeAnimationController.forward().whenComplete(() {
+              print("finished animation");
+              _titleFadeAnimationController.value = 0.0;
+              setState(() {
+                if (_steps[_currentStep] != null) {
+                  _title = _steps[_currentStep].title;
+                  _subtitle = _steps[_currentStep].subtitle;
+                }
+              });
+            });
+          }
+        }
+      },
+      onHorizontalDragEnd: (details) {
+        _swipeAmount = 0.0;
+      },
+      child: new Stack(
+        children: [
+          new Positioned.fill(
+            child: _buildBackgroundView(),
+          ),
+          _buildAnimatedContentView(),
+          _buildBottomSection(),
+        ],
       ),
     );
   }
@@ -119,77 +245,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen> with TickerProvid
   Widget build(BuildContext context) {
     return new Material(
       color: new Color(0xFFFFFFFF),
-      child: new GestureDetector(
-        onHorizontalDragUpdate: (details) {
-          if (swipeAmount < kSwipeThreshold) {
-            print(details.delta.dx);
-            bool movingNext = details.delta.dx <= 0;
-            swipeAmount += details.delta.distance.abs();
-            bool didSwipe = (swipeAmount >= kSwipeThreshold);
-            if (didSwipe) {
-              // TODO - parallax background
-              // TODO - animate content?
-              // debug
-              item += movingNext ? 1 : -1;
-              setState(() {
-                nextTitle = "item $item";
-                nextSubtitle = "this thing $item ...";
-              });
-              // animate the title
-              _titleFadeAnimationController.forward().whenComplete(() {
-                print("finished animation");
-                _titleFadeAnimationController.value = 0.0;
-                setState(() {
-                  title = "item $item";
-                  subtitle = "this thing $item ...";
-                });
-              });
-            }
-          }
-        },
-        onHorizontalDragEnd: (details) {
-          swipeAmount = 0.0;
-        },
-        child: new Stack(
-          children: [
-            new Positioned.fill(
-              child: backgroundView(),
-            ),
-            new Positioned(
-              left: 30.0, right: 30.0, top: 80.0, bottom: 0.0,
-              child: new Stack(
-                children: [
-                  new FadeTransition(
-                    opacity: _firstFadeAnimation,
-                    child: titleSection(title: title, subtitle: subtitle),
-                  ),
-                  new FadeTransition(
-                    opacity: _secondFadeAnimation,
-                    child: titleSection(title: nextTitle, subtitle: nextSubtitle),
-                  ),
-                  // TODO - what do we wrap this in?
-                  new Center(
-                    child: new Container(
-                      width: 300.0,
-                      height: 300.0,
-                      color: new Color(0xFFFF0000),
-                    ),
-                  ),
-                  // TODO - what do we wrap this in?
-                  new Center(
-                    child: new Container(
-                      width: 300.0,
-                      height: 300.0,
-                      color: new Color(0xFF0000FF),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            bottomSection(),
-          ],
-        ),
-      ),
+      child: _buildGestureDetector(),
     );
   }
 }

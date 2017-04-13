@@ -12,7 +12,7 @@ class CategoryManager {
     _categories = _categoryList;
   }
 
-  List<AppCategory> _categories;
+  static List<AppCategory> _categories;
 
   List<AppCategory> categories() {
     return _categories;

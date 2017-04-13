@@ -7,6 +7,7 @@ import 'package:posse_gallery/managers/category_manager.dart';
 import 'package:posse_gallery/models/app_category.dart';
 import 'package:posse_gallery/screens/category_screen.dart';
 import 'package:posse_gallery/screens/item_screen.dart';
+import 'package:posse_gallery/screens/main_screen.dart';
 import 'package:posse_gallery/screens/search_screen.dart';
 
 class RouteManager {
@@ -15,7 +16,7 @@ class RouteManager {
     _categories = new CategoryManager().categories();
   }
 
-  Map<String, WidgetBuilder> _routes;
+  static Map<String, WidgetBuilder> _routes;
   static List<AppCategory> _categories;
 
   Map<String, WidgetBuilder> routes() {
@@ -32,6 +33,7 @@ class RouteManager {
   }
 
   final Map<String, WidgetBuilder> _routesMap = {
+    '/main': (BuildContext context) => new MainScreen(),
     '/search': (BuildContext context) => new SearchScreen(),
     '/category': (BuildContext context) => new CategoryScreen(),
     '/category/customized_design': (BuildContext context) =>
