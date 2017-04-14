@@ -3,7 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:posse_gallery/models/app_section.dart';
+import 'package:posse_gallery/managers/category_manager.dart';
+import 'package:posse_gallery/models/app_category.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -12,69 +13,36 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   _MainScreenState() {
-    _cells = _loadSections();
+    _cells = _loadCategories();
   }
 
   List<Widget> _cells;
 
-  final List<AppSection> _sectionList = [
-    new AppSection(
-        title: "CUSTOMIZED DESIGN",
-        leftShapeColor: new Color(0xFF19AAEE),
-        centerShapeColor: new Color(0xFF00A2EE),
-        rightShapeColor: new Color(0xFF1AA3E4)),
-    new AppSection(
-        title: "LAYOUT & POSITIONING",
-        leftShapeColor: new Color(0xFF5BDBFF),
-        centerShapeColor: new Color(0xFF45D2F9),
-        rightShapeColor: new Color(0xFF53D2F7)),
-    new AppSection(
-        title: "ANIMATION & UI MOTION",
-        leftShapeColor: new Color(0xFF38D3CD),
-        centerShapeColor: new Color(0xFF25C3BC),
-        rightShapeColor: new Color(0xFF3BBCB7)),
-    new AppSection(
-        title: "UI PATTERNS",
-        leftShapeColor: new Color(0xFFF9B640),
-        centerShapeColor: new Color(0xFFFFAC18),
-        rightShapeColor: new Color(0xFFFFB02C)),
-    new AppSection(
-        title: "PLUG INS",
-        leftShapeColor: new Color(0xFFFD734E),
-        centerShapeColor: new Color(0xFFFF6941),
-        rightShapeColor: new Color(0xFFFA724E)),
-    new AppSection(
-        title: "DESIGN COMPONENTS",
-        leftShapeColor: new Color(0xFFAFD84C),
-        centerShapeColor: new Color(0xFFA1CB39),
-        rightShapeColor: new Color(0xFFA3CA4B)),
-  ];
-
-  List<Widget> _loadSections() {
-    List<Widget> sectionCells = [];
-    int sectionIndex = 1;
-    for (AppSection section in _sectionList) {
-      final sectionContainer = new Container(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 2.0, bottom: 2.0),
+  List<Widget> _loadCategories() {
+    List<Widget> categoryCells = [];
+    int categoryIndex = 1;
+    List<AppCategory> categories = new CategoryManager().categories();
+    for (AppCategory category in categories) {
+      String routeName = category.routeName;
+      final categoryContainer = new Container(
+        padding:
+            const EdgeInsets.only(left: 8.0, right: 8.0, top: 2.0, bottom: 2.0),
         height: 156.0,
         child: new Card(
           child: new Stack(
             children: [
-              new Positioned(
-                left: 0.0,
-                right: 0.0,
-                top: 0.0,
-                bottom: 0.0,
-                child: new Container(color: section.centerShapeColor),
+              new Positioned.fill(
+                child: new Container(color: category.centerShapeColor),
               ),
               new Positioned(
                 right: 0.0,
                 top: -45.0,
                 child: new Image(
                   height: 200.0,
-                  width: 200.0,
-                  color: section.rightShapeColor,
-                  image: new AssetImage("assets/images/section_cell_right.png"),
+                  width: 300.0,
+                  color: category.rightShapeColor,
+                  image: new AssetImage(
+                      "assets/images/category_cell_right_shape.png"),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -84,19 +52,21 @@ class _MainScreenState extends State<MainScreen> {
                 child: new Image(
                   height: 250.0,
                   width: 210.0,
-                  color: section.leftShapeColor,
-                  image: new AssetImage("assets/images/section_cell_left.png"),
+                  color: category.leftShapeColor,
+                  image: new AssetImage(
+                      "assets/images/category_cell_left_shape.png"),
                   fit: BoxFit.cover,
                 ),
               ),
-              _sectionTextWidget(section: section, sectionIndex: sectionIndex),
+              _categoryTextWidget(
+                  category: category, categoryIndex: categoryIndex),
               new Material(
                 color: new Color(0x00FFFFFF),
                 child: new InkWell(
                   highlightColor: Colors.white.withAlpha(30),
                   splashColor: Colors.white.withAlpha(20),
                   onTap: () {
-                    print("tapped cell");
+                    Navigator.of(context).pushNamed('/category/$routeName');
                   },
                 ),
               ),
@@ -104,60 +74,59 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       );
-      sectionCells.add(sectionContainer);
-      sectionIndex += 1;
+      categoryCells.add(categoryContainer);
+      categoryIndex += 1;
     }
-    return sectionCells;
+    return categoryCells;
   }
 
-  Widget _sectionTextWidget({section: AppSection, sectionIndex: int}) {
-    return new Center(
-      child: new Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          new Text(
-            "$sectionIndex",
+  Widget _categoryTextWidget({category: AppCategory, categoryIndex: int}) {
+    String formattedIndex = categoryIndex.toString().padLeft(2, '0');
+    return new Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        new Text(
+          formattedIndex,
+          textAlign: TextAlign.center,
+          style: new TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 10.0,
+            color: Colors.white,
+          ),
+        ),
+        new Padding(
+          padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 7.0),
+          child: new Text(
+            category.title,
             textAlign: TextAlign.center,
             style: new TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 10.0,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.6,
+              height: 1.3,
+              fontSize: 20.0,
               color: Colors.white,
             ),
           ),
-          new Padding(
-            padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 7.0),
-            child: new Text(
-              section.title,
-              textAlign: TextAlign.center,
-              style: new TextStyle(
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1.6,
-                height: 1.3,
-                fontSize: 20.0,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  Widget _appBarWidget() {
+  Widget _buildAppBar() {
     Image searchIcon = new Image(
       image: new AssetImage("assets/icons/ic_search.png"),
       fit: BoxFit.cover,
     );
     return new Container(
-      height: 64.0,
+      height: 76.0,
       child: new DecoratedBox(
         decoration: new BoxDecoration(),
         child: new Stack(
           children: [
             new Positioned(
               left: 12.0,
-              top: 32.0,
+              top: 35.0,
               child: new Image(
                 image: new AssetImage("assets/icons/ic_flutter_logo.png"),
                 fit: BoxFit.cover,
@@ -165,7 +134,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             new Positioned(
               left: 52.0,
-              top: 35.0,
+              top: 38.0,
               child: new Text(
                 "Flutter Gallery",
                 style: new TextStyle(
@@ -176,8 +145,8 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             new Positioned(
-              right: 0.0,
-              top: 23.0,
+              right: 8.0,
+              top: 26.0,
               child: new IconButton(
                 padding: EdgeInsets.zero,
                 icon: searchIcon,
@@ -187,6 +156,20 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildListView() {
+    return new Expanded(
+      child: new Container(
+        color: new Color(0x00FFFFFF),
+        child: new Padding(
+          padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+          child: new ListView(
+            children: _cells,
+          ),
         ),
       ),
     );
@@ -205,18 +188,8 @@ class _MainScreenState extends State<MainScreen> {
         new Positioned(
           child: new Column(
             children: [
-              _appBarWidget(),
-              new Expanded(
-                child: new Container(
-                  color: new Color(0x00FFFFFF),
-                  child: new Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                    child: new ListView(
-                      children: _cells,
-                    ),
-                  ),
-                ),
-              ),
+              _buildAppBar(),
+              _buildListView(),
             ],
           ),
         ),

@@ -13,9 +13,33 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/icons/ic_close.png
+    - assets/icons/ic_animation_chains.png
+    - assets/icons/ic_animation_gestures.png
+    - assets/icons/ic_animation_tweens.png
+    - assets/icons/ic_components.png
+    - assets/icons/ic_customized_assets.png
+    - assets/icons/ic_customized_brand_design.png
+    - assets/icons/ic_customized_painting.png
+    - assets/icons/ic_design_components_controls.png
+    - assets/icons/ic_design_components_material.png
     - assets/icons/ic_flutter_logo.png
+    - assets/icons/ic_layout_flex.png
+    - assets/icons/ic_layout_scroll.png
+    - assets/icons/ic_layout_stack.png
+    - assets/icons/ic_pattern_edit_image.png
+    - assets/icons/ic_patterns_list.png
+    - assets/icons/ic_patterns_walkthrough.png
+    - assets/icons/ic_plug_in_location.png
+    - assets/icons/ic_plug_in_motion.png
+    - assets/icons/ic_plug_in_photo.png
+    - assets/icons/ic_plug_in_service.png
     - assets/icons/ic_search.png
+    - assets/images/bg_flutter_welcome.png
     - assets/images/bg_main_screen.png
-    - assets/images/section_cell_left.png
-    - assets/images/section_cell_right.png
+    - assets/images/category_cell_left_shape.png
+    - assets/images/category_cell_right_shape.png
+    - assets/images/welcome_explore_flutter.png
+    - assets/images/welcome_phones.png
+    - assets/images/welcome_recipe.png
+    - assets/images/welcome_widget_collection.png
+    - assets/backgrounds/bg_welcome.png

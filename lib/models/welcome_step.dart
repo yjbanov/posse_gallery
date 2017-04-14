@@ -2,8 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:posse_gallery/config/app_settings.dart';
+class WelcomeStep {
+  WelcomeStep({this.title, this.subtitle, this.imageUri});
 
-class Application {
-  static PersistedAppSettings settings;
+  final String title;
+  final String subtitle;
+  final String imageUri;
 }

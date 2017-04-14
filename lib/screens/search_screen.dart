@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:posse_gallery/views/cells/circular_reveal.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -21,9 +22,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
   List<Widget> _loadResults() {
     List<Widget> resultCells = [];
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 3; i++) {
       final resultContainer = new Container(
-        padding: new EdgeInsets.only(left: 25.0, right: 25.0, top: 20.0),
+        padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 20.0),
         height: 64.0,
         child: new Text("Search Result",
             style: new TextStyle(
@@ -37,30 +38,31 @@ class _SearchScreenState extends State<SearchScreen> {
     return resultCells;
   }
 
-  Widget _appBarWidget() {
-    Image closeIcon = new Image(
-      image: new AssetImage("assets/icons/ic_close.png"),
-      fit: BoxFit.cover,
-    );
-    return new Container(
-      padding: const EdgeInsets.only(left: 10.0),
-      height: 64.0,
-      child: new Align(
-        alignment: FractionalOffset.bottomLeft,
-        child: new Container(
-          child: new IconButton(
-            padding: EdgeInsets.zero,
-            icon: closeIcon,
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+  Widget _buildAppBar() {
+    return new Material(
+      color: new Color(0x00FFFFFF),
+      child: new Container(
+        height: 86.0,
+        padding: const EdgeInsets.only(left: 10.0, top: 15.0),
+        child: new Align(
+          alignment: FractionalOffset.centerLeft,
+          child: new Container(
+            child: new IconButton(
+              icon: new Icon(
+                Icons.close,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _inputWidget() {
+  Widget _buildInputWidget() {
     return new Container(
       padding: const EdgeInsets.only(left: 25.0, right: 26.0),
       height: 64.0,
@@ -103,8 +105,8 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _contentWidget() {
     return new Column(
       children: [
-        _appBarWidget(),
-        _inputWidget(),
+        _buildAppBar(),
+        _buildInputWidget(),
         _resultsViewWidget(),
       ],
     );
@@ -113,9 +115,24 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return new Material(
-      color: new Color(0xFF43C2FD),
-      child: new Center(
-        child: _contentWidget(),
+      color: new Color(0x00FFFFFF),
+      child: new Stack(
+        children: [
+          new Positioned.fill(
+            child: new Center(
+              child: new CircularReveal(
+                  color: new Color(0xFF43C2FD),
+                  duration: new Duration(milliseconds: 2000),
+                  startPosition: PainterStartPosition.center),
+            ),
+          ),
+          new Positioned.fill(
+            child: new Container(
+              color: new Color(0xFF00A2EE),
+              child: _contentWidget(),
+            ),
+          ),
+        ],
       ),
     );
   }

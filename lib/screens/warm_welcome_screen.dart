@@ -3,20 +3,287 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
+import 'package:posse_gallery/config/constants.dart';
+import 'package:posse_gallery/managers/welcome_manager.dart';
+import 'package:posse_gallery/models/welcome_step.dart';
 
 class WarmWelcomeScreen extends StatefulWidget {
   @override
   _WarmWelcomeScreenState createState() => new _WarmWelcomeScreenState();
 }
 
-class _WarmWelcomeScreenState extends State<WarmWelcomeScreen> {
+class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
+    with TickerProviderStateMixin {
+  String _title, _subtitle, _nextTitle, _nextSubtitle;
+
+  Animation<double> _firstFadeAnimation;
+  Animation<double> _secondFadeAnimation;
+  Animation<double> _firstScaleAnimation;
+  Animation<double> _secondScaleAnimation;
+  AnimationController _titleFadeAnimationController;
+
+  List<WelcomeStep> _steps;
+  int _currentStep = 0;
+  double _bgOffset = 0.0;
+
+  bool movingNext = false;
+
+  static const double _kSwipeThreshold = 130.0;
+  static const int _kAnimationDuration = 700;
+  double _swipeAmount = 0.0;
+
+  _WarmWelcomeScreenState() {
+    _steps = new WelcomeManager().steps();
+    if (_steps[_currentStep] != null) {
+      _title = _steps[_currentStep].title;
+      _subtitle = _steps[_currentStep].subtitle;
+    }
+    if (_steps[_currentStep + 1] != null) {
+      _nextTitle = _steps[_currentStep + 1].title;
+      _nextSubtitle = _steps[_currentStep + 1].subtitle;
+    }
+    _configureAnimation();
+  }
+
+  void _configureAnimation() {
+    _titleFadeAnimationController = new AnimationController(
+      duration: new Duration(milliseconds: _kAnimationDuration),
+      vsync: this,
+    );
+    _firstFadeAnimation =
+        _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.easeOut);
+    _secondFadeAnimation =
+        _initTitleAnimation(from: 0.0, to: 1.0, curve: Curves.easeIn);
+    _firstScaleAnimation =
+        _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
+    _secondScaleAnimation =
+        _initTitleAnimation(from: 0.7, to: 1.0, curve: Curves.easeOut);
+  }
+
+  Animation<double> _initTitleAnimation(
+      {@required double from, @required double to, @required Curve curve}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+      parent: _titleFadeAnimationController,
+      curve: curve,
+    );
+    return new Tween<double>(begin: from, end: to).animate(animation);
+  }
+
+  Widget _buildBackgroundView() {
+    int parallaxAnimationDuration = _kAnimationDuration;
+    return new Stack(
+      children: [
+        new DecoratedBox(
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                new Color(0xFFD7D7D7),
+                new Color(0xFFFAFAFA),
+                new Color(0xFFFFFFFF),
+              ],
+              begin: FractionalOffset.topCenter,
+              end: FractionalOffset.bottomCenter,
+              stops: [0.0, 0.35, 1.0],
+            ),
+          ),
+        ),
+        new AnimatedPositioned(
+          top: 0.0,
+          bottom: 0.0,
+          left: _bgOffset,
+          duration: new Duration(milliseconds: parallaxAnimationDuration),
+          curve: Curves.easeOut,
+          child: new Image(
+            height: MediaQuery.of(context).size.height,
+            image: new AssetImage("assets/images/bg_flutter_welcome.png"),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTitleSection(
+      {@required String title, @required String subtitle}) {
+    return new Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        new Text(
+          title,
+          style: new TextStyle(
+            fontSize: 22.0,
+            color: new Color(Constants.ColorPrimary),
+            letterSpacing: 0.25,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        new Padding(
+          padding: new EdgeInsets.only(top: 25.0),
+          child: new Text(
+            subtitle,
+            textAlign: TextAlign.center,
+            style: new TextStyle(
+              fontSize: 13.0,
+              color: new Color(0xFF222222),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBottomSection() {
+    return new Align(
+      alignment: FractionalOffset.bottomCenter,
+      child: new Container(
+        width: 180.0,
+        height: 46.0,
+        margin: new EdgeInsets.only(bottom: 40.0),
+        child: new RaisedButton(
+          color: new Color(Constants.ColorPrimary),
+          child: new Text(
+            "START EXPLORING",
+            style: new TextStyle(
+              color: new Color(0xFFFFFFFF),
+              fontSize: 12.0,
+            ),
+          ),
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed('/main');
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAnimatedContentView({int nextStep, bool movingNext}) {
+    String nextTitle = _title;
+    String nextSubtitle = _subtitle;
+    if (movingNext && _steps[nextStep] != null) {
+      nextTitle = _nextTitle;
+      nextSubtitle = _nextSubtitle;
+    }
+    double imageSize = MediaQuery.of(context).size.width * 0.85;
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      imageSize = MediaQuery.of(context).size.height * 0.25;
+    }
+    int previousStep = movingNext ? nextStep - 1 : nextStep + 1;
+//    print("next step: $nextStep");
+//    print("previous step: $previousStep");
+//    print("moving next: $movingNext");
+    return new Positioned(
+      left: 30.0,
+      right: 30.0,
+      top: 55.0,
+      bottom: 0.0,
+      child: new Stack(
+        children: [
+          new FadeTransition(
+            opacity: _firstFadeAnimation,
+            child: new Column(
+              children: [
+                _buildTitleSection(title: _title, subtitle: _subtitle),
+                new Padding(
+                  padding: const EdgeInsets.only(top: 40.0),
+                  child: new Center(
+                    child: new ScaleTransition(
+                      scale: _firstScaleAnimation,
+                      child: new Image(
+                        width: imageSize,
+                        height: imageSize,
+                        image: new AssetImage(_steps[nextStep].imageUri),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          new FadeTransition(
+            opacity: _secondFadeAnimation,
+            child: new Column(
+              children: [
+                _buildTitleSection(title: nextTitle, subtitle: nextSubtitle),
+                new Padding(
+                  padding: const EdgeInsets.only(top: 40.0),
+                  child: new Center(
+                    child: new ScaleTransition(
+                      scale: _secondScaleAnimation,
+                      child: new Image(
+                        width: imageSize,
+                        height: imageSize,
+                        image: new AssetImage(_steps[nextStep].imageUri),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGestureDetector() {
+    int nextStep = _currentStep;
+    return new GestureDetector(
+      onHorizontalDragUpdate: (details) {
+        if (_swipeAmount < _kSwipeThreshold) {
+//          print(details.delta.dx);
+          movingNext = details.delta.dx <= 0;
+          _swipeAmount += details.delta.distance.abs();
+          bool didSwipe = (_swipeAmount >= _kSwipeThreshold);
+          bool hasReachedBounds = true;
+          if ((movingNext && _currentStep + 1 < _steps.length) ||
+              (!movingNext && _currentStep - 1 >= 0)) {
+            hasReachedBounds = false;
+          }
+          if (didSwipe && !hasReachedBounds) {
+            nextStep += movingNext ? 1 : -1;
+            setState(() {
+              if (nextStep >= 0 && nextStep < _steps.length) {
+                _nextTitle = _steps[nextStep].title;
+                _nextSubtitle = _steps[nextStep].subtitle;
+              }
+              if (movingNext && _currentStep + 1 < _steps.length) {
+                _currentStep += 1;
+                _bgOffset -= MediaQuery.of(context).size.width / 5;
+              } else if (!movingNext && _currentStep - 1 >= 0) {
+                _currentStep -= 1;
+                _bgOffset += MediaQuery.of(context).size.width / 5;
+              }
+              if (_currentStep >= 0 && _currentStep < _steps.length) {
+                _title = _steps[_currentStep].title;
+                _subtitle = _steps[_currentStep].subtitle;
+              }
+            });
+            _titleFadeAnimationController.forward().whenComplete(() {
+              _titleFadeAnimationController.value = 0.0;
+            });
+          }
+        }
+      },
+      onHorizontalDragEnd: (details) {
+        _swipeAmount = 0.0;
+      },
+      child: new Stack(
+        children: [
+          new Positioned.fill(
+            child: _buildBackgroundView(),
+          ),
+          _buildAnimatedContentView(nextStep: nextStep, movingNext: movingNext),
+          _buildBottomSection(),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Material(
       color: new Color(0xFFFFFFFF),
-      child: new Center(
-        child: new Text("Warm welcome goes here"),
-      ),
+      child: _buildGestureDetector(),
     );
   }
 }
