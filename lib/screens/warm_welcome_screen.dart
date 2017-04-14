@@ -27,7 +27,9 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   int _currentStep = 0;
   double _bgOffset = 0.0;
 
-  static const double _kSwipeThreshold = 150.0;
+  bool movingNext = false;
+
+  static const double _kSwipeThreshold = 130.0;
   static const int _kAnimationDuration = 700;
   double _swipeAmount = 0.0;
 
@@ -165,6 +167,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
       imageSize = MediaQuery.of(context).size.height * 0.25;
     }
+    int previousStep = movingNext ? nextStep - 1 : nextStep + 1;
+//    print("next step: $nextStep");
+//    print("previous step: $previousStep");
+//    print("moving next: $movingNext");
     return new Positioned(
       left: 30.0,
       right: 30.0,
@@ -221,7 +227,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   Widget _buildGestureDetector() {
     int nextStep = _currentStep;
-    bool movingNext = false;
     return new GestureDetector(
       onHorizontalDragUpdate: (details) {
         if (_swipeAmount < _kSwipeThreshold) {
@@ -230,9 +235,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           _swipeAmount += details.delta.distance.abs();
           bool didSwipe = (_swipeAmount >= _kSwipeThreshold);
           bool hasReachedBounds = true;
-          if (movingNext && _currentStep + 1 < _steps.length) {
-            hasReachedBounds = false;
-          } else if (!movingNext && _currentStep - 1 >= 0) {
+          if ((movingNext && _currentStep + 1 < _steps.length) ||
+              (!movingNext && _currentStep - 1 >= 0)) {
             hasReachedBounds = false;
           }
           if (didSwipe && !hasReachedBounds) {
