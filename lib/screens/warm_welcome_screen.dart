@@ -29,8 +29,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   bool movingNext = false;
 
-  static const double _kSwipeThreshold = 130.0;
-  static const int _kAnimationDuration = 700;
+  static const double _kSwipeThreshold = 150.0;
+  static const int _kAnimationDuration = 800;
   double _swipeAmount = 0.0;
 
   _WarmWelcomeScreenState() {
@@ -52,9 +52,9 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       vsync: this,
     );
     _firstFadeAnimation =
-        _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.easeOut);
+        _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
     _secondFadeAnimation =
-        _initTitleAnimation(from: 0.0, to: 1.0, curve: Curves.easeIn);
+        _initTitleAnimation(from: 0.0, to: 1.0, curve: Curves.fastOutSlowIn);
     _firstScaleAnimation =
         _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
     _secondScaleAnimation =
