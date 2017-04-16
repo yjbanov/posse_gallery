@@ -24,7 +24,7 @@ class _ItemScreenState extends State<ItemScreen>
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return new Container(
       height: 76.0,
-      padding: const EdgeInsets.only(left: 8.0, top: statusBarHeight, right: 8.0),
+      padding: new EdgeInsets.only(left: 8.0, top: statusBarHeight, right: 8.0),
       child: new Center(
         child: new Row(
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -192,10 +192,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                   padding: const EdgeInsets.only(top: 30.0),
                   child: _appBarCategoryView(),
                 ),
-              ),
-              new Material(
-                color: const Color(0x00FFFFFF),
-              ),
+              )
             ],
           ),
         ),
