@@ -122,7 +122,7 @@ class _SearchScreenState extends State<SearchScreen> {
             child: new Center(
               child: new CircularReveal(
                   color: const Color(0xFF43C2FD),
-                  duration: new Duration(milliseconds: 2000),
+                  duration: const Duration(milliseconds: 2000),
                   startPosition: PainterStartPosition.center),
             ),
           ),

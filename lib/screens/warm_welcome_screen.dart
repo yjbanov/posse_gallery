@@ -48,7 +48,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   void _configureAnimation() {
     _titleFadeAnimationController = new AnimationController(
-      duration: new Duration(milliseconds: _kAnimationDuration),
+      duration: const Duration(milliseconds: _kAnimationDuration),
       vsync: this,
     );
     _firstFadeAnimation =
@@ -118,7 +118,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           textAlign: TextAlign.center,
         ),
         new Padding(
-          padding: new EdgeInsets.only(top: 25.0),
+          padding: const EdgeInsets.only(top: 25.0),
           child: new Text(
             subtitle,
             textAlign: TextAlign.center,
@@ -138,7 +138,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       child: new Container(
         width: 180.0,
         height: 46.0,
-        margin: new EdgeInsets.only(bottom: 40.0),
+        margin: const EdgeInsets.only(bottom: 40.0),
         child: new RaisedButton(
           color: const Color(Constants.ColorPrimary),
           child: new Text(
