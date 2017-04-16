@@ -72,7 +72,7 @@ class _SearchScreenState extends State<SearchScreen> {
           hintStyle: new TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 24.0,
-            color: new Color(0x80FFFFFF),
+            color: const Color(0x80FFFFFF),
           ),
         ),
         style: new TextStyle(
@@ -115,20 +115,20 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return new Material(
-      color: new Color(0x00FFFFFF),
+      color: const Color(0x00FFFFFF),
       child: new Stack(
         children: [
           new Positioned.fill(
             child: new Center(
               child: new CircularReveal(
-                  color: new Color(0xFF43C2FD),
+                  color: const Color(0xFF43C2FD),
                   duration: new Duration(milliseconds: 2000),
                   startPosition: PainterStartPosition.center),
             ),
           ),
           new Positioned.fill(
             child: new Container(
-              color: new Color(0xFF00A2EE),
+              color: const Color(0xFF00A2EE),
               child: _contentWidget(),
             ),
           ),

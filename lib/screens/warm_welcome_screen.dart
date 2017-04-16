@@ -78,9 +78,9 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           decoration: new BoxDecoration(
             gradient: new LinearGradient(
               colors: [
-                new Color(0xFFD7D7D7),
-                new Color(0xFFFAFAFA),
-                new Color(0xFFFFFFFF),
+                const Color(0xFFD7D7D7),
+                const Color(0xFFFAFAFA),
+                const Color(0xFFFFFFFF),
               ],
               begin: FractionalOffset.topCenter,
               end: FractionalOffset.bottomCenter,
@@ -112,7 +112,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           title,
           style: new TextStyle(
             fontSize: 22.0,
-            color: new Color(Constants.ColorPrimary),
+            color: const Color(Constants.ColorPrimary),
             letterSpacing: 0.25,
           ),
           textAlign: TextAlign.center,
@@ -124,7 +124,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             textAlign: TextAlign.center,
             style: new TextStyle(
               fontSize: 13.0,
-              color: new Color(0xFF222222),
+              color: const Color(0xFF222222),
             ),
           ),
         ),
@@ -140,11 +140,11 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         height: 46.0,
         margin: new EdgeInsets.only(bottom: 40.0),
         child: new RaisedButton(
-          color: new Color(Constants.ColorPrimary),
+          color: const Color(Constants.ColorPrimary),
           child: new Text(
             "START EXPLORING",
             style: new TextStyle(
-              color: new Color(0xFFFFFFFF),
+              color: const Color(0xFFFFFFFF),
               fontSize: 12.0,
             ),
           ),
@@ -282,7 +282,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   @override
   Widget build(BuildContext context) {
     return new Material(
-      color: new Color(0xFFFFFFFF),
+      color: const Color(0xFFFFFFFF),
       child: _buildGestureDetector(),
     );
   }
