@@ -40,7 +40,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _buildAppBar() {
     return new Material(
-      color: new Color(0x00FFFFFF),
+      color: const Color(0x00FFFFFF),
       child: new Container(
         height: 86.0,
         padding: const EdgeInsets.only(left: 10.0, top: 15.0),
