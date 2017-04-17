@@ -151,13 +151,7 @@ class _MainScreenState extends State<MainScreen> {
                 padding: EdgeInsets.zero,
                 icon: searchIcon,
                 onPressed: () {
-                  Navigator.of(context).push(
-                    new PageRouteBuilder(
-                      pageBuilder: (BuildContext context, _, __) {
-                        return new SearchScreen();
-                      }
-                    ),
-                  ),
+                  Navigator.of(context).pushNamed("/search");
                 },
               ),
             ),

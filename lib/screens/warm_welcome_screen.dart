@@ -29,9 +29,11 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   int _currentStep = 0;
   double _bgOffset = 0.0;
 
+  bool movingNext = true;
+
   static const double _kSwipeThreshold = 150.0;
-  static const int _kAnimateOutDuration = 1000;
-  static const int _kAnimateInDuration = 1000;
+  static const int _kAnimateOutDuration = 600;
+  static const int _kAnimateInDuration = 800;
   double _swipeAmount = 0.0;
 
   _WarmWelcomeScreenState() {
@@ -53,23 +55,23 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       vsync: this,
     );
     _animateInController = new AnimationController(
-        duration: const Duration(milliseconds: _kAnimateInDuration),
-        vsync: this,
+      duration: const Duration(milliseconds: _kAnimateInDuration),
+      vsync: this,
     );
     _fadeOutAnimation =
-        _initOutAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
+        _initOutAnimation(from: 1.0, to: 0.0, curve: Curves.linear);
     _fadeInAnimation =
-        _initInAnimation(from: 0.0, to: 1.0, curve: Curves.fastOutSlowIn);
+        _initInAnimation(from: 0.0, to: 1.0, curve: Curves.easeOut);
     _scaleOutAnimation =
-        _initOutAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
+        _initOutAnimation(from: 1.0, to: 0.0, curve: Curves.linear);
     _scaleInAnimation =
-        _initInAnimation(from: 0.7, to: 1.0, curve: Curves.easeOut);
+        _initInAnimation(from: 0.0, to: 1.0, curve: Curves.easeOut);
   }
 
   Animation<double> _initOutAnimation(
       {@required double from, @required double to, @required Curve curve}) {
     final CurvedAnimation animation = new CurvedAnimation(
-      parent: _animateInController,
+      parent: _animateOutController,
       curve: curve,
     );
     return new Tween<double>(begin: from, end: to).animate(animation);
@@ -78,8 +80,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   Animation<double> _initInAnimation(
       {@required double from, @required double to, @required Curve curve}) {
     final CurvedAnimation animation = new CurvedAnimation(
-        parent: _animateOutController,
-        curve: curve,
+      parent: _animateInController,
+      curve: curve,
     );
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
@@ -181,6 +183,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
       imageSize = MediaQuery.of(context).size.height * 0.25;
     }
+    int previousStep = nextStep;
+    if (nextStep != 0) {
+      previousStep = movingNext ? nextStep - 1 : nextStep + 1;
+    } else if (!movingNext) {
+      previousStep += 1;
+    }
     return new Positioned(
       left: 30.0,
       right: 30.0,
@@ -201,7 +209,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                       child: new Image(
                         width: imageSize,
                         height: imageSize,
-                        image: new AssetImage(_steps[nextStep].imageUri),
+                        image: new AssetImage(_steps[previousStep].imageUri),
                       ),
                     ),
                   ),
@@ -237,13 +245,9 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   Widget _buildGestureDetector() {
     int nextStep = _currentStep;
-    bool movingNext = false;
     return new GestureDetector(
       onHorizontalDragUpdate: (details) {
         if (_swipeAmount < _kSwipeThreshold) {
-//          _animateOutController.value = 0.0;
-//          _animateInController.value = 0.0;
-//          print(details.delta.dx);
           movingNext = details.delta.dx <= 0;
           _swipeAmount += details.delta.distance.abs();
           bool didSwipe = (_swipeAmount >= _kSwipeThreshold);
@@ -253,6 +257,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             hasReachedBounds = false;
           }
           if (didSwipe && !hasReachedBounds) {
+            _animateOutController.value = 0.0;
+            _animateInController.value = 0.0;
             nextStep += movingNext ? 1 : -1;
             setState(() {
               if (nextStep >= 0 && nextStep < _steps.length) {
@@ -271,12 +277,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                 _subtitle = _steps[_currentStep].subtitle;
               }
             });
-            _animateOutController.forward().whenComplete(() {
-              _animateInController.forward().whenComplete(() {
-                _animateOutController.value = 0.0;
-                _animateInController.value = 0.0;
-              });
-            });
+            _animateOutController.forward().whenComplete(() {});
+            _animateInController.forward().whenComplete(() {});
           }
         }
       },
