@@ -22,6 +22,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   Animation<double> _firstScaleAnimation;
   Animation<double> _secondScaleAnimation;
   AnimationController _titleFadeAnimationController;
+  AnimationController _imageFadeOutAnimationController;
 
   List<WelcomeStep> _steps;
   int _currentStep = 0;
@@ -30,7 +31,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   bool movingNext = false;
 
   static const double _kSwipeThreshold = 150.0;
-  static const int _kAnimationDuration = 800;
+  static const int _kAnimationDuration = 1000;
   double _swipeAmount = 0.0;
 
   _WarmWelcomeScreenState() {
@@ -51,6 +52,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       duration: const Duration(milliseconds: _kAnimationDuration),
       vsync: this,
     );
+    _imageFadeOutAnimationController = new AnimationController(
+        duration: const Duration(milliseconds: 400),
+        vsync: this,
+    );
     _firstFadeAnimation =
         _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
     _secondFadeAnimation =
@@ -66,6 +71,15 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     final CurvedAnimation animation = new CurvedAnimation(
       parent: _titleFadeAnimationController,
       curve: curve,
+    );
+    return new Tween<double>(begin: from, end: to).animate(animation);
+  }
+
+  Animation<double> _initImageFadeOutAnimation(
+      {@required double from, @required double to, @required Curve curve}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+        parent: _imageFadeOutAnimationController,
+        curve: curve,
     );
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
