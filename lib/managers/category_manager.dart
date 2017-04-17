@@ -46,15 +46,20 @@ class CategoryManager {
       categoryItems: [
         new CategoryItem(
             title: "CUSTOMIZED BRAND DESIGN",
-            iconUri: "assets/icons/ic_customized_brand_design.png"),
+            iconUri: "assets/icons/ic_customized_brand_design.png",
+            routeName: "customized_brand_design"),
         new CategoryItem(
             title: "ASSETS & THEMES",
-            iconUri: "assets/icons/ic_customized_assets.png"),
+            iconUri: "assets/icons/ic_customized_assets.png",
+            routeName: "assets_themes"),
         new CategoryItem(
             title: "PAINTING",
-            iconUri: "assets/icons/ic_customized_painting.png"),
+            iconUri: "assets/icons/ic_customized_painting.png",
+            routeName: "painting"),
         new CategoryItem(
-            title: "COMPONENTS", iconUri: "assets/icons/ic_components.png"),
+            title: "COMPONENTS",
+            iconUri: "assets/icons/ic_components.png",
+            routeName: "customized_design_components"),
       ],
     ),
     new AppCategory(
@@ -72,13 +77,21 @@ class CategoryManager {
       ],
       categoryItems: [
         new CategoryItem(
-            title: "FLEX", iconUri: "assets/icons/ic_layout_flex.png"),
+            title: "FLEX",
+            iconUri: "assets/icons/ic_layout_flex.png",
+            routeName: "flex"),
         new CategoryItem(
-            title: "STACK", iconUri: "assets/icons/ic_layout_stack.png"),
+            title: "STACK",
+            iconUri: "assets/icons/ic_layout_stack.png",
+            routeName: "stack"),
         new CategoryItem(
-            title: "SCROLL", iconUri: "assets/icons/ic_layout_scroll.png"),
+            title: "SCROLL",
+            iconUri: "assets/icons/ic_layout_scroll.png",
+            routeName: "scroll"),
         new CategoryItem(
-            title: "COMPONENTS", iconUri: "assets/icons/ic_components.png"),
+            title: "COMPONENTS",
+            iconUri: "assets/icons/ic_components.png",
+            routeName: "layout_components"),
       ],
     ),
     new AppCategory(
@@ -96,15 +109,21 @@ class CategoryManager {
       ],
       categoryItems: [
         new CategoryItem(
-            title: "TWEENS", iconUri: "assets/icons/ic_animation_tweens.png"),
+            title: "TWEENS",
+            iconUri: "assets/icons/ic_animation_tweens.png",
+            routeName: "tweens"),
         new CategoryItem(
             title: "CHAINS/FRAME",
-            iconUri: "assets/icons/ic_animation_chains.png"),
+            iconUri: "assets/icons/ic_animation_chains.png",
+            routeName: "chains"),
         new CategoryItem(
             title: "GESTURES",
-            iconUri: "assets/icons/ic_animation_gestures.png"),
+            iconUri: "assets/icons/ic_animation_gestures.png",
+            routeName: "gestures"),
         new CategoryItem(
-            title: "COMPONENTS", iconUri: "assets/icons/ic_components.png"),
+            title: "COMPONENTS",
+            iconUri: "assets/icons/ic_components.png",
+            routeName: "animation_components"),
       ],
     ),
     new AppCategory(
@@ -121,13 +140,17 @@ class CategoryManager {
       ],
       categoryItems: [
         new CategoryItem(
-            title: "MAKE A LIST", iconUri: "assets/icons/ic_patterns_list.png"),
+            title: "MAKE A LIST",
+            iconUri: "assets/icons/ic_patterns_list.png",
+            routeName: "patterns_list"),
         new CategoryItem(
             title: "WALKTHROUGH",
-            iconUri: "assets/icons/ic_patterns_walkthrough.png"),
+            iconUri: "assets/icons/ic_patterns_walkthrough.png",
+            routeName: "walkthrough"),
         new CategoryItem(
             title: "EDIT AN IMAGE",
-            iconUri: "assets/icons/ic_pattern_edit_image.png"),
+            iconUri: "assets/icons/ic_pattern_edit_image.png",
+            routeName: "edit_image"),
       ],
     ),
     new AppCategory(
@@ -146,16 +169,20 @@ class CategoryManager {
       categoryItems: [
         new CategoryItem(
             title: "TAKE A PHOTO",
-            iconUri: "assets/icons/ic_plug_in_photo.png"),
+            iconUri: "assets/icons/ic_plug_in_photo.png",
+            routeName: "take_photo"),
         new CategoryItem(
             title: "CURRENT LOCATION",
-            iconUri: "assets/icons/ic_plug_in_location.png"),
+            iconUri: "assets/icons/ic_plug_in_location.png",
+            routeName: "current_location"),
         new CategoryItem(
             title: "DEVICE MOTION",
-            iconUri: "assets/icons/ic_plug_in_motion.png"),
+            iconUri: "assets/icons/ic_plug_in_motion.png",
+            routeName: "device_motion"),
         new CategoryItem(
             title: "CUSTOM SERVICE PLUG-INS",
-            iconUri: "assets/icons/ic_plug_in_service.png"),
+            iconUri: "assets/icons/ic_plug_in_service.png",
+            routeName: "custom_plug_ins"),
       ],
     ),
     new AppCategory(
@@ -172,10 +199,12 @@ class CategoryManager {
       categoryItems: [
         new CategoryItem(
             title: "IOS CONTROLS",
-            iconUri: "assets/icons/ic_design_components_controls.png"),
+            iconUri: "assets/icons/ic_design_components_controls.png",
+            routeName: "components_ios_controls"),
         new CategoryItem(
             title: "MATERIAL CONTROLS",
-            iconUri: "assets/icons/ic_design_components_material.png"),
+            iconUri: "assets/icons/ic_design_components_material.png",
+            routeName: "components_material_controls"),
       ],
     ),
   ];

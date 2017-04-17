@@ -17,21 +17,21 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     with TickerProviderStateMixin {
   String _title, _subtitle, _nextTitle, _nextSubtitle;
 
-  Animation<double> _firstFadeAnimation;
-  Animation<double> _secondFadeAnimation;
-  Animation<double> _firstScaleAnimation;
-  Animation<double> _secondScaleAnimation;
-  AnimationController _titleFadeAnimationController;
-  AnimationController _imageFadeOutAnimationController;
+  Animation<double> _fadeOutAnimation;
+  Animation<double> _fadeInAnimation;
+  Animation<double> _scaleOutAnimation;
+  Animation<double> _scaleInAnimation;
+
+  AnimationController _animateOutController;
+  AnimationController _animateInController;
 
   List<WelcomeStep> _steps;
   int _currentStep = 0;
   double _bgOffset = 0.0;
 
-  bool movingNext = false;
-
   static const double _kSwipeThreshold = 150.0;
-  static const int _kAnimationDuration = 1000;
+  static const int _kAnimateOutDuration = 1000;
+  static const int _kAnimateInDuration = 1000;
   double _swipeAmount = 0.0;
 
   _WarmWelcomeScreenState() {
@@ -48,44 +48,44 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   void _configureAnimation() {
-    _titleFadeAnimationController = new AnimationController(
-      duration: const Duration(milliseconds: _kAnimationDuration),
+    _animateOutController = new AnimationController(
+      duration: const Duration(milliseconds: _kAnimateOutDuration),
       vsync: this,
     );
-    _imageFadeOutAnimationController = new AnimationController(
-        duration: const Duration(milliseconds: 400),
+    _animateInController = new AnimationController(
+        duration: const Duration(milliseconds: _kAnimateInDuration),
         vsync: this,
     );
-    _firstFadeAnimation =
-        _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
-    _secondFadeAnimation =
-        _initTitleAnimation(from: 0.0, to: 1.0, curve: Curves.fastOutSlowIn);
-    _firstScaleAnimation =
-        _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
-    _secondScaleAnimation =
-        _initTitleAnimation(from: 0.7, to: 1.0, curve: Curves.easeOut);
+    _fadeOutAnimation =
+        _initOutAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
+    _fadeInAnimation =
+        _initInAnimation(from: 0.0, to: 1.0, curve: Curves.fastOutSlowIn);
+    _scaleOutAnimation =
+        _initOutAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
+    _scaleInAnimation =
+        _initInAnimation(from: 0.7, to: 1.0, curve: Curves.easeOut);
   }
 
-  Animation<double> _initTitleAnimation(
+  Animation<double> _initOutAnimation(
       {@required double from, @required double to, @required Curve curve}) {
     final CurvedAnimation animation = new CurvedAnimation(
-      parent: _titleFadeAnimationController,
+      parent: _animateInController,
       curve: curve,
     );
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
-  Animation<double> _initImageFadeOutAnimation(
+  Animation<double> _initInAnimation(
       {@required double from, @required double to, @required Curve curve}) {
     final CurvedAnimation animation = new CurvedAnimation(
-        parent: _imageFadeOutAnimationController,
+        parent: _animateOutController,
         curve: curve,
     );
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
   Widget _buildBackgroundView() {
-    int parallaxAnimationDuration = _kAnimationDuration;
+    int parallaxAnimationDuration = _kAnimateInDuration;
     return new Stack(
       children: [
         new DecoratedBox(
@@ -181,10 +181,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
       imageSize = MediaQuery.of(context).size.height * 0.25;
     }
-    int previousStep = movingNext ? nextStep - 1 : nextStep + 1;
-//    print("next step: $nextStep");
-//    print("previous step: $previousStep");
-//    print("moving next: $movingNext");
     return new Positioned(
       left: 30.0,
       right: 30.0,
@@ -193,7 +189,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       child: new Stack(
         children: [
           new FadeTransition(
-            opacity: _firstFadeAnimation,
+            opacity: _fadeOutAnimation,
             child: new Column(
               children: [
                 _buildTitleSection(title: _title, subtitle: _subtitle),
@@ -201,7 +197,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                   padding: const EdgeInsets.only(top: 40.0),
                   child: new Center(
                     child: new ScaleTransition(
-                      scale: _firstScaleAnimation,
+                      scale: _scaleOutAnimation,
                       child: new Image(
                         width: imageSize,
                         height: imageSize,
@@ -214,7 +210,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             ),
           ),
           new FadeTransition(
-            opacity: _secondFadeAnimation,
+            opacity: _fadeInAnimation,
             child: new Column(
               children: [
                 _buildTitleSection(title: nextTitle, subtitle: nextSubtitle),
@@ -222,7 +218,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                   padding: const EdgeInsets.only(top: 40.0),
                   child: new Center(
                     child: new ScaleTransition(
-                      scale: _secondScaleAnimation,
+                      scale: _scaleInAnimation,
                       child: new Image(
                         width: imageSize,
                         height: imageSize,
@@ -241,9 +237,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   Widget _buildGestureDetector() {
     int nextStep = _currentStep;
+    bool movingNext = false;
     return new GestureDetector(
       onHorizontalDragUpdate: (details) {
         if (_swipeAmount < _kSwipeThreshold) {
+//          _animateOutController.value = 0.0;
+//          _animateInController.value = 0.0;
 //          print(details.delta.dx);
           movingNext = details.delta.dx <= 0;
           _swipeAmount += details.delta.distance.abs();
@@ -272,8 +271,11 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                 _subtitle = _steps[_currentStep].subtitle;
               }
             });
-            _titleFadeAnimationController.forward().whenComplete(() {
-              _titleFadeAnimationController.value = 0.0;
+            _animateOutController.forward().whenComplete(() {
+              _animateInController.forward().whenComplete(() {
+                _animateOutController.value = 0.0;
+                _animateInController.value = 0.0;
+              });
             });
           }
         }
