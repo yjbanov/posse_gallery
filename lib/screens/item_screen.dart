@@ -72,7 +72,7 @@ class _ItemScreenState extends State<ItemScreen>
 
   Widget build(BuildContext context) {
     return new Material(
-      color: new Color(0xFF19AAEE),
+      color: const Color(0xFF19AAEE),
       child: _contentWidget(),
     );
   }

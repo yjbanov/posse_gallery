@@ -22,6 +22,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   Animation<double> _firstScaleAnimation;
   Animation<double> _secondScaleAnimation;
   AnimationController _titleFadeAnimationController;
+  AnimationController _imageFadeOutAnimationController;
 
   List<WelcomeStep> _steps;
   int _currentStep = 0;
@@ -29,8 +30,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   bool movingNext = false;
 
-  static const double _kSwipeThreshold = 130.0;
-  static const int _kAnimationDuration = 700;
+  static const double _kSwipeThreshold = 150.0;
+  static const int _kAnimationDuration = 1000;
   double _swipeAmount = 0.0;
 
   _WarmWelcomeScreenState() {
@@ -48,13 +49,17 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   void _configureAnimation() {
     _titleFadeAnimationController = new AnimationController(
-      duration: new Duration(milliseconds: _kAnimationDuration),
+      duration: const Duration(milliseconds: _kAnimationDuration),
       vsync: this,
     );
+    _imageFadeOutAnimationController = new AnimationController(
+        duration: const Duration(milliseconds: 400),
+        vsync: this,
+    );
     _firstFadeAnimation =
-        _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.easeOut);
+        _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
     _secondFadeAnimation =
-        _initTitleAnimation(from: 0.0, to: 1.0, curve: Curves.easeIn);
+        _initTitleAnimation(from: 0.0, to: 1.0, curve: Curves.fastOutSlowIn);
     _firstScaleAnimation =
         _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
     _secondScaleAnimation =
@@ -70,6 +75,15 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
+  Animation<double> _initImageFadeOutAnimation(
+      {@required double from, @required double to, @required Curve curve}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+        parent: _imageFadeOutAnimationController,
+        curve: curve,
+    );
+    return new Tween<double>(begin: from, end: to).animate(animation);
+  }
+
   Widget _buildBackgroundView() {
     int parallaxAnimationDuration = _kAnimationDuration;
     return new Stack(
@@ -78,9 +92,9 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           decoration: new BoxDecoration(
             gradient: new LinearGradient(
               colors: [
-                new Color(0xFFD7D7D7),
-                new Color(0xFFFAFAFA),
-                new Color(0xFFFFFFFF),
+                const Color(0xFFD7D7D7),
+                const Color(0xFFFAFAFA),
+                const Color(0xFFFFFFFF),
               ],
               begin: FractionalOffset.topCenter,
               end: FractionalOffset.bottomCenter,
@@ -112,19 +126,19 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           title,
           style: new TextStyle(
             fontSize: 22.0,
-            color: new Color(Constants.ColorPrimary),
+            color: const Color(Constants.ColorPrimary),
             letterSpacing: 0.25,
           ),
           textAlign: TextAlign.center,
         ),
         new Padding(
-          padding: new EdgeInsets.only(top: 25.0),
+          padding: const EdgeInsets.only(top: 25.0),
           child: new Text(
             subtitle,
             textAlign: TextAlign.center,
             style: new TextStyle(
               fontSize: 13.0,
-              color: new Color(0xFF222222),
+              color: const Color(0xFF222222),
             ),
           ),
         ),
@@ -138,13 +152,13 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       child: new Container(
         width: 180.0,
         height: 46.0,
-        margin: new EdgeInsets.only(bottom: 40.0),
+        margin: const EdgeInsets.only(bottom: 40.0),
         child: new RaisedButton(
-          color: new Color(Constants.ColorPrimary),
+          color: const Color(Constants.ColorPrimary),
           child: new Text(
             "START EXPLORING",
             style: new TextStyle(
-              color: new Color(0xFFFFFFFF),
+              color: const Color(0xFFFFFFFF),
               fontSize: 12.0,
             ),
           ),
@@ -282,7 +296,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   @override
   Widget build(BuildContext context) {
     return new Material(
-      color: new Color(0xFFFFFFFF),
+      color: const Color(0xFFFFFFFF),
       child: _buildGestureDetector(),
     );
   }

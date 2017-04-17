@@ -78,7 +78,7 @@ class _CategoryScreenState extends State<CategoryScreen>
               ],
             ),
             new Material(
-              color: new Color(0x00FFFFFF),
+              color: const Color(0x00FFFFFF),
               child: new InkWell(
                 highlightColor: Colors.white.withAlpha(30),
                 splashColor: Colors.white.withAlpha(20),
@@ -155,7 +155,7 @@ class _CategoryScreenState extends State<CategoryScreen>
     return new Container(
       height: 256.0,
       child: new Material(
-        color: new Color(0x00FFFFFF),
+        color: const Color(0x00FFFFFF),
         child: new DecoratedBox(
           decoration: new BoxDecoration(),
           child: new Stack(
@@ -187,23 +187,6 @@ class _CategoryScreenState extends State<CategoryScreen>
                   fit: BoxFit.cover,
                 ),
               ),
-              new Positioned(
-                top: 14.0,
-                child: new Container(
-                  height: 70.0,
-                  width: 70.0,
-                  child: new Material(
-                    color: new Color(0x00FFFFFF),
-                    child: new IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: new Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                ),
-              ),
               new Center(
                 child: new Padding(
                   padding: const EdgeInsets.only(top: 30.0),
@@ -217,23 +200,37 @@ class _CategoryScreenState extends State<CategoryScreen>
     );
   }
 
-  Widget _buildListView() {
-    return new Expanded(
-      child: new Container(
-        color: new Color(0x00FFFFFF),
-        child: new ListView(
-          children: _cells,
-        ),
+  Widget _buildBackButton() {
+    return new Container(
+      child: new IconButton(
+        padding: EdgeInsets.zero,
+        icon: new Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
       ),
     );
   }
 
   Widget _contentWidget() {
-    return new Column(
-      children: [
-        _buildAppBar(),
-        _buildListView(),
-      ],
+    return new Scaffold(
+      backgroundColor: _category.centerShapeColor,
+      body: new CustomScrollView(
+        slivers: [
+          new SliverAppBar(
+            pinned: true,
+            expandedHeight: 256.0,
+            leading: _buildBackButton(),
+            backgroundColor: _category.centerShapeColor,
+            flexibleSpace: new FlexibleSpaceBar(
+              background: _buildAppBar(),
+            ),
+          ),
+          new SliverList(
+            delegate: new SliverChildListDelegate(_cells),
+          ),
+        ],
+      ),
     );
   }
 

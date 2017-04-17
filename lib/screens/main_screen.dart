@@ -61,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
               _categoryTextWidget(
                   category: category, categoryIndex: categoryIndex),
               new Material(
-                color: new Color(0x00FFFFFF),
+                color: const Color(0x00FFFFFF),
                 child: new InkWell(
                   highlightColor: Colors.white.withAlpha(30),
                   splashColor: Colors.white.withAlpha(20),
@@ -140,7 +140,7 @@ class _MainScreenState extends State<MainScreen> {
                 style: new TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 20.0,
-                  color: new Color(0xFF29B6F6),
+                  color: const Color(0xFF29B6F6),
                 ),
               ),
             ),
