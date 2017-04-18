@@ -201,14 +201,12 @@ class _CategoryScreenState extends State<CategoryScreen>
   }
 
   Widget _buildBackButton() {
-    return new Container(
-      child: new IconButton(
-        padding: EdgeInsets.zero,
-        icon: new Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      ),
+    return new IconButton(
+      padding: EdgeInsets.zero,
+      icon: new Icon(Icons.arrow_back, color: Colors.white),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
     );
   }
 

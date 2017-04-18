@@ -14,8 +14,7 @@ class ItemScreen extends StatefulWidget {
   _ItemScreenState createState() => new _ItemScreenState(item: item);
 }
 
-class _ItemScreenState extends State<ItemScreen>
-    with SingleTickerProviderStateMixin {
+class _ItemScreenState extends State<ItemScreen> with TickerProviderStateMixin {
   _ItemScreenState({this.item});
 
   final CategoryItem item;

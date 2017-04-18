@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:posse_gallery/config/constants.dart';
 import 'package:posse_gallery/managers/welcome_manager.dart';
 import 'package:posse_gallery/models/welcome_step.dart';
+import 'package:posse_gallery/screens/main_screen.dart';
 
 class WarmWelcomeScreen extends StatefulWidget {
   @override
@@ -165,7 +166,24 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             ),
           ),
           onPressed: () {
-            Navigator.of(context).pushReplacementNamed('/main');
+            Navigator.pushReplacement(
+              context,
+              new PageRouteBuilder<Null>(
+                settings: const RouteSettings(name: "/main"),
+                pageBuilder: (BuildContext context, Animation<double> _,
+                    Animation<double> __) {
+                  return new MainScreen();
+                },
+                transitionsBuilder: (
+                  BuildContext context,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,
+                  Widget child,
+                ) {
+                  return new ScaleTransition(scale: animation, child: child);
+                },
+              ),
+            );
           },
         ),
       ),
