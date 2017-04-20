@@ -89,7 +89,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   Widget _buildBackgroundView() {
-    int parallaxAnimationDuration = _kParallaxAnimationDuration;
     return new Stack(
       children: [
         new DecoratedBox(

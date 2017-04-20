@@ -73,7 +73,7 @@ class _PatternsListState extends State<PatternsList> {
                   _demoData.insert(0, item);
                   _controller.clear();
                 });
-              },
+              };
             },
           ),
           new Expanded(
