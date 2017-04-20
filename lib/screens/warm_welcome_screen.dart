@@ -35,6 +35,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   static const double _kSwipeThreshold = 150.0;
   static const int _kAnimateOutDuration = 600;
   static const int _kAnimateInDuration = 800;
+  static const int _kParallaxAnimationDuration = 1050;
   double _swipeAmount = 0.0;
 
   _WarmWelcomeScreenState() {
@@ -88,7 +89,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   Widget _buildBackgroundView() {
-    int parallaxAnimationDuration = _kAnimateInDuration;
+    int parallaxAnimationDuration = _kParallaxAnimationDuration;
     return new Stack(
       children: [
         new DecoratedBox(
@@ -109,7 +110,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           top: 0.0,
           bottom: 0.0,
           left: _bgOffset,
-          duration: new Duration(milliseconds: parallaxAnimationDuration),
+          duration: new Duration(milliseconds: _kParallaxAnimationDuration),
           curve: Curves.easeOut,
           child: new Image(
             height: MediaQuery.of(context).size.height,

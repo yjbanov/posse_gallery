@@ -4,8 +4,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:posse_gallery/managers/category_manager.dart';
+import 'package:posse_gallery/managers/route_manager.dart';
 import 'package:posse_gallery/models/app_category.dart';
 import 'package:posse_gallery/models/category_item.dart';
+import 'package:posse_gallery/screens/item_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
   CategoryScreen({
@@ -42,7 +44,8 @@ class _CategoryScreenState extends State<CategoryScreen>
     List<Widget> cells = [];
     for (int i = 0; i < _category.categoryItems.length; i++) {
       CategoryItem item = _category.categoryItems[i];
-      Color color = _category.categoryColors[i];
+      String routeName = item.routeName;
+      Color color = item.color;
       Color textColor =
           item.title == "COMPONENTS" ? Colors.black : Colors.white;
       final cellContainer = new Container(
@@ -83,7 +86,27 @@ class _CategoryScreenState extends State<CategoryScreen>
                 highlightColor: Colors.white.withAlpha(30),
                 splashColor: Colors.white.withAlpha(20),
                 onTap: () {
-                  Navigator.of(context).pushNamed('/item');
+                  Navigator.push(
+                    context,
+                    new PageRouteBuilder<Null>(
+                      settings: new RouteSettings(name: "/item/$routeName"),
+                      pageBuilder: (BuildContext context, Animation<double> _,
+                          Animation<double> __) {
+                        return new ItemScreen(
+                            item: RouteManager.retrieveItem(
+                                _category, item.routeName));
+                      },
+                      transitionsBuilder: (
+                        BuildContext context,
+                        Animation<double> animation,
+                        Animation<double> secondaryAnimation,
+                        Widget child,
+                      ) {
+                        return new FadeTransition(
+                            opacity: animation, child: child);
+                      },
+                    ),
+                  );
                 },
               ),
             ),

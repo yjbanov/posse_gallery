@@ -5,6 +5,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:posse_gallery/managers/category_manager.dart';
 import 'package:posse_gallery/models/app_category.dart';
+import 'package:posse_gallery/models/category_item.dart';
 import 'package:posse_gallery/screens/category_screen.dart';
 import 'package:posse_gallery/screens/item_screen.dart';
 import 'package:posse_gallery/screens/main_screen.dart';
@@ -27,6 +28,15 @@ class RouteManager {
     for (AppCategory category in _categories) {
       if (category.routeName == routeName) {
         return category;
+      }
+    }
+    return null;
+  }
+
+  static CategoryItem retrieveItem(AppCategory category, String routeName) {
+    for (CategoryItem item in category.categoryItems) {
+      if (item.routeName == routeName) {
+        return item;
       }
     }
     return null;

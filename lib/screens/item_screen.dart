@@ -61,17 +61,34 @@ class _ItemScreenState extends State<ItemScreen> with TickerProviderStateMixin {
     );
   }
 
+  Widget _buildItemContent() {
+    return new Expanded(
+      child: new Container(
+        decoration: new BoxDecoration(
+          borderRadius: new BorderRadius.circular(3.0),
+          backgroundColor: Colors.white,
+        ),
+        margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+        child: new ClipRRect(
+          borderRadius: new BorderRadius.circular(3.0),
+          child: item.widget,
+        ),
+      ),
+    );
+  }
+
   Widget _contentWidget() {
     return new Column(
       children: [
-        _buildAppBar("WIDGET"),
+        _buildAppBar(item.title),
+        _buildItemContent(),
       ],
     );
   }
 
   Widget build(BuildContext context) {
     return new Material(
-      color: const Color(0xFF19AAEE),
+      color: item.color,
       child: _contentWidget(),
     );
   }
