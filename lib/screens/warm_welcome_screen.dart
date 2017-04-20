@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:posse_gallery/config/constants.dart';
 import 'package:posse_gallery/managers/welcome_manager.dart';
 import 'package:posse_gallery/models/welcome_step.dart';
+import 'package:posse_gallery/screens/main_screen.dart';
 
 class WarmWelcomeScreen extends StatefulWidget {
   @override
@@ -17,21 +18,24 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     with TickerProviderStateMixin {
   String _title, _subtitle, _nextTitle, _nextSubtitle;
 
-  Animation<double> _firstFadeAnimation;
-  Animation<double> _secondFadeAnimation;
-  Animation<double> _firstScaleAnimation;
-  Animation<double> _secondScaleAnimation;
-  AnimationController _titleFadeAnimationController;
-  AnimationController _imageFadeOutAnimationController;
+  Animation<double> _fadeOutAnimation;
+  Animation<double> _fadeInAnimation;
+  Animation<double> _scaleOutAnimation;
+  Animation<double> _scaleInAnimation;
+
+  AnimationController _animateOutController;
+  AnimationController _animateInController;
 
   List<WelcomeStep> _steps;
   int _currentStep = 0;
   double _bgOffset = 0.0;
 
-  bool movingNext = false;
+  bool movingNext = true;
 
   static const double _kSwipeThreshold = 150.0;
-  static const int _kAnimationDuration = 1000;
+  static const int _kAnimateOutDuration = 600;
+  static const int _kAnimateInDuration = 800;
+  static const int _kParallaxAnimationDuration = 1050;
   double _swipeAmount = 0.0;
 
   _WarmWelcomeScreenState() {
@@ -48,44 +52,43 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   void _configureAnimation() {
-    _titleFadeAnimationController = new AnimationController(
-      duration: const Duration(milliseconds: _kAnimationDuration),
+    _animateOutController = new AnimationController(
+      duration: const Duration(milliseconds: _kAnimateOutDuration),
       vsync: this,
     );
-    _imageFadeOutAnimationController = new AnimationController(
-        duration: const Duration(milliseconds: 400),
-        vsync: this,
+    _animateInController = new AnimationController(
+      duration: const Duration(milliseconds: _kAnimateInDuration),
+      vsync: this,
     );
-    _firstFadeAnimation =
-        _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
-    _secondFadeAnimation =
-        _initTitleAnimation(from: 0.0, to: 1.0, curve: Curves.fastOutSlowIn);
-    _firstScaleAnimation =
-        _initTitleAnimation(from: 1.0, to: 0.0, curve: Curves.fastOutSlowIn);
-    _secondScaleAnimation =
-        _initTitleAnimation(from: 0.7, to: 1.0, curve: Curves.easeOut);
+    _fadeOutAnimation =
+        _initOutAnimation(from: 1.0, to: 0.0, curve: Curves.linear);
+    _fadeInAnimation =
+        _initInAnimation(from: 0.0, to: 1.0, curve: Curves.easeOut);
+    _scaleOutAnimation =
+        _initOutAnimation(from: 1.0, to: 0.0, curve: Curves.linear);
+    _scaleInAnimation =
+        _initInAnimation(from: 0.0, to: 1.0, curve: Curves.easeOut);
   }
 
-  Animation<double> _initTitleAnimation(
+  Animation<double> _initOutAnimation(
       {@required double from, @required double to, @required Curve curve}) {
     final CurvedAnimation animation = new CurvedAnimation(
-      parent: _titleFadeAnimationController,
+      parent: _animateOutController,
       curve: curve,
     );
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
-  Animation<double> _initImageFadeOutAnimation(
+  Animation<double> _initInAnimation(
       {@required double from, @required double to, @required Curve curve}) {
     final CurvedAnimation animation = new CurvedAnimation(
-        parent: _imageFadeOutAnimationController,
-        curve: curve,
+      parent: _animateInController,
+      curve: curve,
     );
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
   Widget _buildBackgroundView() {
-    int parallaxAnimationDuration = _kAnimationDuration;
     return new Stack(
       children: [
         new DecoratedBox(
@@ -106,7 +109,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           top: 0.0,
           bottom: 0.0,
           left: _bgOffset,
-          duration: new Duration(milliseconds: parallaxAnimationDuration),
+          duration: new Duration(milliseconds: _kParallaxAnimationDuration),
           curve: Curves.easeOut,
           child: new Image(
             height: MediaQuery.of(context).size.height,
@@ -163,7 +166,24 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             ),
           ),
           onPressed: () {
-            Navigator.of(context).pushReplacementNamed('/main');
+            Navigator.pushReplacement(
+              context,
+              new PageRouteBuilder<Null>(
+                settings: const RouteSettings(name: "/main"),
+                pageBuilder: (BuildContext context, Animation<double> _,
+                    Animation<double> __) {
+                  return new MainScreen();
+                },
+                transitionsBuilder: (
+                  BuildContext context,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,
+                  Widget child,
+                ) {
+                  return new ScaleTransition(scale: animation, child: child);
+                },
+              ),
+            );
           },
         ),
       ),
@@ -181,10 +201,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
       imageSize = MediaQuery.of(context).size.height * 0.25;
     }
-    int previousStep = movingNext ? nextStep - 1 : nextStep + 1;
-//    print("next step: $nextStep");
-//    print("previous step: $previousStep");
-//    print("moving next: $movingNext");
+    int previousStep = nextStep;
+    if (nextStep != 0) {
+      previousStep = movingNext ? nextStep - 1 : nextStep + 1;
+    } else if (!movingNext) {
+      previousStep += 1;
+    }
     return new Positioned(
       left: 30.0,
       right: 30.0,
@@ -193,7 +215,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       child: new Stack(
         children: [
           new FadeTransition(
-            opacity: _firstFadeAnimation,
+            opacity: _fadeOutAnimation,
             child: new Column(
               children: [
                 _buildTitleSection(title: _title, subtitle: _subtitle),
@@ -201,11 +223,11 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                   padding: const EdgeInsets.only(top: 40.0),
                   child: new Center(
                     child: new ScaleTransition(
-                      scale: _firstScaleAnimation,
+                      scale: _scaleOutAnimation,
                       child: new Image(
                         width: imageSize,
                         height: imageSize,
-                        image: new AssetImage(_steps[nextStep].imageUri),
+                        image: new AssetImage(_steps[previousStep].imageUri),
                       ),
                     ),
                   ),
@@ -214,7 +236,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             ),
           ),
           new FadeTransition(
-            opacity: _secondFadeAnimation,
+            opacity: _fadeInAnimation,
             child: new Column(
               children: [
                 _buildTitleSection(title: nextTitle, subtitle: nextSubtitle),
@@ -222,7 +244,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                   padding: const EdgeInsets.only(top: 40.0),
                   child: new Center(
                     child: new ScaleTransition(
-                      scale: _secondScaleAnimation,
+                      scale: _scaleInAnimation,
                       child: new Image(
                         width: imageSize,
                         height: imageSize,
@@ -244,7 +266,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     return new GestureDetector(
       onHorizontalDragUpdate: (details) {
         if (_swipeAmount < _kSwipeThreshold) {
-//          print(details.delta.dx);
           movingNext = details.delta.dx <= 0;
           _swipeAmount += details.delta.distance.abs();
           bool didSwipe = (_swipeAmount >= _kSwipeThreshold);
@@ -254,6 +275,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             hasReachedBounds = false;
           }
           if (didSwipe && !hasReachedBounds) {
+            _animateOutController.value = 0.0;
+            _animateInController.value = 0.0;
             nextStep += movingNext ? 1 : -1;
             setState(() {
               if (nextStep >= 0 && nextStep < _steps.length) {
@@ -272,9 +295,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                 _subtitle = _steps[_currentStep].subtitle;
               }
             });
-            _titleFadeAnimationController.forward().whenComplete(() {
-              _titleFadeAnimationController.value = 0.0;
-            });
+            _animateOutController.forward().whenComplete(() {});
+            _animateInController.forward().whenComplete(() {});
           }
         }
       },

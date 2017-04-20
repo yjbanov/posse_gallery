@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:posse_gallery/models/app_category.dart';
 import 'package:posse_gallery/models/category_item.dart';
+import 'package:posse_gallery/screens/items/customized_design.dart';
+import 'package:posse_gallery/screens/items/patterns_list.dart';
 
 class CategoryManager {
   CategoryManager() {
@@ -37,24 +39,32 @@ class CategoryManager {
       leftShapeColor: const Color(0xFF19AAEE),
       centerShapeColor: const Color(0xFF00A2EE),
       rightShapeColor: const Color(0xFF1AA3E4),
-      categoryColors: [
-        const Color(0xFF30BDFF),
-        const Color(0xFF009FEA),
-        const Color(0xFF0084EA),
-        Colors.white,
-      ],
       categoryItems: [
         new CategoryItem(
-            title: "CUSTOMIZED BRAND DESIGN",
-            iconUri: "assets/icons/ic_customized_brand_design.png"),
+          title: "CUSTOMIZED BRAND DESIGN",
+          iconUri: "assets/icons/ic_customized_brand_design.png",
+          routeName: "customized_brand_design",
+          color: const Color(0xFF30BDFF),
+          widget: new CustomizedDesign(),
+        ),
         new CategoryItem(
-            title: "ASSETS & THEMES",
-            iconUri: "assets/icons/ic_customized_assets.png"),
+          title: "ASSETS & THEMES",
+          iconUri: "assets/icons/ic_customized_assets.png",
+          routeName: "assets_themes",
+          color: const Color(0xFF009FEA),
+        ),
         new CategoryItem(
-            title: "PAINTING",
-            iconUri: "assets/icons/ic_customized_painting.png"),
+          title: "PAINTING",
+          iconUri: "assets/icons/ic_customized_painting.png",
+          routeName: "painting",
+          color: const Color(0xFF0084EA),
+        ),
         new CategoryItem(
-            title: "COMPONENTS", iconUri: "assets/icons/ic_components.png"),
+          title: "COMPONENTS",
+          iconUri: "assets/icons/ic_components.png",
+          routeName: "customized_design_components",
+          color: Colors.white,
+        ),
       ],
     ),
     new AppCategory(
@@ -64,21 +74,31 @@ class CategoryManager {
       leftShapeColor: const Color(0xFF5BDBFF),
       centerShapeColor: const Color(0xFF45D2F9),
       rightShapeColor: const Color(0xFF53D2F7),
-      categoryColors: [
-        const Color(0xFF00BBFF),
-        const Color(0xFF0086FF),
-        const Color(0xFF382DFF),
-        Colors.white,
-      ],
       categoryItems: [
         new CategoryItem(
-            title: "FLEX", iconUri: "assets/icons/ic_layout_flex.png"),
+          title: "FLEX",
+          iconUri: "assets/icons/ic_layout_flex.png",
+          routeName: "flex",
+          color: const Color(0xFF00BBFF),
+        ),
         new CategoryItem(
-            title: "STACK", iconUri: "assets/icons/ic_layout_stack.png"),
+          title: "STACK",
+          iconUri: "assets/icons/ic_layout_stack.png",
+          routeName: "stack",
+          color: const Color(0xFF0086FF),
+        ),
         new CategoryItem(
-            title: "SCROLL", iconUri: "assets/icons/ic_layout_scroll.png"),
+          title: "SCROLL",
+          iconUri: "assets/icons/ic_layout_scroll.png",
+          routeName: "scroll",
+          color: const Color(0xFF382DFF),
+        ),
         new CategoryItem(
-            title: "COMPONENTS", iconUri: "assets/icons/ic_components.png"),
+          title: "COMPONENTS",
+          iconUri: "assets/icons/ic_components.png",
+          routeName: "layout_components",
+          color: Colors.white,
+        ),
       ],
     ),
     new AppCategory(
@@ -88,23 +108,31 @@ class CategoryManager {
       leftShapeColor: const Color(0xFF38D3CD),
       centerShapeColor: const Color(0xFF25C3BC),
       rightShapeColor: const Color(0xFF3BBCB7),
-      categoryColors: [
-        const Color(0xFF05BBC0),
-        const Color(0xFF00A3A8),
-        const Color(0xFF02898D),
-        Colors.white,
-      ],
       categoryItems: [
         new CategoryItem(
-            title: "TWEENS", iconUri: "assets/icons/ic_animation_tweens.png"),
+          title: "TWEENS",
+          iconUri: "assets/icons/ic_animation_tweens.png",
+          routeName: "tweens",
+          color: const Color(0xFF05BBC0),
+        ),
         new CategoryItem(
-            title: "CHAINS/FRAME",
-            iconUri: "assets/icons/ic_animation_chains.png"),
+          title: "CHAINS/FRAME",
+          iconUri: "assets/icons/ic_animation_chains.png",
+          routeName: "chains",
+          color: const Color(0xFF00A3A8),
+        ),
         new CategoryItem(
-            title: "GESTURES",
-            iconUri: "assets/icons/ic_animation_gestures.png"),
+          title: "GESTURES",
+          iconUri: "assets/icons/ic_animation_gestures.png",
+          routeName: "gestures",
+          color: const Color(0xFF02898D),
+        ),
         new CategoryItem(
-            title: "COMPONENTS", iconUri: "assets/icons/ic_components.png"),
+          title: "COMPONENTS",
+          iconUri: "assets/icons/ic_components.png",
+          routeName: "animation_components",
+          color: Colors.white,
+        ),
       ],
     ),
     new AppCategory(
@@ -114,20 +142,26 @@ class CategoryManager {
       leftShapeColor: const Color(0xFFF9B640),
       centerShapeColor: const Color(0xFFFFAC18),
       rightShapeColor: const Color(0xFFFFB02C),
-      categoryColors: [
-        const Color(0xFFFF8B00),
-        const Color(0xFFFF6600),
-        const Color(0xFFFF4A2D),
-      ],
       categoryItems: [
         new CategoryItem(
-            title: "MAKE A LIST", iconUri: "assets/icons/ic_patterns_list.png"),
+          title: "MAKE A LIST",
+          iconUri: "assets/icons/ic_patterns_list.png",
+          routeName: "patterns_list",
+          color: const Color(0xFFFF8B00),
+          widget: new PatternsList(),
+        ),
         new CategoryItem(
-            title: "WALKTHROUGH",
-            iconUri: "assets/icons/ic_patterns_walkthrough.png"),
+          title: "WALKTHROUGH",
+          iconUri: "assets/icons/ic_patterns_walkthrough.png",
+          routeName: "walkthrough",
+          color: const Color(0xFFFF6600),
+        ),
         new CategoryItem(
-            title: "EDIT AN IMAGE",
-            iconUri: "assets/icons/ic_pattern_edit_image.png"),
+          title: "EDIT AN IMAGE",
+          iconUri: "assets/icons/ic_pattern_edit_image.png",
+          routeName: "edit_image",
+          color: const Color(0xFFFF4A2D),
+        ),
       ],
     ),
     new AppCategory(
@@ -137,25 +171,31 @@ class CategoryManager {
       leftShapeColor: const Color(0xFFFD734E),
       centerShapeColor: const Color(0xFFFF6941),
       rightShapeColor: const Color(0xFFFA724E),
-      categoryColors: [
-        const Color(0xFFFE5224),
-        const Color(0xFFF13300),
-        const Color(0xFFDE0202),
-        const Color(0xFFBA0000),
-      ],
       categoryItems: [
         new CategoryItem(
-            title: "TAKE A PHOTO",
-            iconUri: "assets/icons/ic_plug_in_photo.png"),
+          title: "TAKE A PHOTO",
+          iconUri: "assets/icons/ic_plug_in_photo.png",
+          routeName: "take_photo",
+          color: const Color(0xFFFE5224),
+        ),
         new CategoryItem(
-            title: "CURRENT LOCATION",
-            iconUri: "assets/icons/ic_plug_in_location.png"),
+          title: "CURRENT LOCATION",
+          iconUri: "assets/icons/ic_plug_in_location.png",
+          routeName: "current_location",
+          color: const Color(0xFFF13300),
+        ),
         new CategoryItem(
-            title: "DEVICE MOTION",
-            iconUri: "assets/icons/ic_plug_in_motion.png"),
+          title: "DEVICE MOTION",
+          iconUri: "assets/icons/ic_plug_in_motion.png",
+          routeName: "device_motion",
+          color: const Color(0xFFDE0202),
+        ),
         new CategoryItem(
-            title: "CUSTOM SERVICE PLUG-INS",
-            iconUri: "assets/icons/ic_plug_in_service.png"),
+          title: "CUSTOM SERVICE PLUG-INS",
+          iconUri: "assets/icons/ic_plug_in_service.png",
+          routeName: "custom_plug_ins",
+          color: const Color(0xFFBA0000),
+        ),
       ],
     ),
     new AppCategory(
@@ -165,17 +205,19 @@ class CategoryManager {
       leftShapeColor: const Color(0xFFAFD84C),
       centerShapeColor: const Color(0xFFA1CB39),
       rightShapeColor: const Color(0xFFA3CA4B),
-      categoryColors: [
-        const Color(0xFF8ABC10),
-        const Color(0xFF6AAD10),
-      ],
       categoryItems: [
         new CategoryItem(
-            title: "IOS CONTROLS",
-            iconUri: "assets/icons/ic_design_components_controls.png"),
+          title: "IOS CONTROLS",
+          iconUri: "assets/icons/ic_design_components_controls.png",
+          routeName: "components_ios_controls",
+          color: const Color(0xFF8ABC10),
+        ),
         new CategoryItem(
-            title: "MATERIAL CONTROLS",
-            iconUri: "assets/icons/ic_design_components_material.png"),
+          title: "MATERIAL CONTROLS",
+          iconUri: "assets/icons/ic_design_components_material.png",
+          routeName: "components_material_controls",
+          color: const Color(0xFF6AAD10),
+        ),
       ],
     ),
   ];

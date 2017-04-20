@@ -17,6 +17,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   List<Widget> _cells = [];
+  // TODO(al) - Implement indexing
   bool _isSearching = false;
   final TextEditingController _searchQuery = new TextEditingController();
 
@@ -121,7 +122,7 @@ class _SearchScreenState extends State<SearchScreen> {
           new Positioned.fill(
             child: new Center(
               child: new CircularReveal(
-                  color: const Color(0xFF43C2FD),
+                  color: const Color(0xFF00A2EE),
                   duration: const Duration(milliseconds: 2000),
                   startPosition: PainterStartPosition.center),
             ),

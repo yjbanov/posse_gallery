@@ -4,14 +4,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:posse_gallery/managers/category_manager.dart';
+import 'package:posse_gallery/managers/route_manager.dart';
 import 'package:posse_gallery/models/app_category.dart';
+import 'package:posse_gallery/screens/category_screen.dart';
+import 'package:posse_gallery/screens/search_screen.dart';
 
 class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => new _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   _MainScreenState() {
     _cells = _loadCategories();
   }
@@ -66,7 +69,28 @@ class _MainScreenState extends State<MainScreen> {
                   highlightColor: Colors.white.withAlpha(30),
                   splashColor: Colors.white.withAlpha(20),
                   onTap: () {
-                    Navigator.of(context).pushNamed('/category/$routeName');
+                    Navigator.push(
+                      context,
+                      new PageRouteBuilder<Null>(
+                        settings:
+                            new RouteSettings(name: "/category/$routeName"),
+                        pageBuilder: (BuildContext context, Animation<double> _,
+                            Animation<double> __) {
+                          return new CategoryScreen(
+                              category:
+                                  RouteManager.retrieveCategory(routeName));
+                        },
+                        transitionsBuilder: (
+                          BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                          Widget child,
+                        ) {
+                          return new FadeTransition(
+                              opacity: animation, child: child);
+                        },
+                      ),
+                    );
                   },
                 ),
               ),
@@ -151,7 +175,25 @@ class _MainScreenState extends State<MainScreen> {
                 padding: EdgeInsets.zero,
                 icon: searchIcon,
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/search');
+                  Navigator.push(
+                    context,
+                    new PageRouteBuilder<Null>(
+                      settings: const RouteSettings(name: "/search"),
+                      pageBuilder: (BuildContext context, Animation<double> _,
+                          Animation<double> __) {
+                        return new SearchScreen();
+                      },
+                      transitionsBuilder: (
+                        BuildContext context,
+                        Animation<double> animation,
+                        Animation<double> secondaryAnimation,
+                        Widget child,
+                      ) {
+                        return new ScaleTransition(
+                            scale: animation, child: child);
+                      },
+                    ),
+                  );
                 },
               ),
             ),

@@ -5,6 +5,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:posse_gallery/managers/category_manager.dart';
 import 'package:posse_gallery/models/app_category.dart';
+import 'package:posse_gallery/models/category_item.dart';
 import 'package:posse_gallery/screens/category_screen.dart';
 import 'package:posse_gallery/screens/item_screen.dart';
 import 'package:posse_gallery/screens/main_screen.dart';
@@ -23,10 +24,19 @@ class RouteManager {
     return _routes;
   }
 
-  static AppCategory _retrieveCategory(String routeName) {
+  static AppCategory retrieveCategory(String routeName) {
     for (AppCategory category in _categories) {
       if (category.routeName == routeName) {
         return category;
+      }
+    }
+    return null;
+  }
+
+  static CategoryItem retrieveItem(AppCategory category, String routeName) {
+    for (CategoryItem item in category.categoryItems) {
+      if (item.routeName == routeName) {
+        return item;
       }
     }
     return null;
@@ -37,17 +47,17 @@ class RouteManager {
     '/search': (BuildContext context) => new SearchScreen(),
     '/category': (BuildContext context) => new CategoryScreen(),
     '/category/customized_design': (BuildContext context) =>
-        new CategoryScreen(category: _retrieveCategory("customized_design")),
+        new CategoryScreen(category: retrieveCategory("customized_design")),
     '/category/layout_positioning': (BuildContext context) =>
-        new CategoryScreen(category: _retrieveCategory("layout_positioning")),
+        new CategoryScreen(category: retrieveCategory("layout_positioning")),
     '/category/animation': (BuildContext context) =>
-        new CategoryScreen(category: _retrieveCategory("animation")),
+        new CategoryScreen(category: retrieveCategory("animation")),
     '/category/patterns': (BuildContext context) =>
-        new CategoryScreen(category: _retrieveCategory("patterns")),
+        new CategoryScreen(category: retrieveCategory("patterns")),
     '/category/plug_ins': (BuildContext context) =>
-        new CategoryScreen(category: _retrieveCategory("plug_ins")),
+        new CategoryScreen(category: retrieveCategory("plug_ins")),
     '/category/design_components': (BuildContext context) =>
-        new CategoryScreen(category: _retrieveCategory("design_components")),
+        new CategoryScreen(category: retrieveCategory("design_components")),
     '/item': (BuildContext context) => new ItemScreen(),
   };
 }

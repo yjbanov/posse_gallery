@@ -13,7 +13,6 @@ class AppCategory {
     this.leftShapeColor,
     this.centerShapeColor,
     this.rightShapeColor,
-    this.categoryColors,
     this.categoryItems,
   });
 
@@ -23,6 +22,5 @@ class AppCategory {
   final Color leftShapeColor;
   final Color centerShapeColor;
   final Color rightShapeColor;
-  final List<Color> categoryColors;
   final List<CategoryItem> categoryItems;
 }
