@@ -21,7 +21,8 @@ class WelcomeManager {
       subtitle:
           "Flutter is a mobile app SDK for building high-performance, high-fidelity, apps for iOS and Android.",
       imageUris: [
-        "assets/images/welcome_phones.png",
+        "assets/images/welcome_iphone.png",
+        "assets/images/welcome_pixel.png",
       ],
     ),
     new WelcomeStep(
