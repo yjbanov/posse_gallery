@@ -21,8 +21,7 @@ class WelcomeManager {
       subtitle:
           "Flutter is a mobile app SDK for building high-performance, high-fidelity, apps for iOS and Android.",
       imageUris: [
-        "assets/images/welcome_iphone.png",
-        "assets/images/welcome_pixel.png",
+        "assets/images/welcome_phones.png",
       ],
     ),
     new WelcomeStep(
@@ -48,7 +47,12 @@ class WelcomeManager {
       subtitle:
           "Now that you’re familiar with the basic structure and principles of the Flutter framework, explore what it can do.",
       imageUris: [
-        "assets/images/welcome_explore_flutter.png",
+        "assets/images/welcome_widget_1.png",
+        "assets/images/welcome_widget_2.png",
+        "assets/images/welcome_widget_3.png",
+        "assets/images/welcome_widget_4.png",
+        "assets/images/welcome_widget_5.png",
+        "assets/images/welcome_flutter_logo.png",
       ],
     ),
   ];

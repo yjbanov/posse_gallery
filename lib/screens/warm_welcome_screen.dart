@@ -30,6 +30,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   Animation<double> _widgetScaleInAnimation2;
   Animation<double> _widgetScaleInAnimation3;
   Animation<double> _widgetScaleInAnimation4;
+  Animation<double> _widgetScaleInAnimation5;
 
   AnimationController _animateOutController;
   AnimationController _animateInController;
@@ -41,6 +42,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   AnimationController _widgetScaleInController2;
   AnimationController _widgetScaleInController3;
   AnimationController _widgetScaleInController4;
+  AnimationController _widgetScaleInController5;
 
   List<WelcomeStep> _steps;
   int _currentStep = 0;
@@ -79,11 +81,11 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       vsync: this,
     );
     _iPhoneAnimationController = new AnimationController(
-      duration: const Duration(milliseconds: _kWidgetScaleInDuration),
+      duration: const Duration(milliseconds: _kAnimateInDuration),
       vsync: this,
     );
     _pixelAnimationController = new AnimationController(
-      duration: const Duration(milliseconds: _kWidgetScaleInDuration),
+      duration: const Duration(milliseconds: _kAnimateInDuration),
       vsync: this,
     );
     _widgetScaleInController1 = new AnimationController(
@@ -99,6 +101,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       vsync: this,
     );
     _widgetScaleInController4 = new AnimationController(
+      duration: const Duration(milliseconds: _kWidgetScaleInDuration),
+      vsync: this,
+    );
+    _widgetScaleInController5 = new AnimationController(
       duration: const Duration(milliseconds: _kWidgetScaleInDuration),
       vsync: this,
     );
@@ -152,6 +158,11 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         to: 1.0,
         curve: Curves.easeOut,
         controller: _widgetScaleInController4);
+    _widgetScaleInAnimation5 = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _widgetScaleInController5);
   }
 
   Animation<double> _initAnimation(
@@ -285,7 +296,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     } else if (!movingNext) {
       previousStep += 1;
     }
-
     return new Positioned(
       left: 30.0,
       right: 30.0,
@@ -333,25 +343,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   Widget _buildBody({@required int nextStep, @required double imageSize}) {
-    if (nextStep == 0) {
-      return new Stack(
-        children: [
-          new Padding(
-            padding: const EdgeInsets.only(top: 40.0),
-            child: new Center(
-              child: new FadeTransition(
-                opacity: _fadeInAnimation,
-                child: new ScaleTransition(
-                    scale: _scaleInAnimation,
-                    child: new Image(
-                      image: new AssetImage(_steps[nextStep].imageUris[0]),
-                    )),
-              ),
-            ),
-          ),
-        ],
-      );
-    } else if (nextStep == 2) {
+    if (nextStep == 2) {
       return new Stack(
         children: [
           new Padding(
@@ -407,6 +399,92 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               scale: _widgetScaleInAnimation4,
               child: new Image(
                 image: new AssetImage(_steps[nextStep].imageUris[4]),
+              ),
+            ),
+          ),
+        ],
+      );
+    } else if (nextStep == 3) {
+      return new Stack(
+        children: [
+          new Positioned(
+            top: 35.0,
+            left: 20.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation1,
+              child: new Opacity(
+                opacity: 0.3,
+                child: new Image(
+                    image: new AssetImage(_steps[nextStep].imageUris[3]),
+                ),
+              ),
+            ),
+          ),
+          new Positioned(
+            top: 30.0,
+            right: 20.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation2,
+              child: new Opacity(
+                opacity: 0.3,
+                child: new Image(
+                    image: new AssetImage(_steps[nextStep].imageUris[1]),
+                ),
+              ),
+            ),
+          ),
+          new Positioned(
+            top: 135.0,
+            right: 35.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation3,
+              child: new Opacity(
+                opacity: 0.3,
+                child: new Image(
+                    image: new AssetImage(_steps[nextStep].imageUris[2]),
+                ),
+              ),
+            ),
+          ),
+          new Positioned(
+            bottom: 0.0,
+            left: 20.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation4,
+              child: new Opacity(
+                opacity: 0.3,
+                child: new Image(
+                    image: new AssetImage(_steps[nextStep].imageUris[0]),
+                ),
+              ),
+            ),
+          ),
+          new Positioned(
+            bottom: 0.0,
+            right: 15.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation5,
+              child: new Opacity(
+                opacity: 0.3,
+                child: new Image(
+                    image: new AssetImage(_steps[nextStep].imageUris[4]),
+                ),
+              ),
+            ),
+          ),
+          new Padding(
+            padding: const EdgeInsets.only(top: 40.0),
+            child: new Center(
+              child: new FadeTransition(
+                opacity: _fadeInAnimation,
+                child: new ScaleTransition(
+                  scale: _scaleInAnimation,
+                  child: new Image(
+                    width: imageSize * 0.85,
+                    height: imageSize * 0.85,
+                    image: new AssetImage(_steps[nextStep].imageUris[5]),
+                  ),
+                ),
               ),
             ),
           ),
@@ -487,22 +565,39 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   void _resetAnimationControllers() {
     _animateOutController.value = 0.0;
     _animateInController.value = 0.0;
-    _widgetScaleInController1.value = 0.0;
-    _widgetScaleInController2.value = 0.0;
-    _widgetScaleInController3.value = 0.0;
-    _widgetScaleInController4.value = 0.0;
+    _widgetScaleInController1.reverse();
+    _widgetScaleInController2.reverse();
+    _widgetScaleInController3.reverse();
+    _widgetScaleInController4.reverse();
+    _widgetScaleInController5.reverse();
   }
 
   void _startAnimation() {
     _animateOutController.forward().whenComplete(() {});
     _animateInController.forward().whenComplete(() {
-      _widgetScaleInController1.forward().whenComplete(() {
-        _widgetScaleInController2.forward().whenComplete(() {
-          _widgetScaleInController3.forward().whenComplete(() {
-            _widgetScaleInController4.forward().whenComplete(() {});
+      if (_currentStep == 0) {
+        _iPhoneAnimationController.forward().whenComplete(() {
+          _pixelAnimationController.forward().whenComplete(() {});
+        });
+      } else if (_currentStep == 2) {
+        _widgetScaleInController1.forward().whenComplete(() {
+          _widgetScaleInController2.forward().whenComplete(() {
+            _widgetScaleInController3.forward().whenComplete(() {
+              _widgetScaleInController4.forward().whenComplete(() {});
+            });
           });
         });
-      });
+      } else if (_currentStep == 3) {
+        _widgetScaleInController1.forward().whenComplete(() {
+          _widgetScaleInController2.forward().whenComplete(() {
+            _widgetScaleInController3.forward().whenComplete(() {
+              _widgetScaleInController4.forward().whenComplete(() {
+                _widgetScaleInController5.forward().whenComplete(() {});
+              });
+            });
+          });
+        });
+      }
     });
   }
 
