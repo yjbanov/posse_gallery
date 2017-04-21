@@ -585,19 +585,19 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           _pixelAnimationController.forward().whenComplete(() {});
         });
       } else if (_currentStep == 2) {
-        _widgetScaleInController1.forward().whenComplete(() {
-          _widgetScaleInController2.forward().whenComplete(() {
-            _widgetScaleInController3.forward().whenComplete(() {
-              _widgetScaleInController4.forward().whenComplete(() {});
+        _widgetScaleInController3.forward().whenComplete(() {
+          _widgetScaleInController4.forward().whenComplete(() {
+            _widgetScaleInController1.forward().whenComplete(() {
+              _widgetScaleInController2.forward().whenComplete(() {});
             });
           });
         });
       } else if (_currentStep == 3) {
-        _widgetScaleInController1.forward().whenComplete(() {
+        _widgetScaleInController5.forward().whenComplete(() {
           _widgetScaleInController2.forward().whenComplete(() {
-            _widgetScaleInController3.forward().whenComplete(() {
-              _widgetScaleInController4.forward().whenComplete(() {
-                _widgetScaleInController5.forward().whenComplete(() {});
+            _widgetScaleInController1.forward().whenComplete(() {
+              _widgetScaleInController3.forward().whenComplete(() {
+                _widgetScaleInController4.forward().whenComplete(() {});
               });
             });
           });
