@@ -23,8 +23,26 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   Animation<double> _scaleOutAnimation;
   Animation<double> _scaleInAnimation;
 
+  Animation<double> _iPhoneScaleInAnimation;
+  Animation<double> _pixelScaleInAnimation;
+
+  Animation<double> _widgetScaleInAnimation1;
+  Animation<double> _widgetScaleInAnimation2;
+  Animation<double> _widgetScaleInAnimation3;
+  Animation<double> _widgetScaleInAnimation4;
+  Animation<double> _widgetScaleInAnimation5;
+
   AnimationController _animateOutController;
   AnimationController _animateInController;
+
+  AnimationController _iPhoneAnimationController;
+  AnimationController _pixelAnimationController;
+
+  AnimationController _widgetScaleInController1;
+  AnimationController _widgetScaleInController2;
+  AnimationController _widgetScaleInController3;
+  AnimationController _widgetScaleInController4;
+  AnimationController _widgetScaleInController5;
 
   List<WelcomeStep> _steps;
   int _currentStep = 0;
@@ -32,10 +50,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   bool movingNext = true;
 
-  static const double _kSwipeThreshold = 150.0;
+  static const double _kSwipeThreshold = 140.0;
   static const int _kAnimateOutDuration = 600;
   static const int _kAnimateInDuration = 800;
-  static const int _kParallaxAnimationDuration = 1050;
+  static const int _kParallaxAnimationDuration = 1350;
+  static const int _kWidgetScaleInDuration = 200;
+
   double _swipeAmount = 0.0;
 
   _WarmWelcomeScreenState() {
@@ -60,29 +80,98 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       duration: const Duration(milliseconds: _kAnimateInDuration),
       vsync: this,
     );
-    _fadeOutAnimation =
-        _initOutAnimation(from: 1.0, to: 0.0, curve: Curves.linear);
-    _fadeInAnimation =
-        _initInAnimation(from: 0.0, to: 1.0, curve: Curves.easeOut);
-    _scaleOutAnimation =
-        _initOutAnimation(from: 1.0, to: 0.0, curve: Curves.linear);
-    _scaleInAnimation =
-        _initInAnimation(from: 0.0, to: 1.0, curve: Curves.easeOut);
-  }
-
-  Animation<double> _initOutAnimation(
-      {@required double from, @required double to, @required Curve curve}) {
-    final CurvedAnimation animation = new CurvedAnimation(
-      parent: _animateOutController,
-      curve: curve,
+    _iPhoneAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kAnimateInDuration),
+      vsync: this,
     );
-    return new Tween<double>(begin: from, end: to).animate(animation);
+    _pixelAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kAnimateInDuration),
+      vsync: this,
+    );
+    _widgetScaleInController1 = new AnimationController(
+      duration: const Duration(milliseconds: _kWidgetScaleInDuration),
+      vsync: this,
+    );
+    _widgetScaleInController2 = new AnimationController(
+      duration: const Duration(milliseconds: _kWidgetScaleInDuration),
+      vsync: this,
+    );
+    _widgetScaleInController3 = new AnimationController(
+      duration: const Duration(milliseconds: _kWidgetScaleInDuration),
+      vsync: this,
+    );
+    _widgetScaleInController4 = new AnimationController(
+      duration: const Duration(milliseconds: _kWidgetScaleInDuration),
+      vsync: this,
+    );
+    _widgetScaleInController5 = new AnimationController(
+      duration: const Duration(milliseconds: _kWidgetScaleInDuration),
+      vsync: this,
+    );
+    _fadeOutAnimation = _initAnimation(
+        from: 1.0,
+        to: 0.0,
+        curve: Curves.linear,
+        controller: _animateOutController);
+    _fadeInAnimation = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _animateInController);
+    _scaleOutAnimation = _initAnimation(
+        from: 1.0,
+        to: 0.0,
+        curve: Curves.linear,
+        controller: _animateOutController);
+    _scaleInAnimation = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _animateInController);
+    _iPhoneScaleInAnimation = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _iPhoneAnimationController);
+    _pixelScaleInAnimation = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _pixelAnimationController);
+    _widgetScaleInAnimation1 = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _widgetScaleInController1);
+    _widgetScaleInAnimation2 = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _widgetScaleInController2);
+    _widgetScaleInAnimation3 = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _widgetScaleInController3);
+    _widgetScaleInAnimation4 = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _widgetScaleInController4);
+    _widgetScaleInAnimation5 = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _widgetScaleInController5);
   }
 
-  Animation<double> _initInAnimation(
-      {@required double from, @required double to, @required Curve curve}) {
+  Animation<double> _initAnimation(
+      {@required double from,
+      @required double to,
+      @required Curve curve,
+      @required AnimationController controller}) {
     final CurvedAnimation animation = new CurvedAnimation(
-      parent: _animateInController,
+      parent: controller,
       curve: curve,
     );
     return new Tween<double>(begin: from, end: to).animate(animation);
@@ -207,6 +296,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     } else if (!movingNext) {
       previousStep += 1;
     }
+    AssetImage previousImage;
+    if (previousStep == 3) {
+      previousImage = new AssetImage(_steps[previousStep].imageUris[5]);
+    } else {
+      previousImage = new AssetImage(_steps[previousStep].imageUris[0]);
+    }
     return new Positioned(
       left: 30.0,
       right: 30.0,
@@ -227,7 +322,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                       child: new Image(
                         width: imageSize,
                         height: imageSize,
-                        image: new AssetImage(_steps[previousStep].imageUri),
+                        image: previousImage,
                       ),
                     ),
                   ),
@@ -235,30 +330,189 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               ],
             ),
           ),
-          new FadeTransition(
-            opacity: _fadeInAnimation,
-            child: new Column(
-              children: [
-                _buildTitleSection(title: nextTitle, subtitle: nextSubtitle),
-                new Padding(
-                  padding: const EdgeInsets.only(top: 40.0),
-                  child: new Center(
-                    child: new ScaleTransition(
-                      scale: _scaleInAnimation,
-                      child: new Image(
-                        width: imageSize,
-                        height: imageSize,
-                        image: new AssetImage(_steps[nextStep].imageUri),
-                      ),
-                    ),
-                  ),
+          new Column(
+            children: [
+              new FadeTransition(
+                opacity: _fadeInAnimation,
+                child: _buildTitleSection(
+                  title: nextTitle,
+                  subtitle: nextSubtitle,
                 ),
-              ],
-            ),
+              ),
+              _buildBody(nextStep: nextStep, imageSize: imageSize),
+            ],
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildBody({@required int nextStep, @required double imageSize}) {
+    if (nextStep == 2) {
+      return new Stack(
+        children: [
+          new Padding(
+            padding: const EdgeInsets.only(top: 40.0),
+            child: new Center(
+              child: new FadeTransition(
+                opacity: _fadeInAnimation,
+                child: new ScaleTransition(
+                  scale: _scaleInAnimation,
+                  child: new Image(
+                    width: imageSize,
+                    height: imageSize,
+                    image: new AssetImage(_steps[nextStep].imageUris[0]),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          new Positioned(
+            top: 45.0,
+            right: 20.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation1,
+              child: new Image(
+                image: new AssetImage(_steps[nextStep].imageUris[1]),
+              ),
+            ),
+          ),
+          new Positioned(
+            top: 100.0,
+            left: 10.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation2,
+              child: new Image(
+                image: new AssetImage(_steps[nextStep].imageUris[2]),
+              ),
+            ),
+          ),
+          new Positioned(
+            bottom: 75.0,
+            right: 30.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation3,
+              child: new Image(
+                image: new AssetImage(_steps[nextStep].imageUris[3]),
+              ),
+            ),
+          ),
+          new Positioned(
+            bottom: 15.0,
+            left: 60.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation4,
+              child: new Image(
+                image: new AssetImage(_steps[nextStep].imageUris[4]),
+              ),
+            ),
+          ),
+        ],
+      );
+    } else if (nextStep == 3) {
+      return new Stack(
+        children: [
+          new Positioned(
+            top: 35.0,
+            left: 20.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation1,
+              child: new Opacity(
+                opacity: 0.3,
+                child: new Image(
+                  image: new AssetImage(_steps[nextStep].imageUris[3]),
+                ),
+              ),
+            ),
+          ),
+          new Positioned(
+            top: 35.0,
+            right: 25.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation2,
+              child: new Opacity(
+                opacity: 0.3,
+                child: new Image(
+                  image: new AssetImage(_steps[nextStep].imageUris[1]),
+                ),
+              ),
+            ),
+          ),
+          new Positioned(
+            top: 135.0,
+            right: 35.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation3,
+              child: new Opacity(
+                opacity: 0.3,
+                child: new Image(
+                  image: new AssetImage(_steps[nextStep].imageUris[2]),
+                ),
+              ),
+            ),
+          ),
+          new Positioned(
+            bottom: 0.0,
+            left: 20.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation4,
+              child: new Opacity(
+                opacity: 0.3,
+                child: new Image(
+                  image: new AssetImage(_steps[nextStep].imageUris[0]),
+                ),
+              ),
+            ),
+          ),
+          new Positioned(
+            bottom: 0.0,
+            right: 15.0,
+            child: new ScaleTransition(
+              scale: _widgetScaleInAnimation5,
+              child: new Opacity(
+                opacity: 0.3,
+                child: new Image(
+                  image: new AssetImage(_steps[nextStep].imageUris[4]),
+                ),
+              ),
+            ),
+          ),
+          new Padding(
+            padding: const EdgeInsets.only(top: 40.0),
+            child: new Center(
+              child: new FadeTransition(
+                opacity: _fadeInAnimation,
+                child: new ScaleTransition(
+                  scale: _scaleInAnimation,
+                  child: new Image(
+                    width: imageSize * 0.85,
+                    height: imageSize * 0.85,
+                    image: new AssetImage(_steps[nextStep].imageUris[5]),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    } else {
+      return new Padding(
+        padding: const EdgeInsets.only(top: 40.0),
+        child: new Center(
+          child: new FadeTransition(
+            opacity: _fadeInAnimation,
+            child: new ScaleTransition(
+              scale: _scaleInAnimation,
+              child: new Image(
+                width: imageSize,
+                height: imageSize,
+                image: new AssetImage(_steps[nextStep].imageUris[0]),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   Widget _buildGestureDetector() {
@@ -275,8 +529,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             hasReachedBounds = false;
           }
           if (didSwipe && !hasReachedBounds) {
-            _animateOutController.value = 0.0;
-            _animateInController.value = 0.0;
+            _resetAnimationControllers();
             nextStep += movingNext ? 1 : -1;
             setState(() {
               if (nextStep >= 0 && nextStep < _steps.length) {
@@ -295,8 +548,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                 _subtitle = _steps[_currentStep].subtitle;
               }
             });
-            _animateOutController.forward().whenComplete(() {});
-            _animateInController.forward().whenComplete(() {});
+            _startAnimation();
           }
         }
       },
@@ -313,6 +565,45 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         ],
       ),
     );
+  }
+
+  void _resetAnimationControllers() {
+    _animateOutController.value = 0.0;
+    _animateInController.value = 0.0;
+    _widgetScaleInController1.value = 0.0;
+    _widgetScaleInController2.value = 0.0;
+    _widgetScaleInController3.value = 0.0;
+    _widgetScaleInController4.value = 0.0;
+    _widgetScaleInController5.value = 0.0;
+  }
+
+  void _startAnimation() {
+    _animateOutController.forward().whenComplete(() {});
+    _animateInController.forward().whenComplete(() {
+      if (_currentStep == 0) {
+        _iPhoneAnimationController.forward().whenComplete(() {
+          _pixelAnimationController.forward().whenComplete(() {});
+        });
+      } else if (_currentStep == 2) {
+        _widgetScaleInController1.forward().whenComplete(() {
+          _widgetScaleInController2.forward().whenComplete(() {
+            _widgetScaleInController3.forward().whenComplete(() {
+              _widgetScaleInController4.forward().whenComplete(() {});
+            });
+          });
+        });
+      } else if (_currentStep == 3) {
+        _widgetScaleInController1.forward().whenComplete(() {
+          _widgetScaleInController2.forward().whenComplete(() {
+            _widgetScaleInController3.forward().whenComplete(() {
+              _widgetScaleInController4.forward().whenComplete(() {
+                _widgetScaleInController5.forward().whenComplete(() {});
+              });
+            });
+          });
+        });
+      }
+    });
   }
 
   @override
