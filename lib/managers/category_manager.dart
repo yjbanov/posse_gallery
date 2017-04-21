@@ -37,7 +37,7 @@ class CategoryManager {
       title: "CUSTOMIZED DESIGN",
       subtitle: "BRAND FIRST EXPERIENCES",
       leftShapeColor: const Color(0xFF19AAEE),
-      centerShapeColor: const Color(0xFF30BDFF),
+      centerShapeColor: const Color(0xD800A2EE),
       rightShapeColor: const Color(0xFF1AA3E4),
       categoryItems: [
         new CategoryItem(
@@ -72,7 +72,7 @@ class CategoryManager {
       title: "LAYOUT & POSITIONING",
       subtitle: "EASY TO COMPOSE",
       leftShapeColor: const Color(0xFF5BDBFF),
-      centerShapeColor: const Color(0xFF45D2F9),
+      centerShapeColor: const Color(0xCC45D2F9),
       rightShapeColor: const Color(0xFF53D2F7),
       categoryItems: [
         new CategoryItem(
@@ -106,8 +106,8 @@ class CategoryManager {
       title: "ANIMATION & UI MOTION",
       subtitle: "MADE FOR MOTION",
       leftShapeColor: const Color(0xFF38D3CD),
-      centerShapeColor: const Color(0xFF25C3BC),
-      rightShapeColor: const Color(0xFF3BBCB7),
+      centerShapeColor: const Color(0xD825C3BC),
+      rightShapeColor: const Color(0xF23BBCB7),
       categoryItems: [
         new CategoryItem(
           title: "TWEENS",
@@ -140,7 +140,7 @@ class CategoryManager {
       title: "UI PATTERNS",
       subtitle: "NATURAL AND PRODUCTIVE",
       leftShapeColor: const Color(0xFFF9B640),
-      centerShapeColor: const Color(0xFFFFAC18),
+      centerShapeColor: const Color(0xD8FFAC18),
       rightShapeColor: const Color(0xFFFFB02C),
       categoryItems: [
         new CategoryItem(
@@ -169,8 +169,8 @@ class CategoryManager {
       title: "PLUG INS",
       subtitle: "UNIFIED BUILDING BLOCKS",
       leftShapeColor: const Color(0xFFFD734E),
-      centerShapeColor: const Color(0xFFFF6941),
-      rightShapeColor: const Color(0xFFFA724E),
+      centerShapeColor: const Color(0xD8FF6941),
+      rightShapeColor: const Color(0x80FA724E),
       categoryItems: [
         new CategoryItem(
           title: "TAKE A PHOTO",
@@ -203,7 +203,7 @@ class CategoryManager {
       title: "DESIGN COMPONENTS",
       subtitle: "HIGH FIDELITY TOOLKIT",
       leftShapeColor: const Color(0xFFAFD84C),
-      centerShapeColor: const Color(0xFFA1CB39),
+      centerShapeColor: const Color(0xBFA1CB39),
       rightShapeColor: const Color(0xFFA3CA4B),
       categoryItems: [
         new CategoryItem(

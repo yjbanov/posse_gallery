@@ -296,6 +296,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     } else if (!movingNext) {
       previousStep += 1;
     }
+    AssetImage previousImage;
+    if (previousStep == 3) {
+      previousImage = new AssetImage(_steps[previousStep].imageUris[5]);
+    } else {
+      previousImage = new AssetImage(_steps[previousStep].imageUris[0]);
+    }
     return new Positioned(
       left: 30.0,
       right: 30.0,
@@ -316,8 +322,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                       child: new Image(
                         width: imageSize,
                         height: imageSize,
-                        image:
-                            new AssetImage(_steps[previousStep].imageUris[0]),
+                        image: previousImage,
                       ),
                     ),
                   ),
@@ -415,20 +420,20 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
-                    image: new AssetImage(_steps[nextStep].imageUris[3]),
+                  image: new AssetImage(_steps[nextStep].imageUris[3]),
                 ),
               ),
             ),
           ),
           new Positioned(
-            top: 30.0,
-            right: 20.0,
+            top: 35.0,
+            right: 25.0,
             child: new ScaleTransition(
               scale: _widgetScaleInAnimation2,
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
-                    image: new AssetImage(_steps[nextStep].imageUris[1]),
+                  image: new AssetImage(_steps[nextStep].imageUris[1]),
                 ),
               ),
             ),
@@ -441,7 +446,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
-                    image: new AssetImage(_steps[nextStep].imageUris[2]),
+                  image: new AssetImage(_steps[nextStep].imageUris[2]),
                 ),
               ),
             ),
@@ -454,7 +459,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
-                    image: new AssetImage(_steps[nextStep].imageUris[0]),
+                  image: new AssetImage(_steps[nextStep].imageUris[0]),
                 ),
               ),
             ),
@@ -467,7 +472,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
-                    image: new AssetImage(_steps[nextStep].imageUris[4]),
+                  image: new AssetImage(_steps[nextStep].imageUris[4]),
                 ),
               ),
             ),
@@ -565,11 +570,11 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   void _resetAnimationControllers() {
     _animateOutController.value = 0.0;
     _animateInController.value = 0.0;
-    _widgetScaleInController1.reverse();
-    _widgetScaleInController2.reverse();
-    _widgetScaleInController3.reverse();
-    _widgetScaleInController4.reverse();
-    _widgetScaleInController5.reverse();
+    _widgetScaleInController1.value = 0.0;
+    _widgetScaleInController2.value = 0.0;
+    _widgetScaleInController3.value = 0.0;
+    _widgetScaleInController4.value = 0.0;
+    _widgetScaleInController5.value = 0.0;
   }
 
   void _startAnimation() {

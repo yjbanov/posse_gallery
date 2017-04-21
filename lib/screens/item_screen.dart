@@ -87,8 +87,9 @@ class _ItemScreenState extends State<ItemScreen> with TickerProviderStateMixin {
   }
 
   Widget build(BuildContext context) {
+    Color color = item.color != Colors.white ? item.color : const Color(0xFF54C5F8);
     return new Material(
-      color: item.color,
+      color: color,
       child: _contentWidget(),
     );
   }
