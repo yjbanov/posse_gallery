@@ -10,7 +10,8 @@ class PatternsList extends StatefulWidget {
   _PatternsListState createState() => new _PatternsListState();
 }
 
-class _PatternsListState extends State<PatternsList> {
+class _PatternsListState extends State<PatternsList>
+    with TickerProviderStateMixin {
   final TextEditingController _controller = new TextEditingController();
   List<ChecklistItem> _demoData = [
     new ChecklistItem(title: "Drink a gallon of water", isSelected: false),
@@ -19,6 +20,35 @@ class _PatternsListState extends State<PatternsList> {
     new ChecklistItem(title: "Visit a new place", isSelected: false),
   ];
   List<Widget> _cells;
+  Animation<double> _cellSizeInAnimation;
+  AnimationController _animateInController;
+
+  static const int _kAnimateInDuration = 700;
+
+  _PatternsListState() {
+    _configureAnimation();
+  }
+
+  void _configureAnimation() {
+    _animateInController = new AnimationController(
+      duration: const Duration(milliseconds: _kAnimateInDuration),
+      vsync: this,
+    );
+    _cellSizeInAnimation = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeIn,
+        controller: _animateInController);
+  }
+
+  Animation<double> _initAnimation(
+      {double from, double to, Curve curve, AnimationController controller}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+      parent: controller,
+      curve: curve,
+    );
+    return new Tween<double>(begin: from, end: to).animate(animation);
+  }
 
   List<Widget> _loadItems() {
     List<Widget> cells = [];
@@ -64,7 +94,7 @@ class _PatternsListState extends State<PatternsList> {
             child: new IconButton(
               icon: new Icon(
                 Icons.add,
-                color: Colors.blue,
+                color: const Color(0xFF54C5F8),
               ),
               onPressed: () {
                 if (_controller.text.length > 0) {
