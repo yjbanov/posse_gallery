@@ -23,8 +23,15 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   Animation<double> _scaleOutAnimation;
   Animation<double> _scaleInAnimation;
 
+  Animation<double> _sizeInAnimation1;
+  Animation<double> _sizeInAnimation2;
+  Animation<double> _sizeInAnimation3;
+  Animation<double> _sizeInAnimation4;
+
   AnimationController _animateOutController;
   AnimationController _animateInController;
+
+  AnimationController _sizeInController;
 
   List<WelcomeStep> _steps;
   int _currentStep = 0;
@@ -32,10 +39,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   bool movingNext = true;
 
-  static const double _kSwipeThreshold = 150.0;
+  static const double _kSwipeThreshold = 140.0;
   static const int _kAnimateOutDuration = 600;
   static const int _kAnimateInDuration = 800;
-  static const int _kParallaxAnimationDuration = 1050;
+  static const int _kParallaxAnimationDuration = 1200;
+  static const int _kSizeInDuration = 400;
+
   double _swipeAmount = 0.0;
 
   _WarmWelcomeScreenState() {
@@ -60,6 +69,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       duration: const Duration(milliseconds: _kAnimateInDuration),
       vsync: this,
     );
+    _sizeInController = new AnimationController(
+      duration: const Duration(milliseconds: _kSizeInDuration),
+      vsync: this,
+    );
     _fadeOutAnimation =
         _initOutAnimation(from: 1.0, to: 0.0, curve: Curves.linear);
     _fadeInAnimation =
@@ -68,6 +81,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         _initOutAnimation(from: 1.0, to: 0.0, curve: Curves.linear);
     _scaleInAnimation =
         _initInAnimation(from: 0.0, to: 1.0, curve: Curves.easeOut);
+    _sizeInAnimation1 = _initSizeInAnimation(from: 0.0, to: 1.0, curve: Curves.elasticIn);
   }
 
   Animation<double> _initOutAnimation(
@@ -84,6 +98,15 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     final CurvedAnimation animation = new CurvedAnimation(
       parent: _animateInController,
       curve: curve,
+    );
+    return new Tween<double>(begin: from, end: to).animate(animation);
+  }
+
+  Animation<double> _initSizeInAnimation(
+      {@required double from, @required double to, @required Curve curve}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+        parent: _sizeInController,
+        curve: curve,
     );
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
@@ -207,6 +230,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     } else if (!movingNext) {
       previousStep += 1;
     }
+
     return new Positioned(
       left: 30.0,
       right: 30.0,
@@ -227,7 +251,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                       child: new Image(
                         width: imageSize,
                         height: imageSize,
-                        image: new AssetImage(_steps[previousStep].imageUri),
+                        image: new AssetImage(_steps[previousStep].imageUris[0]),
                       ),
                     ),
                   ),
@@ -240,25 +264,30 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             child: new Column(
               children: [
                 _buildTitleSection(title: nextTitle, subtitle: nextSubtitle),
-                new Padding(
-                  padding: const EdgeInsets.only(top: 40.0),
-                  child: new Center(
-                    child: new ScaleTransition(
-                      scale: _scaleInAnimation,
-                      child: new Image(
-                        width: imageSize,
-                        height: imageSize,
-                        image: new AssetImage(_steps[nextStep].imageUri),
-                      ),
-                    ),
-                  ),
-                ),
+                _buildBody(),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildBody(int nextStep, ) {
+    if ()
+    new Padding(
+        padding: const EdgeInsets.only(top: 40.0),
+        child: new Center(
+            child: new ScaleTransition(
+                scale: _scaleInAnimation,
+                child: new Image(
+                    width: imageSize,
+                    height: imageSize,
+                    image: new AssetImage(_steps[nextStep].imageUris[0]),
+                ),
+            ),
+        ),
+    ),
   }
 
   Widget _buildGestureDetector() {

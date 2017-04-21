@@ -37,7 +37,7 @@ class CategoryManager {
       title: "CUSTOMIZED DESIGN",
       subtitle: "BRAND FIRST EXPERIENCES",
       leftShapeColor: const Color(0xFF19AAEE),
-      centerShapeColor: const Color(0xFF00A2EE),
+      centerShapeColor: const Color(0xFF30BDFF),
       rightShapeColor: const Color(0xFF1AA3E4),
       categoryItems: [
         new CategoryItem(

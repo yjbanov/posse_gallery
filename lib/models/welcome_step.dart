@@ -3,9 +3,9 @@
 // found in the LICENSE file.
 
 class WelcomeStep {
-  WelcomeStep({this.title, this.subtitle, this.imageUri});
+  WelcomeStep({this.title, this.subtitle, this.imageUris});
 
   final String title;
   final String subtitle;
-  final String imageUri;
+  final List<String> imageUris;
 }

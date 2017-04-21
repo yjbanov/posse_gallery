@@ -60,21 +60,24 @@ class _PatternsListState extends State<PatternsList> {
       child: new Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          new IconButton(
-            icon: new Icon(
-              Icons.add,
-              color: Colors.blue,
+          new Material(
+            child: new IconButton(
+              icon: new Icon(
+                Icons.add,
+                color: Colors.blue,
+              ),
+              onPressed: () {
+                if (_controller.text.length > 0) {
+                  ChecklistItem item = new ChecklistItem(
+                      title: _controller.text, isSelected: false);
+                  setState(() {
+                    _demoData.insert(0, item);
+                    _controller.clear();
+                  });
+                }
+                ;
+              },
             ),
-            onPressed: () {
-              if (_controller.text.length > 0) {
-                ChecklistItem item =
-                new ChecklistItem(title: _controller.text, isSelected: false);
-                setState(() {
-                  _demoData.insert(0, item);
-                  _controller.clear();
-                });
-              };
-            },
           ),
           new Expanded(
             child: new TextField(

@@ -44,6 +44,11 @@ flutter:
     - assets/images/category_cell_right_shape.png
     - assets/images/welcome_explore_flutter.png
     - assets/images/welcome_phones.png
+    - assets/images/welcome_pie.png
     - assets/images/welcome_recipe.png
+    - assets/images/welcome_widget_1.png
+    - assets/images/welcome_widget_2.png
+    - assets/images/welcome_widget_3.png
+    - assets/images/welcome_widget_4.png
     - assets/images/welcome_widget_collection.png
     - assets/backgrounds/bg_welcome.png
