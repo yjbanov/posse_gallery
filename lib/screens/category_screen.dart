@@ -86,15 +86,21 @@ class _CategoryScreenState extends State<CategoryScreen>
                 highlightColor: Colors.white.withAlpha(30),
                 splashColor: Colors.white.withAlpha(20),
                 onTap: () {
+                  Widget nextScreen;
+                  if (item.needsFullScreen == true) {
+                    nextScreen = item.widget;
+                  } else {
+                    nextScreen = new ItemScreen(
+                        item: RouteManager.retrieveItem(
+                            _category, item.routeName));
+                  }
                   Navigator.push(
                     context,
                     new PageRouteBuilder<Null>(
                       settings: new RouteSettings(name: "/item/$routeName"),
                       pageBuilder: (BuildContext context, Animation<double> _,
                           Animation<double> __) {
-                        return new ItemScreen(
-                            item: RouteManager.retrieveItem(
-                                _category, item.routeName));
+                        return nextScreen;
                       },
                       transitionsBuilder: (
                         BuildContext context,
