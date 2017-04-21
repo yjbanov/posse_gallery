@@ -116,7 +116,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     _fadeInAnimation = _initAnimation(
         from: 0.0,
         to: 1.0,
-        curve: Curves.easeOut,
+        curve: const Interval(0.25, 1.0, curve: Curves.easeOut),
         controller: _animateInController);
     _scaleOutAnimation = _initAnimation(
         from: 1.0,
