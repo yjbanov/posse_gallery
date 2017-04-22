@@ -44,6 +44,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   AnimationController _iPhoneAnimationController;
   AnimationController _pixelAnimationController;
 
+  AnimationController _imageSlideUpAnimationController;
+
   AnimationController _widgetScaleInController1;
   AnimationController _widgetScaleInController2;
   AnimationController _widgetScaleInController3;
@@ -57,10 +59,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   bool movingNext = true;
 
   static const double _kSwipeThreshold = 140.0;
+
   static const int _kAnimateOutDuration = 600;
   static const int _kAnimateInDuration = 800;
   static const int _kParallaxAnimationDuration = 1450;
   static const int _kWidgetScaleInDuration = 200;
+  static const int _kImageSlideUpDuration = 500;
 
   double _swipeAmount = 0.0;
 
@@ -92,6 +96,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     );
     _pixelAnimationController = new AnimationController(
       duration: const Duration(milliseconds: _kAnimateInDuration),
+      vsync: this,
+    );
+    _imageSlideUpAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kImageSlideUpDuration),
       vsync: this,
     );
     _widgetScaleInController1 = new AnimationController(
@@ -148,7 +156,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         from: const FractionalOffset(0.0, 1.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.decelerate,
-        controller: _animateInController);
+        controller: _imageSlideUpAnimationController);
     _iPhoneScaleInAnimation = _initAnimation(
         from: 0.0,
         to: 1.0,
@@ -264,6 +272,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             style: new TextStyle(
               fontSize: 13.0,
               color: const Color(0xFF222222),
+                letterSpacing: 0.25,
+              height: 1.3,
             ),
           ),
         ),
@@ -578,7 +588,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               (!movingNext && _currentStep - 1 >= 0)) {
             hasReachedBounds = false;
           }
-          if (didSwipe && !hasReachedBounds) {
+          if (didSwipe && !hasReachedBounds && !_animateInController.isAnimating && !_animateOutController.isAnimating) {
             _resetAnimationControllers();
             nextStep += movingNext ? 1 : -1;
             setState(() {
@@ -620,6 +630,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   void _resetAnimationControllers() {
     _animateOutController.value = 0.0;
     _animateInController.value = 0.0;
+    _imageSlideUpAnimationController.value = 0.0;
     _widgetScaleInController1.value = 0.0;
     _widgetScaleInController2.value = 0.0;
     _widgetScaleInController3.value = 0.0;
@@ -628,7 +639,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   void _startAnimation() {
-    _animateOutController.forward().whenComplete(() {});
+    _animateOutController.forward();
+    _imageSlideUpAnimationController.forward();
     _animateInController.forward().whenComplete(() {
       if (_currentStep == 0) {
         _iPhoneAnimationController.forward().whenComplete(() {
