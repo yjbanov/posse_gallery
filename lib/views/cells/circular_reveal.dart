@@ -4,6 +4,7 @@
 
 import 'dart:math' as math;
 
+import 'dart:math';
 import 'package:flutter/widgets.dart';
 
 enum PainterStartPosition {
@@ -125,7 +126,7 @@ class CirclePainter extends CustomPainter {
       ..color = _color
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(_origin, _animation.value, paint);
+//    canvas.drawCircle(_origin, _animation.value, paint);
   }
 
   @override

@@ -1,3 +1,4 @@
+// ignore: invalid_constant
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,6 +23,11 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   Animation<double> _fadeInAnimation;
   Animation<double> _scaleOutAnimation;
   Animation<double> _scaleInAnimation;
+
+  Animation<FractionalOffset> _textSlideInLeftAnimation;
+  Animation<FractionalOffset> _textSlideInRightAnimation;
+
+  Animation<FractionalOffset> _imageSlideUpAnimation;
 
   Animation<double> _iPhoneScaleInAnimation;
   Animation<double> _pixelScaleInAnimation;
@@ -53,7 +59,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   static const double _kSwipeThreshold = 140.0;
   static const int _kAnimateOutDuration = 600;
   static const int _kAnimateInDuration = 800;
-  static const int _kParallaxAnimationDuration = 1350;
+  static const int _kParallaxAnimationDuration = 1450;
   static const int _kWidgetScaleInDuration = 200;
 
   double _swipeAmount = 0.0;
@@ -116,7 +122,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     _fadeInAnimation = _initAnimation(
         from: 0.0,
         to: 1.0,
-        curve: const Interval(0.25, 1.0, curve: Curves.easeOut),
+        curve: Curves.easeOut,
         controller: _animateInController);
     _scaleOutAnimation = _initAnimation(
         from: 1.0,
@@ -127,6 +133,21 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         from: 0.0,
         to: 1.0,
         curve: Curves.easeOut,
+        controller: _animateInController);
+    _textSlideInLeftAnimation = _initSlideAnimation(
+        from: const FractionalOffset(2.0, 0.0),
+        to: const FractionalOffset(0.0, 0.0),
+        curve: Curves.easeInOut,
+        controller: _animateInController);
+    _textSlideInRightAnimation = _initSlideAnimation(
+        from: const FractionalOffset(-2.0, 0.0),
+        to: const FractionalOffset(0.0, 0.0),
+        curve: Curves.easeInOut,
+        controller: _animateInController);
+    _imageSlideUpAnimation = _initSlideAnimation(
+        from: const FractionalOffset(0.0, 1.0),
+        to: const FractionalOffset(0.0, 0.0),
+        curve: Curves.decelerate,
         controller: _animateInController);
     _iPhoneScaleInAnimation = _initAnimation(
         from: 0.0,
@@ -141,27 +162,27 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     _widgetScaleInAnimation1 = _initAnimation(
         from: 0.0,
         to: 1.0,
-        curve: Curves.easeOut,
+        curve: Curves.decelerate,
         controller: _widgetScaleInController1);
     _widgetScaleInAnimation2 = _initAnimation(
         from: 0.0,
         to: 1.0,
-        curve: Curves.easeOut,
+        curve: Curves.decelerate,
         controller: _widgetScaleInController2);
     _widgetScaleInAnimation3 = _initAnimation(
         from: 0.0,
         to: 1.0,
-        curve: Curves.easeOut,
+        curve: Curves.decelerate,
         controller: _widgetScaleInController3);
     _widgetScaleInAnimation4 = _initAnimation(
         from: 0.0,
         to: 1.0,
-        curve: Curves.easeOut,
+        curve: Curves.decelerate,
         controller: _widgetScaleInController4);
     _widgetScaleInAnimation5 = _initAnimation(
         from: 0.0,
         to: 1.0,
-        curve: Curves.easeOut,
+        curve: Curves.decelerate,
         controller: _widgetScaleInController5);
   }
 
@@ -175,6 +196,18 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       curve: curve,
     );
     return new Tween<double>(begin: from, end: to).animate(animation);
+  }
+
+  Animation<FractionalOffset> _initSlideAnimation(
+      {@required FractionalOffset from,
+      @required FractionalOffset to,
+      @required Curve curve,
+      @required AnimationController controller}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+      parent: controller,
+      curve: curve,
+    );
+    return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
   }
 
   Widget _buildBackgroundView() {
@@ -199,7 +232,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           bottom: 0.0,
           left: _bgOffset,
           duration: new Duration(milliseconds: _kParallaxAnimationDuration),
-          curve: Curves.easeOut,
+          curve: const Interval(0.25, 1.0, curve: Curves.easeOut),
           child: new Image(
             height: MediaQuery.of(context).size.height,
             image: new AssetImage("assets/images/bg_flutter_welcome.png"),
@@ -297,11 +330,15 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       previousStep += 1;
     }
     AssetImage previousImage;
+    String previousTitle = _steps[previousStep].title;
+    String previousSubtitle = _steps[previousStep].subtitle;
     if (previousStep == 3) {
       previousImage = new AssetImage(_steps[previousStep].imageUris[5]);
     } else {
       previousImage = new AssetImage(_steps[previousStep].imageUris[0]);
     }
+    Animation<FractionalOffset> slideInAnimation =
+        movingNext ? _textSlideInLeftAnimation : _textSlideInRightAnimation;
     return new Positioned(
       left: 30.0,
       right: 30.0,
@@ -313,7 +350,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             opacity: _fadeOutAnimation,
             child: new Column(
               children: [
-                _buildTitleSection(title: _title, subtitle: _subtitle),
+                _buildTitleSection(
+                    title: previousTitle, subtitle: previousSubtitle),
                 new Padding(
                   padding: const EdgeInsets.only(top: 40.0),
                   child: new Center(
@@ -334,9 +372,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             children: [
               new FadeTransition(
                 opacity: _fadeInAnimation,
-                child: _buildTitleSection(
-                  title: nextTitle,
-                  subtitle: nextSubtitle,
+                child: new SlideTransition(
+                  position: slideInAnimation,
+                  child: _buildTitleSection(
+                    title: nextTitle,
+                    subtitle: nextSubtitle,
+                  ),
                 ),
               ),
               _buildBody(nextStep: nextStep, imageSize: imageSize),
@@ -351,17 +392,20 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     if (nextStep == 2) {
       return new Stack(
         children: [
-          new Padding(
-            padding: const EdgeInsets.only(top: 40.0),
-            child: new Center(
-              child: new FadeTransition(
-                opacity: _fadeInAnimation,
-                child: new ScaleTransition(
-                  scale: _scaleInAnimation,
-                  child: new Image(
-                    width: imageSize,
-                    height: imageSize,
-                    image: new AssetImage(_steps[nextStep].imageUris[0]),
+          new SlideTransition(
+            position: _imageSlideUpAnimation,
+            child: new Padding(
+              padding: const EdgeInsets.only(top: 40.0),
+              child: new Center(
+                child: new FadeTransition(
+                  opacity: _fadeInAnimation,
+                  child: new ScaleTransition(
+                    scale: _scaleInAnimation,
+                    child: new Image(
+                      width: imageSize,
+                      height: imageSize,
+                      image: new AssetImage(_steps[nextStep].imageUris[0]),
+                    ),
                   ),
                 ),
               ),
@@ -477,17 +521,20 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               ),
             ),
           ),
-          new Padding(
-            padding: const EdgeInsets.only(top: 40.0),
-            child: new Center(
-              child: new FadeTransition(
-                opacity: _fadeInAnimation,
-                child: new ScaleTransition(
-                  scale: _scaleInAnimation,
-                  child: new Image(
-                    width: imageSize * 0.85,
-                    height: imageSize * 0.85,
-                    image: new AssetImage(_steps[nextStep].imageUris[5]),
+          new SlideTransition(
+            position: _imageSlideUpAnimation,
+            child: new Padding(
+              padding: const EdgeInsets.only(top: 40.0),
+              child: new Center(
+                child: new FadeTransition(
+                  opacity: _fadeInAnimation,
+                  child: new ScaleTransition(
+                    scale: _scaleInAnimation,
+                    child: new Image(
+                      width: imageSize * 0.85,
+                      height: imageSize * 0.85,
+                      image: new AssetImage(_steps[nextStep].imageUris[5]),
+                    ),
                   ),
                 ),
               ),
@@ -496,17 +543,20 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         ],
       );
     } else {
-      return new Padding(
-        padding: const EdgeInsets.only(top: 40.0),
-        child: new Center(
-          child: new FadeTransition(
-            opacity: _fadeInAnimation,
-            child: new ScaleTransition(
-              scale: _scaleInAnimation,
-              child: new Image(
-                width: imageSize,
-                height: imageSize,
-                image: new AssetImage(_steps[nextStep].imageUris[0]),
+      return new SlideTransition(
+        position: _imageSlideUpAnimation,
+        child: new Padding(
+          padding: const EdgeInsets.only(top: 40.0),
+          child: new Center(
+            child: new FadeTransition(
+              opacity: _fadeInAnimation,
+              child: new ScaleTransition(
+                scale: _scaleInAnimation,
+                child: new Image(
+                  width: imageSize,
+                  height: imageSize,
+                  image: new AssetImage(_steps[nextStep].imageUris[0]),
+                ),
               ),
             ),
           ),
