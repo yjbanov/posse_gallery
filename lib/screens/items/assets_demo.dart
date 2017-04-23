@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:posse_gallery/screens/items/assets_demo_detail.dart';
 
 class AssetsDemo extends StatefulWidget {
   @override
@@ -11,30 +12,33 @@ class AssetsDemo extends StatefulWidget {
 
 class _AssetsDemoState extends State<AssetsDemo> {
   Widget _buildAppBar() {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return new Container(
       height: 56.0,
+      padding: new EdgeInsets.only(top: statusBarHeight),
       child: new Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           new IconButton(
-            icon: new Icon(Icons.menu, color: Colors.black38),
-            onPressed: null,
+            icon: new Icon(Icons.arrow_back, color: const Color(0xFF4A4A4A)),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
           new Expanded(
             child: new Text(
               "My Recipe Book",
               style: new TextStyle(
-                color: Colors.black38,
-                fontWeight: FontWeight.w700,
-                fontSize: 14.0,
+                color: const Color(0xFF4A4A4A),
+                fontWeight: FontWeight.w500,
+                fontSize: 16.0,
               ),
               textAlign: TextAlign.left,
             ),
           ),
           new IconButton(
             icon: new Icon(
-              Icons.search,
-              color: Colors.black38,
+              Icons.more_vert,
+              color: const Color(0xFF4A4A4A),
             ),
             onPressed: null,
           )
@@ -48,21 +52,22 @@ class _AssetsDemoState extends State<AssetsDemo> {
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          new Positioned(
+          new Padding(
+            padding: const EdgeInsets.only(bottom: 0.0),
             child: new Image(
-              image: new AssetImage("assets/images/welcome_pie.png"),
+              image: new AssetImage("assets/images/assets_demo_pie.png"),
             ),
           ),
           new Text(
             "Classic Apple Pie",
             style: new TextStyle(
-              color: const Color(0xFF62AF30),
-              fontSize: 18.0,
-              fontWeight: FontWeight.w500,
+              color: const Color(0xFF4A4A4A),
+              fontSize: 22.0,
+              fontWeight: FontWeight.w300,
             ),
           ),
-          new Positioned(
-            bottom: 0.0,
+          new Padding(
+            padding: const EdgeInsets.only(top: 20.0, bottom: 5.0),
             child: new Image(
               image: new AssetImage("assets/images/brand_profile.png"),
             ),
@@ -70,40 +75,39 @@ class _AssetsDemoState extends State<AssetsDemo> {
           new Text(
             "By Jenny Flay",
             style: new TextStyle(
-              color: const Color(0xFFC7C7C7),
-              fontSize: 18.0,
+              color: const Color(0xFFAAAAAA),
+              fontSize: 14.0,
               fontWeight: FontWeight.normal,
             ),
           ),
           new Container(
-            margin: const EdgeInsets.only(top: 10.0),
+            margin: const EdgeInsets.only(top: 20.0),
             child: new Center(
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  new Column(
-                    children: [
-                      new Text(
-                        "120",
-                        style: new TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.normal,
-                          color: const Color(0xFF4A4A4A),
-                        ),
-                      ),
-                      new Text(
-                        "Mins",
-                        style: new TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.normal,
-                          color: const Color(0xFF4A4A4A),
-                        ),
-                      )
-                    ],
+                  new Padding(
+                    padding: const EdgeInsets.only(right: 10.0),
+                    child: new Image(
+                      image: new AssetImage("assets/images/brand_stars.png"),
+                    ),
                   ),
-                  new Image(
-                    image: new AssetImage("assets/images/brand_stars.png"),
+                  new Text(
+                    "120",
+                    style: new TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.normal,
+                      color: const Color(0xFF4A4A4A),
+                    ),
                   ),
+                  new Text(
+                    "Mins",
+                    style: new TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.normal,
+                      color: const Color(0xFF4A4A4A),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -115,7 +119,7 @@ class _AssetsDemoState extends State<AssetsDemo> {
 
   Widget _buildBottomButton() {
     return new Container(
-      height: 46.0,
+      height: 50.0,
       margin: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
       child: new Row(
         children: [
@@ -130,7 +134,27 @@ class _AssetsDemoState extends State<AssetsDemo> {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  new PageRouteBuilder<Null>(
+                    settings: new RouteSettings(),
+                    pageBuilder: (BuildContext context, Animation<double> _,
+                        Animation<double> __) {
+                      return new AssetsDetailDemo();
+                    },
+                    transitionsBuilder: (
+                      BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child,
+                    ) {
+                      return new FadeTransition(
+                          opacity: animation, child: child);
+                    },
+                  ),
+                );
+              },
             ),
           ),
         ],

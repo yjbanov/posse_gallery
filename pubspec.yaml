@@ -34,6 +34,7 @@ flutter:
     - assets/icons/ic_plug_in_photo.png
     - assets/icons/ic_plug_in_service.png
     - assets/icons/ic_search.png
+    - assets/images/assets_demo_pie.png
     - assets/images/bg_flutter_welcome.png
     - assets/images/bg_main_screen.png
     - assets/images/brand_apple_pie.png

@@ -3,6 +3,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:posse_gallery/config/constants.dart';
@@ -218,6 +219,19 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
   }
 
+  @override
+  void dispose() {
+    _animateOutController.dispose();
+    _animateInController.dispose();
+    _imageSlideUpAnimationController.dispose();
+    _widgetScaleInController1.dispose();
+    _widgetScaleInController2.dispose();
+    _widgetScaleInController3.dispose();
+    _widgetScaleInController4.dispose();
+    _widgetScaleInController5.dispose();
+    super.dispose();
+  }
+
   Widget _buildBackgroundView() {
     return new Stack(
       children: [
@@ -272,7 +286,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             style: new TextStyle(
               fontSize: 13.0,
               color: const Color(0xFF222222),
-                letterSpacing: 0.25,
+              letterSpacing: 0.25,
               height: 1.3,
             ),
           ),
@@ -588,7 +602,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               (!movingNext && _currentStep - 1 >= 0)) {
             hasReachedBounds = false;
           }
-          if (didSwipe && !hasReachedBounds && !_animateInController.isAnimating && !_animateOutController.isAnimating) {
+          if (didSwipe &&
+              !hasReachedBounds &&
+              !_animateInController.isAnimating &&
+              !_animateOutController.isAnimating) {
             _resetAnimationControllers();
             nextStep += movingNext ? 1 : -1;
             setState(() {
