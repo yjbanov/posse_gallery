@@ -82,7 +82,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     _configureAnimation();
   }
 
-  void _configureAnimation() {
+  _configureAnimation() {
     _animateOutController = new AnimationController(
       duration: const Duration(milliseconds: _kAnimateOutDuration),
       vsync: this,
@@ -220,7 +220,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   @override
-  void dispose() {
+  dispose() {
     _animateOutController.dispose();
     _animateInController.dispose();
     _imageSlideUpAnimationController.dispose();
@@ -644,7 +644,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     );
   }
 
-  void _resetAnimationControllers() {
+  _resetAnimationControllers() {
     _animateOutController.value = 0.0;
     _animateInController.value = 0.0;
     _imageSlideUpAnimationController.value = 0.0;
@@ -655,7 +655,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     _widgetScaleInController5.value = 0.0;
   }
 
-  void _startAnimation() {
+  _startAnimation() {
     _animateOutController.forward();
     _imageSlideUpAnimationController.forward();
     _animateInController.forward().whenComplete(() {

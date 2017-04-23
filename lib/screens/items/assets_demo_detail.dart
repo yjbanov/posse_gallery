@@ -10,6 +10,7 @@ class AssetsDetailDemo extends StatefulWidget {
 }
 
 class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
+
   Widget _buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return new Container(

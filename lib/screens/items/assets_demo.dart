@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import 'package:posse_gallery/screens/items/assets_demo_detail.dart';
 
 class AssetsDemo extends StatefulWidget {
@@ -10,7 +11,65 @@ class AssetsDemo extends StatefulWidget {
   _AssetsDemoState createState() => new _AssetsDemoState();
 }
 
-class _AssetsDemoState extends State<AssetsDemo> {
+class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
+  Animation<double> _rotationAnimation;
+  Animation<FractionalOffset> _slideInAnimation;
+
+  AnimationController _heroAnimationController;
+
+  static const int _kHeroAnimationDuration = 800;
+
+  _AssetsDemoState() {
+    _configureAnimation();
+  }
+
+  _configureAnimation() {
+    _heroAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kHeroAnimationDuration),
+      vsync: this,
+    );
+    _rotationAnimation = _initAnimation(
+        from: 0.0,
+        to: 10.0,
+        curve: Curves.easeOut,
+        controller: _heroAnimationController);
+    _slideInAnimation = _initSlideAnimation(
+        from: const FractionalOffset(-2.0, 0.0),
+        to: const FractionalOffset(0.0, 0.0),
+        curve: Curves.decelerate,
+        controller: _heroAnimationController);
+  }
+
+  @override
+  dispose() {
+    _heroAnimationController.dispose();
+    super.dispose();
+  }
+
+  Animation<double> _initAnimation(
+      {@required double from,
+      @required double to,
+      @required Curve curve,
+      @required AnimationController controller}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+      parent: controller,
+      curve: curve,
+    );
+    return new Tween<double>(begin: from, end: to).animate(animation);
+  }
+
+  Animation<FractionalOffset> _initSlideAnimation(
+      {@required FractionalOffset from,
+      @required FractionalOffset to,
+      @required Curve curve,
+      @required AnimationController controller}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+      parent: controller,
+      curve: curve,
+    );
+    return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
+  }
+
   Widget _buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return new Container(
@@ -48,14 +107,21 @@ class _AssetsDemoState extends State<AssetsDemo> {
   }
 
   Widget _buildBody() {
+    _heroAnimationController.forward();
     return new Expanded(
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           new Padding(
             padding: const EdgeInsets.only(bottom: 0.0),
-            child: new Image(
-              image: new AssetImage("assets/images/assets_demo_pie.png"),
+            child: new SlideTransition(
+              position: _slideInAnimation,
+              child: new RotationTransition(
+                turns: _rotationAnimation,
+                child: new Image(
+                  image: new AssetImage("assets/images/assets_demo_pie.png"),
+                ),
+              ),
             ),
           ),
           new Text(
