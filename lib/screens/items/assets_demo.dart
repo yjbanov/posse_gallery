@@ -1,3 +1,4 @@
+// ignore: invalid_constant
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -30,7 +31,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     );
     _rotationAnimation = _initAnimation(
         from: 0.0,
-        to: 10.0,
+        to: 2.0,
         curve: Curves.easeOut,
         controller: _heroAnimationController);
     _slideInAnimation = _initSlideAnimation(
