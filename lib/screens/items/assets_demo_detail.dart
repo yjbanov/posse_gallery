@@ -10,8 +10,12 @@ class AssetsDetailDemo extends StatefulWidget {
 }
 
 class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
+  ThemeData _selectedTheme;
+  TargetPlatform _targetPlatform;
+
   Widget _buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
+    TextAlign titleTextAlignment = _targetPlatform == TargetPlatform.iOS ? TextAlign.center : TextAlign.left;
     return new Container(
       height: 76.0,
       padding: new EdgeInsets.only(top: statusBarHeight),
@@ -19,7 +23,8 @@ class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           new IconButton(
-            icon: new Icon(Icons.arrow_back, color: const Color(0xFF4A4A4A)),
+            icon: new Icon(Icons.arrow_back,
+                color: _selectedTheme.iconTheme.color),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -28,17 +33,17 @@ class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
             child: new Text(
               "Classic Apple Pie",
               style: new TextStyle(
-                color: const Color(0xFF4A4A4A),
+                color: _selectedTheme.textTheme.title.color,
                 fontWeight: FontWeight.w500,
                 fontSize: 16.0,
               ),
-              textAlign: TextAlign.left,
+              textAlign: titleTextAlignment,
             ),
           ),
           new IconButton(
             icon: new Icon(
               Icons.more_vert,
-              color: const Color(0xFF4A4A4A),
+              color: _selectedTheme.iconTheme.color,
             ),
             onPressed: null,
           )
@@ -97,7 +102,7 @@ class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
             child: new Text(
               "INGREDIENTS",
               style: new TextStyle(
-                color: const Color(0xFFC7C7C7),
+                color: _selectedTheme.textTheme.title.color,
                 fontSize: 14.0,
                 fontWeight: FontWeight.w300,
                 letterSpacing: 2.0,
@@ -113,7 +118,7 @@ class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
                 "1 tablespoon of cinnamon",
             textAlign: TextAlign.center,
             style: new TextStyle(
-                color: const Color(0xFF979797),
+                color: _selectedTheme.textTheme.body1.color,
                 fontSize: 14.0,
                 fontWeight: FontWeight.normal,
                 height: 1.6),
@@ -131,7 +136,7 @@ class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
         children: [
           new Expanded(
             child: new FlatButton(
-              color: const Color(0xFF5FAD2C),
+              color: _selectedTheme.buttonColor,
               child: new Text(
                 "Step 1: Make Crust",
                 style: new TextStyle(
@@ -160,9 +165,55 @@ class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
 
   @override
   Widget build(BuildContext context) {
-    return new Material(
-      color: const Color(0xFFFFFFFF),
-      child: _contentWidget(),
+    _targetPlatform = TargetPlatform.android;
+    TextTheme luxuryTextTheme = Theme.of(context).textTheme;
+    TextStyle luxuryTitleTextStyle =
+        luxuryTextTheme.title.copyWith(color: const Color(0xFF4A4A4A));
+    TextStyle luxurySubheadTextStyle =
+        luxuryTextTheme.subhead.copyWith(color: const Color(0xFFAAAAAA));
+    TextStyle luxuryBody1TextStyle =
+        luxuryTextTheme.body1.copyWith(color: const Color(0xFF4A4A4A));
+    TextStyle luxuryBody2TextStyle =
+        luxuryTextTheme.body2.copyWith(color: const Color(0xFF979797));
+    TextStyle luxuryButtonTextStyle =
+        luxuryTextTheme.button.copyWith(color: Colors.white);
+    ThemeData luxuryThemeData = new ThemeData(
+      primaryColor: Colors.white,
+      buttonColor: const Color(0xFF5FAD2C),
+      iconTheme: const IconThemeData(color: const Color(0xFFD1D1D1)),
+      textTheme: new TextTheme(
+        title: luxuryTitleTextStyle,
+        subhead: luxurySubheadTextStyle,
+        body1: luxuryBody1TextStyle,
+        body2: luxuryBody2TextStyle,
+        button: luxuryButtonTextStyle,
+      ),
+      brightness: Brightness.light,
+      platform: _targetPlatform,
+    );
+    ThemeData playfulThemeData = new ThemeData(
+      primaryColor: const Color(0xFFF0465A),
+      buttonColor: const Color(0xFF1DBC98),
+      iconTheme: const IconThemeData(color: Colors.white),
+      textTheme: new Typography(platform: _targetPlatform).white,
+      brightness: Brightness.light,
+      platform: Theme.of(context).platform,
+    );
+    ThemeData darkTheme = new ThemeData(
+      primaryColor: const Color(0xFF212121),
+      buttonColor: const Color(0xFF4A4A4A),
+      iconTheme: const IconThemeData(color: Colors.white),
+      textTheme: new Typography(platform: _targetPlatform).white,
+      brightness: Brightness.dark,
+      platform: Theme.of(context).platform,
+    );
+    _selectedTheme = luxuryThemeData;
+    return new Theme(
+      data: _selectedTheme,
+      child: new Material(
+        color: _selectedTheme.primaryColor,
+        child: _contentWidget(),
+      ),
     );
   }
 }

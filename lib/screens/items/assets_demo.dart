@@ -13,6 +13,9 @@ class AssetsDemo extends StatefulWidget {
 }
 
 class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
+  ThemeData _selectedTheme;
+  TargetPlatform _targetPlatform;
+
   Animation<double> _rotationAnimation;
   Animation<FractionalOffset> _slideInAnimation;
 
@@ -73,6 +76,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
 
   Widget _buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
+    TextAlign titleTextAlignment = _targetPlatform == TargetPlatform.iOS ? TextAlign.center : TextAlign.left;
     return new Container(
       height: 76.0,
       padding: new EdgeInsets.only(top: statusBarHeight),
@@ -80,7 +84,8 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           new IconButton(
-            icon: new Icon(Icons.arrow_back, color: const Color(0xFF4A4A4A)),
+            icon: new Icon(Icons.arrow_back,
+                color: _selectedTheme.iconTheme.color),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -89,22 +94,36 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
             child: new Text(
               "My Recipe Book",
               style: new TextStyle(
-                color: const Color(0xFF4A4A4A),
+                color: _selectedTheme.textTheme.title.color,
                 fontWeight: FontWeight.w500,
                 fontSize: 16.0,
               ),
-              textAlign: TextAlign.left,
+              textAlign: titleTextAlignment,
             ),
           ),
           new IconButton(
             icon: new Icon(
               Icons.more_vert,
-              color: const Color(0xFF4A4A4A),
+              color: _selectedTheme.iconTheme.color,
             ),
-            onPressed: null,
+            onPressed: () {
+              showModalBottomSheet<Null>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return _buildBottomSheet();
+                  },
+              );
+            },
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildBottomSheet() {
+    return new Container(
+      height: MediaQuery.of(context).size.height * 0.34,
+      color: Colors.white,
     );
   }
 
@@ -130,7 +149,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
           new Text(
             "Classic Apple Pie",
             style: new TextStyle(
-              color: const Color(0xFF4A4A4A),
+              color: _selectedTheme.textTheme.title.color,
               fontSize: 22.0,
               fontWeight: FontWeight.w300,
             ),
@@ -144,7 +163,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
           new Text(
             "By Jenny Flay",
             style: new TextStyle(
-              color: const Color(0xFFAAAAAA),
+              color: _selectedTheme.textTheme.subhead.color,
               fontSize: 14.0,
               fontWeight: FontWeight.normal,
             ),
@@ -166,7 +185,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
                     style: new TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.normal,
-                      color: const Color(0xFF4A4A4A),
+                      color: _selectedTheme.textTheme.body1.color,
                     ),
                   ),
                   new Text(
@@ -174,7 +193,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
                     style: new TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.normal,
-                      color: const Color(0xFF979797),
+                      color: _selectedTheme.textTheme.body2.color,
                     ),
                   )
                 ],
@@ -242,9 +261,55 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return new Material(
-      color: const Color(0xFFFFFFFF),
-      child: _contentWidget(),
+    _targetPlatform = TargetPlatform.android;
+    TextTheme luxuryTextTheme = Theme.of(context).textTheme;
+    TextStyle luxuryTitleTextStyle =
+        luxuryTextTheme.title.copyWith(color: const Color(0xFF4A4A4A));
+    TextStyle luxurySubheadTextStyle =
+        luxuryTextTheme.subhead.copyWith(color: const Color(0xFFAAAAAA));
+    TextStyle luxuryBody1TextStyle =
+        luxuryTextTheme.body1.copyWith(color: const Color(0xFF4A4A4A));
+    TextStyle luxuryBody2TextStyle =
+        luxuryTextTheme.body2.copyWith(color: const Color(0xFF979797));
+    TextStyle luxuryButtonTextStyle =
+        luxuryTextTheme.button.copyWith(color: Colors.white);
+    ThemeData luxuryThemeData = new ThemeData(
+      primaryColor: Colors.white,
+      buttonColor: const Color(0xFF5FAD2C),
+      iconTheme: const IconThemeData(color: const Color(0xFFD1D1D1)),
+      textTheme: new TextTheme(
+        title: luxuryTitleTextStyle,
+        subhead: luxurySubheadTextStyle,
+        body1: luxuryBody1TextStyle,
+        body2: luxuryBody2TextStyle,
+        button: luxuryButtonTextStyle,
+      ),
+      brightness: Brightness.light,
+      platform: _targetPlatform,
+    );
+    ThemeData playfulThemeData = new ThemeData(
+      primaryColor: const Color(0xFFF0465A),
+      buttonColor: const Color(0xFF1DBC98),
+      iconTheme: const IconThemeData(color: Colors.white),
+      textTheme: new Typography(platform: _targetPlatform).white,
+      brightness: Brightness.light,
+      platform: Theme.of(context).platform,
+    );
+    ThemeData darkTheme = new ThemeData(
+      primaryColor: const Color(0xFF212121),
+      buttonColor: const Color(0xFF4A4A4A),
+      iconTheme: const IconThemeData(color: Colors.white),
+      textTheme: new Typography(platform: _targetPlatform).white,
+      brightness: Brightness.dark,
+      platform: Theme.of(context).platform,
+    );
+    _selectedTheme = playfulThemeData;
+    return new Theme(
+      data: _selectedTheme,
+      child: new Material(
+        color: _selectedTheme.primaryColor,
+        child: _contentWidget(),
+      ),
     );
   }
 }

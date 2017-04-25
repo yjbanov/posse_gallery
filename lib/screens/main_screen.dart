@@ -151,10 +151,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             new Positioned(
               left: 12.0,
               top: 35.0,
-              child: new Image(
-                image: new AssetImage("assets/icons/ic_flutter_logo.png"),
-                fit: BoxFit.cover,
-              ),
+              child: const FlutterLogo(),
             ),
             new Positioned(
               left: 52.0,
