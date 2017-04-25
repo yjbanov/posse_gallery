@@ -34,12 +34,15 @@ flutter:
     - assets/icons/ic_plug_in_photo.png
     - assets/icons/ic_plug_in_service.png
     - assets/icons/ic_search.png
-    - assets/images/assets_demo_pie.png
     - assets/images/bg_flutter_welcome.png
     - assets/images/bg_main_screen.png
     - assets/images/brand_apple_pie.png
+    - assets/images/brand_cinnamon.png
+    - assets/images/brand_egg.png
+    - assets/images/brand_flour.png
     - assets/images/brand_product.png
     - assets/images/brand_profile.png
+    - assets/images/brand_salt.png
     - assets/images/brand_stars.png
     - assets/images/category_cell_left_shape.png
     - assets/images/category_cell_right_shape.png

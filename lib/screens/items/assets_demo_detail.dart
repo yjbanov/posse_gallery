@@ -10,13 +10,13 @@ class AssetsDetailDemo extends StatefulWidget {
 }
 
 class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
-
   Widget _buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return new Container(
-      height: 56.0,
+      height: 76.0,
       padding: new EdgeInsets.only(top: statusBarHeight),
       child: new Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           new IconButton(
             icon: new Icon(Icons.arrow_back, color: const Color(0xFF4A4A4A)),
@@ -50,12 +50,46 @@ class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
   Widget _buildBody() {
     return new Expanded(
       child: new Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           new Padding(
-            padding: const EdgeInsets.only(bottom: 0.0),
-            child: new Image(
-              image: new AssetImage("assets/images/assets_demo_pie.png"),
+            padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
+            child: new Column(
+              children: [
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 14.0, right: 10.0),
+                      child: new Image(
+                        image: new AssetImage("assets/images/brand_egg.png"),
+                      ),
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: new Image(
+                        image: new AssetImage("assets/images/brand_flour.png"),
+                      ),
+                    ),
+                  ],
+                ),
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: new Image(
+                        image:
+                            new AssetImage("assets/images/brand_cinnamon.png"),
+                      ),
+                    ),
+                    new Image(
+                      image: new AssetImage("assets/images/brand_salt.png"),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           new Padding(

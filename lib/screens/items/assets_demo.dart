@@ -18,7 +18,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
 
   AnimationController _heroAnimationController;
 
-  static const int _kHeroAnimationDuration = 800;
+  static const int _kHeroAnimationDuration = 1000;
 
   _AssetsDemoState() {
     _configureAnimation();
@@ -31,7 +31,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     );
     _rotationAnimation = _initAnimation(
         from: 0.0,
-        to: 2.0,
+        to: 1.0,
         curve: Curves.easeOut,
         controller: _heroAnimationController);
     _slideInAnimation = _initSlideAnimation(
@@ -74,9 +74,10 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   Widget _buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return new Container(
-      height: 56.0,
+      height: 76.0,
       padding: new EdgeInsets.only(top: statusBarHeight),
       child: new Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           new IconButton(
             icon: new Icon(Icons.arrow_back, color: const Color(0xFF4A4A4A)),
@@ -111,16 +112,17 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     _heroAnimationController.forward();
     return new Expanded(
       child: new Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           new Padding(
-            padding: const EdgeInsets.only(bottom: 0.0),
+            padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
             child: new SlideTransition(
               position: _slideInAnimation,
               child: new RotationTransition(
                 turns: _rotationAnimation,
                 child: new Image(
-                  image: new AssetImage("assets/images/assets_demo_pie.png"),
+                  image: new AssetImage("assets/images/brand_apple_pie.png"),
                 ),
               ),
             ),
@@ -168,11 +170,11 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
                     ),
                   ),
                   new Text(
-                    "Mins",
+                    " Mins",
                     style: new TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.normal,
-                      color: const Color(0xFF4A4A4A),
+                      color: const Color(0xFF979797),
                     ),
                   )
                 ],
@@ -186,8 +188,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
 
   Widget _buildBottomButton() {
     return new Container(
-      height: 50.0,
-      margin: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
+      margin: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
       child: new Row(
         children: [
           new Expanded(

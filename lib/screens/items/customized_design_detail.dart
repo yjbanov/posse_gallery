@@ -88,11 +88,11 @@ class CustomizedDesignDetail extends StatelessWidget {
                                       ),
                                   ),
                                   new Text(
-                                      "Mins",
+                                      " Mins",
                                       style: new TextStyle(
                                           fontSize: 14.0,
                                           fontWeight: FontWeight.normal,
-                                          color: const Color(0xFF4A4A4A),
+                                          color: const Color(0xFF979797),
                                       ),
                                   )
                                 ],

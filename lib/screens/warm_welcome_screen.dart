@@ -3,7 +3,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:posse_gallery/config/constants.dart';
@@ -42,6 +41,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   AnimationController _animateOutController;
   AnimationController _animateInController;
 
+  AnimationController _slideInAnimationController;
+
   AnimationController _iPhoneAnimationController;
   AnimationController _pixelAnimationController;
 
@@ -66,6 +67,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   static const int _kParallaxAnimationDuration = 1450;
   static const int _kWidgetScaleInDuration = 200;
   static const int _kImageSlideUpDuration = 500;
+  static const int _kSlideInDuration = 1100;
 
   double _swipeAmount = 0.0;
 
@@ -97,6 +99,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     );
     _pixelAnimationController = new AnimationController(
       duration: const Duration(milliseconds: _kAnimateInDuration),
+      vsync: this,
+    );
+    _slideInAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kSlideInDuration),
       vsync: this,
     );
     _imageSlideUpAnimationController = new AnimationController(
@@ -144,15 +150,15 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         curve: Curves.easeOut,
         controller: _animateInController);
     _textSlideInLeftAnimation = _initSlideAnimation(
-        from: const FractionalOffset(2.0, 0.0),
+        from: const FractionalOffset(1.5, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeInOut,
-        controller: _animateInController);
+        controller: _slideInAnimationController);
     _textSlideInRightAnimation = _initSlideAnimation(
-        from: const FractionalOffset(-2.0, 0.0),
+        from: const FractionalOffset(-1.5, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeInOut,
-        controller: _animateInController);
+        controller: _slideInAnimationController);
     _imageSlideUpAnimation = _initSlideAnimation(
         from: const FractionalOffset(0.0, 1.0),
         to: const FractionalOffset(0.0, 0.0),
@@ -220,9 +226,15 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   @override
+  initState() {
+    super.initState();
+  }
+
+  @override
   dispose() {
     _animateOutController.dispose();
     _animateInController.dispose();
+    _slideInAnimationController.dispose();
     _imageSlideUpAnimationController.dispose();
     _widgetScaleInController1.dispose();
     _widgetScaleInController2.dispose();
@@ -632,21 +644,26 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       onHorizontalDragEnd: (details) {
         _swipeAmount = 0.0;
       },
-      child: new Stack(
-        children: [
-          new Positioned.fill(
-            child: _buildBackgroundView(),
-          ),
-          _buildAnimatedContentView(nextStep: nextStep, movingNext: movingNext),
-          _buildBottomSection(),
-        ],
-      ),
+      child: _contentWidget(nextStep),
+    );
+  }
+
+  Widget _contentWidget(int nextStep) {
+    return new Stack(
+      children: [
+        new Positioned.fill(
+          child: _buildBackgroundView(),
+        ),
+        _buildAnimatedContentView(nextStep: nextStep, movingNext: movingNext),
+        _buildBottomSection(),
+      ],
     );
   }
 
   _resetAnimationControllers() {
     _animateOutController.value = 0.0;
     _animateInController.value = 0.0;
+    _slideInAnimationController.value = 0.0;
     _imageSlideUpAnimationController.value = 0.0;
     _widgetScaleInController1.value = 0.0;
     _widgetScaleInController2.value = 0.0;
@@ -657,6 +674,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   _startAnimation() {
     _animateOutController.forward();
+    _slideInAnimationController.forward();
     _imageSlideUpAnimationController.forward();
     _animateInController.forward().whenComplete(() {
       if (_currentStep == 0) {
