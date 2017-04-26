@@ -74,7 +74,6 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    _configureThemes();
     _configureUI();
     _registerObservables();
   }
@@ -83,10 +82,6 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   dispose() {
     _heroAnimationController.dispose();
     super.dispose();
-  }
-
-  void _configureThemes() {
-
   }
 
   void _configureUI() {
@@ -407,7 +402,13 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
       brightness: Brightness.dark,
       platform: Theme.of(context).platform,
     );
-    _selectedTheme = playfulThemeData;
+    if (_tabController.index == 0) {
+      _selectedTheme = luxuryThemeData;
+    } else if (_tabController.index == 1) {
+      _selectedTheme = playfulThemeData;
+    } else if (_tabController.index == 2) {
+      _selectedTheme = darkTheme;
+    }
     return new Theme(
       data: _selectedTheme,
       child: new Material(
