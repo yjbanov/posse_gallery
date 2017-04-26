@@ -9,22 +9,24 @@ import 'package:posse_gallery/screens/items/assets_demo_detail.dart';
 
 class AssetsDemo extends StatefulWidget {
   @override
-  _AssetsDemoState createState() => new _AssetsDemoState();
+  AssetsDemoState createState() => new AssetsDemoState();
 }
 
-class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
+class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   static const int _kHeroAnimationDuration = 1000;
-  ThemeData _selectedTheme;
-  ThemeData _luxuryThemeData;
-  ThemeData _playfulThemeData;
-  ThemeData _darkTheme;
+  ThemeData selectedTheme;
+  ThemeData luxuryThemeData;
+  ThemeData playfulThemeData;
+  ThemeData darkTheme;
 
-  TargetPlatform _targetPlatform;
+  TargetPlatform targetPlatform;
+
   Animation<double> _rotationAnimation;
-
   Animation<FractionalOffset> _slideInAnimation;
-
   AnimationController _heroAnimationController;
+
+  String appBarTitle;
+  String bottomButtonTitle;
 
   TabController _tabController;
 
@@ -49,7 +51,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     ),
   ];
 
-  _AssetsDemoState() {
+  AssetsDemoState() {
     _configureAnimation();
   }
 
@@ -57,40 +59,26 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     _configureThemes();
     if (_tabController.index == 0) {
-      _selectedTheme = _luxuryThemeData;
+      selectedTheme = luxuryThemeData;
     } else if (_tabController.index == 1) {
-      _selectedTheme = _playfulThemeData;
+      selectedTheme = playfulThemeData;
     } else if (_tabController.index == 2) {
-      _selectedTheme = _darkTheme;
+      selectedTheme = darkTheme;
     } else {
-      _selectedTheme = _luxuryThemeData;
+      selectedTheme = luxuryThemeData;
     }
     return new Theme(
-      data: _selectedTheme,
+      data: selectedTheme,
       child: new Material(
-        color: _selectedTheme.primaryColor,
+        color: selectedTheme.primaryColor,
         child: _contentWidget(),
       ),
     );
   }
 
-  @override
-  dispose() {
-    _heroAnimationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  initState() {
-    super.initState();
-
-    _configureUI();
-    _registerObservables();
-  }
-
-  Widget _buildAppBar() {
+  Widget buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    TextAlign titleTextAlignment = _targetPlatform == TargetPlatform.android
+    TextAlign titleTextAlignment = targetPlatform == TargetPlatform.android
         ? TextAlign.center
         : TextAlign.left;
     return new Container(
@@ -102,9 +90,9 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
           new BackButton(),
           new Expanded(
             child: new Text(
-              "My Recipe Book",
+              appBarTitle,
               style: new TextStyle(
-                color: _selectedTheme.textTheme.title.color,
+                color: selectedTheme.textTheme.title.color,
                 fontWeight: FontWeight.w500,
                 fontSize: 16.0,
               ),
@@ -114,7 +102,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
           new IconButton(
             icon: new Icon(
               Icons.more_vert,
-              color: _selectedTheme.iconTheme.color,
+              color: selectedTheme.iconTheme.color,
             ),
             onPressed: () {
               showModalBottomSheet<Null>(
@@ -130,7 +118,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildBody() {
+  Widget buildBody() {
     _heroAnimationController.forward();
     return new Expanded(
       child: new Column(
@@ -159,7 +147,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
           new Text(
             "Classic Apple Pie",
             style: new TextStyle(
-              color: _selectedTheme.textTheme.title.color,
+              color: selectedTheme.textTheme.title.color,
               fontSize: 22.0,
               fontWeight: FontWeight.w300,
             ),
@@ -173,7 +161,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
           new Text(
             "By Jenny Flay",
             style: new TextStyle(
-              color: _selectedTheme.textTheme.subhead.color,
+              color: selectedTheme.textTheme.subhead.color,
               fontSize: 14.0,
               fontWeight: FontWeight.normal,
             ),
@@ -195,7 +183,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
                     style: new TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.normal,
-                      color: _selectedTheme.textTheme.body1.color,
+                      color: selectedTheme.textTheme.body1.color,
                     ),
                   ),
                   new Text(
@@ -203,7 +191,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
                     style: new TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.normal,
-                      color: _selectedTheme.textTheme.body2.color,
+                      color: selectedTheme.textTheme.body2.color,
                     ),
                   )
                 ],
@@ -215,28 +203,9 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     );
   }
 
-  _buildRadialGradient() {
-    if (_tabController.index == 1) {
-      return new BoxDecoration(
-        gradient: new RadialGradient(
-          center: FractionalOffset.center,
-          radius: 0.5,
-          colors: [
-            Colors.white,
-            const Color(0xFFF68D99),
-            _selectedTheme.primaryColor,
-          ],
-          stops: [0.0, 0.35, 1.0],
-        ),
-      );
-    } else {
-      return null;
-    }
-  }
-
-  Widget _buildBottomButton() {
+  Widget buildBottomButton() {
     double buttonBorderRadius =
-        _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
+        targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
     return new Container(
       decoration: new BoxDecoration(
         borderRadius: new BorderRadius.circular(buttonBorderRadius),
@@ -248,7 +217,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
             child: new FlatButton(
               color: const Color(0xFF5FAD2C),
               child: new Text(
-                "View Recipe",
+                bottomButtonTitle,
                 style: new TextStyle(
                   fontSize: 12.0,
                   fontWeight: FontWeight.bold,
@@ -281,6 +250,23 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  @override
+  dispose() {
+    _heroAnimationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  initState() {
+    super.initState();
+
+    appBarTitle = "My Recipe Book";
+    bottomButtonTitle = "View Recipe";
+
+    _configureUI();
+    _registerObservables();
   }
 
   Widget _buildBottomSheet() {
@@ -323,6 +309,25 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     );
   }
 
+  _buildRadialGradient() {
+    if (_tabController.index == 1) {
+      return new BoxDecoration(
+        gradient: new RadialGradient(
+          center: FractionalOffset.center,
+          radius: 0.5,
+          colors: [
+            Colors.white,
+            const Color(0xFFF68D99),
+            selectedTheme.primaryColor,
+          ],
+          stops: [0.0, 0.35, 1.0],
+        ),
+      );
+    } else {
+      return null;
+    }
+  }
+
   Widget _buildTabBar() {
     TabBar tabBar = new TabBar(
       controller: _tabController,
@@ -358,7 +363,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   }
 
   void _configureThemes() {
-    _targetPlatform = TargetPlatform.iOS;
+    targetPlatform = TargetPlatform.iOS;
     TextTheme luxuryTextTheme = Theme.of(context).textTheme;
     TextStyle luxuryTitleTextStyle =
         luxuryTextTheme.title.copyWith(color: const Color(0xFF4A4A4A));
@@ -370,7 +375,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         luxuryTextTheme.body2.copyWith(color: const Color(0xFF979797));
     TextStyle luxuryButtonTextStyle =
         luxuryTextTheme.button.copyWith(color: Colors.white);
-    _luxuryThemeData = new ThemeData(
+    luxuryThemeData = new ThemeData(
       primaryColor: Colors.white,
       buttonColor: const Color(0xFF5FAD2C),
       iconTheme: const IconThemeData(color: const Color(0xFFD1D1D1)),
@@ -382,23 +387,23 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         button: luxuryButtonTextStyle,
       ),
       brightness: Brightness.light,
-      platform: _targetPlatform,
+      platform: targetPlatform,
     );
-    _playfulThemeData = new ThemeData(
+    playfulThemeData = new ThemeData(
       primaryColor: const Color(0xFFF0465A),
       buttonColor: const Color(0xFF1DBC98),
       iconTheme: const IconThemeData(color: Colors.white),
-      textTheme: new Typography(platform: _targetPlatform).white,
+      textTheme: new Typography(platform: targetPlatform).white,
       brightness: Brightness.light,
-      platform: _targetPlatform,
+      platform: targetPlatform,
     );
-    _darkTheme = new ThemeData(
+    darkTheme = new ThemeData(
       primaryColor: const Color(0xFF212121),
       buttonColor: const Color(0xFF4A4A4A),
       iconTheme: const IconThemeData(color: Colors.white),
-      textTheme: new Typography(platform: _targetPlatform).white,
+      textTheme: new Typography(platform: targetPlatform).white,
       brightness: Brightness.dark,
-      platform: _targetPlatform,
+      platform: targetPlatform,
     );
   }
 
@@ -412,9 +417,9 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   Widget _contentWidget() {
     return new Column(
       children: [
-        _buildAppBar(),
-        _buildBody(),
-        _buildBottomButton(),
+        buildAppBar(),
+        buildBody(),
+        buildBottomButton(),
       ],
     );
   }

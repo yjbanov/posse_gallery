@@ -3,56 +3,55 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:posse_gallery/screens/items/assets_demo.dart';
 
-class AssetsDetailDemo extends StatefulWidget {
+class AssetsDetailDemo extends AssetsDemo {
   @override
   _AssetsDetailDemoState createState() => new _AssetsDetailDemoState();
 }
 
-class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
-  ThemeData _selectedTheme;
-  TargetPlatform _targetPlatform;
+class _AssetsDetailDemoState extends AssetsDemoState {
 
-  Widget _buildAppBar() {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
-    TextAlign titleTextAlignment = _targetPlatform == TargetPlatform.iOS ? TextAlign.center : TextAlign.left;
-    return new Container(
-      height: 76.0,
-      padding: new EdgeInsets.only(top: statusBarHeight),
-      child: new Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          new IconButton(
-            icon: new Icon(Icons.arrow_back,
-                color: _selectedTheme.iconTheme.color),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          new Expanded(
-            child: new Text(
-              "Classic Apple Pie",
-              style: new TextStyle(
-                color: _selectedTheme.textTheme.title.color,
-                fontWeight: FontWeight.w500,
-                fontSize: 16.0,
-              ),
-              textAlign: titleTextAlignment,
-            ),
-          ),
-          new IconButton(
-            icon: new Icon(
-              Icons.more_vert,
-              color: _selectedTheme.iconTheme.color,
-            ),
-            onPressed: null,
-          )
-        ],
-      ),
-    );
-  }
+//  Widget _buildAppBar() {
+//    final double statusBarHeight = MediaQuery.of(context).padding.top;
+//    TextAlign titleTextAlignment = targetPlatform == TargetPlatform.iOS ? TextAlign.center : TextAlign.left;
+//    return new Container(
+//      height: 76.0,
+//      padding: new EdgeInsets.only(top: statusBarHeight),
+//      child: new Row(
+//        crossAxisAlignment: CrossAxisAlignment.center,
+//        children: [
+//          new IconButton(
+//            icon: new Icon(Icons.arrow_back,
+//                color: _selectedTheme.iconTheme.color),
+//            onPressed: () {
+//              Navigator.of(context).pop();
+//            },
+//          ),
+//          new Expanded(
+//            child: new Text(
+//              "Classic Apple Pie",
+//              style: new TextStyle(
+//                color: _selectedTheme.textTheme.title.color,
+//                fontWeight: FontWeight.w500,
+//                fontSize: 16.0,
+//              ),
+//              textAlign: titleTextAlignment,
+//            ),
+//          ),
+//          new IconButton(
+//            icon: new Icon(
+//              Icons.more_vert,
+//              color: _selectedTheme.iconTheme.color,
+//            ),
+//            onPressed: null,
+//          )
+//        ],
+//      ),
+//    );
+//  }
 
-  Widget _buildBody() {
+  Widget buildBody() {
     return new Expanded(
       child: new Column(
         children: [
@@ -128,7 +127,7 @@ class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
     );
   }
 
-  Widget _buildBottomButton() {
+  Widget buildBottomButton() {
     return new Container(
       height: 50.0,
       margin: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
@@ -136,7 +135,7 @@ class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
         children: [
           new Expanded(
             child: new FlatButton(
-              color: _selectedTheme.buttonColor,
+              color: selectedTheme.buttonColor,
               child: new Text(
                 "Step 1: Make Crust",
                 style: new TextStyle(
@@ -156,9 +155,9 @@ class _AssetsDetailDemoState extends State<AssetsDetailDemo> {
   Widget _contentWidget() {
     return new Column(
       children: [
-        _buildAppBar(),
-        _buildBody(),
-        _buildBottomButton(),
+        buildAppBar(),
+        buildBody(),
+        buildBottomButton(),
       ],
     );
   }
