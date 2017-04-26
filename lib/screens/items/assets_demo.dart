@@ -13,20 +13,20 @@ class AssetsDemo extends StatefulWidget {
 }
 
 class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
+  static const int _kHeroAnimationDuration = 1000;
   ThemeData _selectedTheme;
   ThemeData _luxuryThemeData;
   ThemeData _playfulThemeData;
   ThemeData _darkTheme;
-  TargetPlatform _targetPlatform;
 
+  TargetPlatform _targetPlatform;
   Animation<double> _rotationAnimation;
+
   Animation<FractionalOffset> _slideInAnimation;
 
   AnimationController _heroAnimationController;
 
   TabController _tabController;
-
-  static const int _kHeroAnimationDuration = 1000;
 
   final List<Tab> _tabs = [
     new Tab(
@@ -53,29 +53,25 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     _configureAnimation();
   }
 
-  _configureAnimation() {
-    _heroAnimationController = new AnimationController(
-      duration: const Duration(milliseconds: _kHeroAnimationDuration),
-      vsync: this,
-    );
-    _rotationAnimation = _initAnimation(
-        from: 0.0,
-        to: 1.0,
-        curve: Curves.easeOut,
-        controller: _heroAnimationController);
-    _slideInAnimation = _initSlideAnimation(
-        from: const FractionalOffset(-2.0, 0.0),
-        to: const FractionalOffset(0.0, 0.0),
-        curve: Curves.decelerate,
-        controller: _heroAnimationController);
-  }
-
   @override
-  void initState() {
-    super.initState();
-
-    _configureUI();
-    _registerObservables();
+  Widget build(BuildContext context) {
+    _configureThemes();
+    if (_tabController.index == 0) {
+      _selectedTheme = _luxuryThemeData;
+    } else if (_tabController.index == 1) {
+      _selectedTheme = _playfulThemeData;
+    } else if (_tabController.index == 2) {
+      _selectedTheme = _darkTheme;
+    } else {
+      _selectedTheme = _luxuryThemeData;
+    }
+    return new Theme(
+      data: _selectedTheme,
+      child: new Material(
+        color: _selectedTheme.primaryColor,
+        child: _contentWidget(),
+      ),
+    );
   }
 
   @override
@@ -84,48 +80,17 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void _configureUI() {
-    _tabController = new TabController(
-      vsync: this,
-      length: 3,
-    );
-  }
+  @override
+  initState() {
+    super.initState();
 
-  void _registerObservables() {
-    _tabController.addListener(() {
-      setState(() {
-        print(_tabController.index);
-      });
-    });
-  }
-
-  Animation<double> _initAnimation(
-      {@required double from,
-      @required double to,
-      @required Curve curve,
-      @required AnimationController controller}) {
-    final CurvedAnimation animation = new CurvedAnimation(
-      parent: controller,
-      curve: curve,
-    );
-    return new Tween<double>(begin: from, end: to).animate(animation);
-  }
-
-  Animation<FractionalOffset> _initSlideAnimation(
-      {@required FractionalOffset from,
-      @required FractionalOffset to,
-      @required Curve curve,
-      @required AnimationController controller}) {
-    final CurvedAnimation animation = new CurvedAnimation(
-      parent: controller,
-      curve: curve,
-    );
-    return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
+    _configureUI();
+    _registerObservables();
   }
 
   Widget _buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    TextAlign titleTextAlignment = _targetPlatform == TargetPlatform.iOS
+    TextAlign titleTextAlignment = _targetPlatform == TargetPlatform.android
         ? TextAlign.center
         : TextAlign.left;
     return new Container(
@@ -134,13 +99,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
       child: new Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          new IconButton(
-            icon: new Icon(Icons.arrow_back,
-                color: _selectedTheme.iconTheme.color),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
+          new BackButton(),
           new Expanded(
             child: new Text(
               "My Recipe Book",
@@ -171,76 +130,28 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildBottomSheet() {
-    return new Container(
-      height: MediaQuery.of(context).size.height * 0.34,
-      color: Colors.white,
-      child: new Column(
-        children: [
-          new Align(
-            alignment: FractionalOffset.centerRight,
-            child: new IconButton(
-              icon: new Icon(Icons.close, color: Colors.black),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-          new Expanded(
-            child: new Center(
-              child: new Padding(
-                padding: const EdgeInsets.only(
-                    left: 50.0, right: 50.0, bottom: 42.0),
-                child: new Text(
-                  "Toggle between themes to see how changing elements can give an app a whole new identity.",
-                  textAlign: TextAlign.center,
-                  style: new TextStyle(
-                    letterSpacing: 0.6,
-                    fontSize: 16.0,
-                    height: 1.4,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          _buildTabBar(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTabBar() {
-    TabBar tabBar = new TabBar(
-      controller: _tabController,
-      isScrollable: false,
-      labelColor: Theme.of(context).primaryColor,
-      unselectedLabelColor: const Color(0xFFAAAAAA),
-      indicatorColor: Theme.of(context).primaryColor,
-      labelStyle: new TextStyle(
-        fontSize: 14.0,
-      ),
-      tabs: _tabs,
-    );
-    return new Padding(
-        padding: const EdgeInsets.only(bottom: 1.0),
-        child: new Center(child: tabBar));
-  }
-
   Widget _buildBody() {
     _heroAnimationController.forward();
     return new Expanded(
       child: new Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           new Padding(
-            padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
+            padding: const EdgeInsets.only(right: 20.0),
             child: new SlideTransition(
               position: _slideInAnimation,
               child: new RotationTransition(
                 turns: _rotationAnimation,
-                child: new Image(
-                  image: new AssetImage("assets/images/brand_apple_pie.png"),
+                child: new Container(
+                  decoration: _buildRadialGradient(),
+                  child: new Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: new Image(
+                      image:
+                          new AssetImage("assets/images/brand_apple_pie.png"),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -304,8 +215,32 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     );
   }
 
+  _buildRadialGradient() {
+    if (_tabController.index == 1) {
+      return new BoxDecoration(
+        gradient: new RadialGradient(
+          center: FractionalOffset.center,
+          radius: 0.5,
+          colors: [
+            Colors.white,
+            const Color(0xFFF68D99),
+            _selectedTheme.primaryColor,
+          ],
+          stops: [0.0, 0.35, 1.0],
+        ),
+      );
+    } else {
+      return null;
+    }
+  }
+
   Widget _buildBottomButton() {
+    double buttonBorderRadius =
+        _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
     return new Container(
+      decoration: new BoxDecoration(
+        borderRadius: new BorderRadius.circular(buttonBorderRadius),
+      ),
       margin: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
       child: new Row(
         children: [
@@ -348,19 +283,82 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     );
   }
 
-  Widget _contentWidget() {
-    return new Column(
-      children: [
-        _buildAppBar(),
-        _buildBody(),
-        _buildBottomButton(),
-      ],
+  Widget _buildBottomSheet() {
+    return new Container(
+      height: MediaQuery.of(context).size.height * 0.4,
+      color: Colors.white,
+      child: new Material(
+        child: new Column(
+          children: [
+            new Align(
+              alignment: FractionalOffset.centerRight,
+              child: new IconButton(
+                icon: new Icon(Icons.close, color: Colors.black),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+            new Expanded(
+              child: new Center(
+                child: new Padding(
+                  padding: const EdgeInsets.only(
+                      left: 50.0, right: 50.0, bottom: 42.0),
+                  child: new Text(
+                    "Toggle between themes to see how changing elements can give an app a whole new identity.",
+                    textAlign: TextAlign.center,
+                    style: new TextStyle(
+                      letterSpacing: 0.6,
+                      fontSize: 16.0,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            _buildTabBar(),
+          ],
+        ),
+      ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    _targetPlatform = TargetPlatform.android;
+  Widget _buildTabBar() {
+    TabBar tabBar = new TabBar(
+      controller: _tabController,
+      isScrollable: false,
+      labelColor: Theme.of(context).primaryColor,
+      unselectedLabelColor: const Color(0xFFAAAAAA),
+      indicatorColor: Theme.of(context).primaryColor,
+      labelStyle: new TextStyle(
+        fontSize: 14.0,
+      ),
+      tabs: _tabs,
+    );
+    return new Padding(
+        padding: const EdgeInsets.only(bottom: 1.0),
+        child: new Center(child: tabBar));
+  }
+
+  _configureAnimation() {
+    _heroAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kHeroAnimationDuration),
+      vsync: this,
+    );
+    _rotationAnimation = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _heroAnimationController);
+    _slideInAnimation = _initSlideAnimation(
+        from: const FractionalOffset(-2.0, 0.0),
+        to: const FractionalOffset(0.0, 0.0),
+        curve: Curves.decelerate,
+        controller: _heroAnimationController);
+  }
+
+  void _configureThemes() {
+    _targetPlatform = TargetPlatform.iOS;
     TextTheme luxuryTextTheme = Theme.of(context).textTheme;
     TextStyle luxuryTitleTextStyle =
         luxuryTextTheme.title.copyWith(color: const Color(0xFF4A4A4A));
@@ -372,7 +370,7 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         luxuryTextTheme.body2.copyWith(color: const Color(0xFF979797));
     TextStyle luxuryButtonTextStyle =
         luxuryTextTheme.button.copyWith(color: Colors.white);
-    ThemeData luxuryThemeData = new ThemeData(
+    _luxuryThemeData = new ThemeData(
       primaryColor: Colors.white,
       buttonColor: const Color(0xFF5FAD2C),
       iconTheme: const IconThemeData(color: const Color(0xFFD1D1D1)),
@@ -386,35 +384,68 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
       brightness: Brightness.light,
       platform: _targetPlatform,
     );
-    ThemeData playfulThemeData = new ThemeData(
+    _playfulThemeData = new ThemeData(
       primaryColor: const Color(0xFFF0465A),
       buttonColor: const Color(0xFF1DBC98),
       iconTheme: const IconThemeData(color: Colors.white),
       textTheme: new Typography(platform: _targetPlatform).white,
       brightness: Brightness.light,
-      platform: Theme.of(context).platform,
+      platform: _targetPlatform,
     );
-    ThemeData darkTheme = new ThemeData(
+    _darkTheme = new ThemeData(
       primaryColor: const Color(0xFF212121),
       buttonColor: const Color(0xFF4A4A4A),
       iconTheme: const IconThemeData(color: Colors.white),
       textTheme: new Typography(platform: _targetPlatform).white,
       brightness: Brightness.dark,
-      platform: Theme.of(context).platform,
+      platform: _targetPlatform,
     );
-    if (_tabController.index == 0) {
-      _selectedTheme = luxuryThemeData;
-    } else if (_tabController.index == 1) {
-      _selectedTheme = playfulThemeData;
-    } else if (_tabController.index == 2) {
-      _selectedTheme = darkTheme;
-    }
-    return new Theme(
-      data: _selectedTheme,
-      child: new Material(
-        color: _selectedTheme.primaryColor,
-        child: _contentWidget(),
-      ),
+  }
+
+  void _configureUI() {
+    _tabController = new TabController(
+      vsync: this,
+      length: _tabs.length,
     );
+  }
+
+  Widget _contentWidget() {
+    return new Column(
+      children: [
+        _buildAppBar(),
+        _buildBody(),
+        _buildBottomButton(),
+      ],
+    );
+  }
+
+  Animation<double> _initAnimation(
+      {@required double from,
+      @required double to,
+      @required Curve curve,
+      @required AnimationController controller}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+      parent: controller,
+      curve: curve,
+    );
+    return new Tween<double>(begin: from, end: to).animate(animation);
+  }
+
+  Animation<FractionalOffset> _initSlideAnimation(
+      {@required FractionalOffset from,
+      @required FractionalOffset to,
+      @required Curve curve,
+      @required AnimationController controller}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+      parent: controller,
+      curve: curve,
+    );
+    return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
+  }
+
+  void _registerObservables() {
+    _tabController.addListener(() {
+      setState(() {});
+    });
   }
 }
