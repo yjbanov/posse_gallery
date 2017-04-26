@@ -60,14 +60,14 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   bool movingNext = true;
 
-  static const double _kSwipeThreshold = 140.0;
+  static const double _kSwipeThreshold = 40.0;
 
   static const int _kAnimateOutDuration = 600;
   static const int _kAnimateInDuration = 800;
   static const int _kParallaxAnimationDuration = 1450;
   static const int _kWidgetScaleInDuration = 200;
   static const int _kImageSlideUpDuration = 500;
-  static const int _kSlideInDuration = 1100;
+  static const int _kSlideInDuration = 1000;
 
   double _swipeAmount = 0.0;
 

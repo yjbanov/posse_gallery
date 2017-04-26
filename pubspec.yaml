@@ -16,6 +16,9 @@ flutter:
     - assets/icons/ic_animation_chains.png
     - assets/icons/ic_animation_gestures.png
     - assets/icons/ic_animation_tweens.png
+    - assets/icons/ic_assets_diamond.png
+    - assets/icons/ic_assets_moon.png
+    - assets/icons/ic_assets_smiley.png
     - assets/icons/ic_components.png
     - assets/icons/ic_customized_assets.png
     - assets/icons/ic_customized_brand_design.png

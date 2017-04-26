@@ -14,6 +14,9 @@ class AssetsDemo extends StatefulWidget {
 
 class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   ThemeData _selectedTheme;
+  ThemeData _luxuryThemeData;
+  ThemeData _playfulThemeData;
+  ThemeData _darkTheme;
   TargetPlatform _targetPlatform;
 
   Animation<double> _rotationAnimation;
@@ -21,7 +24,30 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
 
   AnimationController _heroAnimationController;
 
+  TabController _tabController;
+
   static const int _kHeroAnimationDuration = 1000;
+
+  final List<Tab> _tabs = [
+    new Tab(
+      text: "LUXURY",
+      icon: new ImageIcon(
+        new AssetImage("assets/icons/ic_assets_diamond.png"),
+      ),
+    ),
+    new Tab(
+      text: "PLAYFUL",
+      icon: new ImageIcon(
+        new AssetImage("assets/icons/ic_assets_smiley.png"),
+      ),
+    ),
+    new Tab(
+      text: "DARK",
+      icon: new ImageIcon(
+        new AssetImage("assets/icons/ic_assets_moon.png"),
+      ),
+    ),
+  ];
 
   _AssetsDemoState() {
     _configureAnimation();
@@ -45,9 +71,37 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    _configureThemes();
+    _configureUI();
+    _registerObservables();
+  }
+
+  @override
   dispose() {
     _heroAnimationController.dispose();
     super.dispose();
+  }
+
+  void _configureThemes() {
+
+  }
+
+  void _configureUI() {
+    _tabController = new TabController(
+      vsync: this,
+      length: 3,
+    );
+  }
+
+  void _registerObservables() {
+    _tabController.addListener(() {
+      setState(() {
+        print(_tabController.index);
+      });
+    });
   }
 
   Animation<double> _initAnimation(
@@ -76,7 +130,9 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
 
   Widget _buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    TextAlign titleTextAlignment = _targetPlatform == TargetPlatform.iOS ? TextAlign.center : TextAlign.left;
+    TextAlign titleTextAlignment = _targetPlatform == TargetPlatform.iOS
+        ? TextAlign.center
+        : TextAlign.left;
     return new Container(
       height: 76.0,
       padding: new EdgeInsets.only(top: statusBarHeight),
@@ -108,10 +164,10 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
             ),
             onPressed: () {
               showModalBottomSheet<Null>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return _buildBottomSheet();
-                  },
+                context: context,
+                builder: (BuildContext context) {
+                  return _buildBottomSheet();
+                },
               );
             },
           )
@@ -124,7 +180,55 @@ class _AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     return new Container(
       height: MediaQuery.of(context).size.height * 0.34,
       color: Colors.white,
+      child: new Column(
+        children: [
+          new Align(
+            alignment: FractionalOffset.centerRight,
+            child: new IconButton(
+              icon: new Icon(Icons.close, color: Colors.black),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+          new Expanded(
+            child: new Center(
+              child: new Padding(
+                padding: const EdgeInsets.only(
+                    left: 50.0, right: 50.0, bottom: 42.0),
+                child: new Text(
+                  "Toggle between themes to see how changing elements can give an app a whole new identity.",
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                    letterSpacing: 0.6,
+                    fontSize: 16.0,
+                    height: 1.4,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          _buildTabBar(),
+        ],
+      ),
     );
+  }
+
+  Widget _buildTabBar() {
+    TabBar tabBar = new TabBar(
+      controller: _tabController,
+      isScrollable: false,
+      labelColor: Theme.of(context).primaryColor,
+      unselectedLabelColor: const Color(0xFFAAAAAA),
+      indicatorColor: Theme.of(context).primaryColor,
+      labelStyle: new TextStyle(
+        fontSize: 14.0,
+      ),
+      tabs: _tabs,
+    );
+    return new Padding(
+        padding: const EdgeInsets.only(bottom: 1.0),
+        child: new Center(child: tabBar));
   }
 
   Widget _buildBody() {
