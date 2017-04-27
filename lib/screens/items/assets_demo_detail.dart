@@ -45,11 +45,7 @@ class _AssetsDetailDemoState extends AssetsDemoState {
 
   @override
   Widget buildBody() {
-    _slideInAnimationController.forward().whenComplete(() {
-      _fadeInAnimationController.forward().whenComplete(() {
-        _sizeInAnimationController.forward();
-      });
-    });
+    _startAnimation();
     return new Expanded(
       child: new Column(
         children: [
@@ -238,5 +234,13 @@ class _AssetsDetailDemoState extends AssetsDemoState {
       curve: curve,
     );
     return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
+  }
+
+  _startAnimation() {
+    _slideInAnimationController.forward().whenComplete(() {
+      _fadeInAnimationController.forward().whenComplete(() {
+        _sizeInAnimationController.forward();
+      });
+    });
   }
 }

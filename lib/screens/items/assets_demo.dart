@@ -14,6 +14,7 @@ class AssetsDemo extends StatefulWidget {
 
 class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   static const int _kHeroAnimationDuration = 1000;
+  static const int _kFadeInAnimationDuration = 400;
   ThemeData selectedTheme;
   ThemeData luxuryThemeData;
   ThemeData playfulThemeData;
@@ -22,8 +23,12 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   TargetPlatform targetPlatform;
 
   Animation<double> _rotationAnimation;
+  Animation<double> _bodyRotationAnimation;
   Animation<FractionalOffset> _slideInAnimation;
+  Animation<double> _fadeInAnimation;
+
   AnimationController _heroAnimationController;
+  AnimationController _fadeInAnimationController;
 
   String appBarTitle;
   String bottomButtonTitle;
@@ -119,7 +124,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   }
 
   Widget buildBody() {
-    _heroAnimationController.forward();
+    _startAnimation();
     return new Expanded(
       child: new Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -144,58 +149,66 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
               ),
             ),
           ),
-          new Text(
-            "Classic Apple Pie",
-            style: new TextStyle(
-              color: selectedTheme.textTheme.title.color,
-              fontSize: 22.0,
-              fontWeight: FontWeight.w300,
-            ),
-          ),
-          new Padding(
-            padding: const EdgeInsets.only(top: 20.0, bottom: 5.0),
-            child: new Image(
-              image: new AssetImage("assets/images/brand_profile.png"),
-            ),
-          ),
-          new Text(
-            "By Jenny Flay",
-            style: new TextStyle(
-              color: selectedTheme.textTheme.subhead.color,
-              fontSize: 14.0,
-              fontWeight: FontWeight.normal,
-            ),
-          ),
-          new Container(
-            margin: const EdgeInsets.only(top: 20.0),
-            child: new Center(
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
-                    child: new Image(
-                      image: new AssetImage("assets/images/brand_stars.png"),
+          new FadeTransition(
+            opacity: _fadeInAnimation,
+            child: new Column(
+              children: [
+                new Text(
+                  "Classic Apple Pie",
+                  style: new TextStyle(
+                    color: selectedTheme.textTheme.title.color,
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+                new Padding(
+                  padding: const EdgeInsets.only(top: 20.0, bottom: 5.0),
+                  child: new Image(
+                    image: new AssetImage("assets/images/brand_profile.png"),
+                  ),
+                ),
+                new Text(
+                  "By Jenny Flay",
+                  style: new TextStyle(
+                    color: selectedTheme.textTheme.subhead.color,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                new Container(
+                  margin: const EdgeInsets.only(top: 20.0),
+                  child: new Center(
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        new Padding(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: new Image(
+                            image:
+                                new AssetImage("assets/images/brand_stars.png"),
+                          ),
+                        ),
+                        new Text(
+                          "120",
+                          style: new TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.normal,
+                            color: selectedTheme.textTheme.body1.color,
+                          ),
+                        ),
+                        new Text(
+                          " Mins",
+                          style: new TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.normal,
+                            color: selectedTheme.textTheme.body2.color,
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  new Text(
-                    "120",
-                    style: new TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.normal,
-                      color: selectedTheme.textTheme.body1.color,
-                    ),
-                  ),
-                  new Text(
-                    " Mins",
-                    style: new TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.normal,
-                      color: selectedTheme.textTheme.body2.color,
-                    ),
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -351,6 +364,10 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: _kHeroAnimationDuration),
       vsync: this,
     );
+    _fadeInAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kFadeInAnimationDuration),
+      vsync: this,
+    );
     _rotationAnimation = _initAnimation(
         from: 0.0,
         to: 1.0,
@@ -361,6 +378,17 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.decelerate,
         controller: _heroAnimationController);
+    _fadeInAnimation = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeInOut,
+        controller: _fadeInAnimationController);
+    _bodyRotationAnimation = _initAnimation(
+      from: 0.25,
+      to: 1.0,
+      curve: Curves.linear,
+      controller: _fade
+    );
   }
 
   _configureThemes() {
@@ -452,6 +480,12 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   _registerObservables() {
     tabController.addListener(() {
       setState(() {});
+    });
+  }
+
+  _startAnimation() {
+    _heroAnimationController.forward().whenComplete(() {
+      _fadeInAnimationController.forward();
     });
   }
 }
