@@ -154,26 +154,32 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
             child: new Column(
               children: [
                 new Text(
-                  "Classic Apple Pie",
-                  style: new TextStyle(
-                    color: selectedTheme.textTheme.title.color,
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.w300,
-                  ),
+                    "Classic Apple Pie",
+                    style: new TextStyle(
+                        color: selectedTheme.textTheme.title.color,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.w300,
+                    ),
                 ),
-                new Padding(
-                  padding: const EdgeInsets.only(top: 20.0, bottom: 5.0),
-                  child: new Image(
-                    image: new AssetImage("assets/images/brand_profile.png"),
-                  ),
-                ),
-                new Text(
-                  "By Jenny Flay",
-                  style: new TextStyle(
-                    color: selectedTheme.textTheme.subhead.color,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.normal,
-                  ),
+                new RotationTransition(
+                  turns: _bodyRotationAnimation,
+                  child: new Column(children: [
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0, bottom: 5.0),
+                      child: new Image(
+                        image:
+                            new AssetImage("assets/images/brand_profile.png"),
+                      ),
+                    ),
+                    new Text(
+                      "By Jenny Flay",
+                      style: new TextStyle(
+                        color: selectedTheme.textTheme.subhead.color,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ]),
                 ),
                 new Container(
                   margin: const EdgeInsets.only(top: 20.0),
@@ -384,11 +390,10 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         curve: Curves.easeInOut,
         controller: _fadeInAnimationController);
     _bodyRotationAnimation = _initAnimation(
-      from: 0.25,
-      to: 1.0,
-      curve: Curves.linear,
-      controller: _fade
-    );
+        from: 0.8,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _fadeInAnimationController);
   }
 
   _configureThemes() {
