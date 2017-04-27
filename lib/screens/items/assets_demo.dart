@@ -28,7 +28,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   String appBarTitle;
   String bottomButtonTitle;
 
-  TabController _tabController;
+  TabController tabController;
 
   final List<Tab> _tabs = [
     new Tab(
@@ -58,11 +58,11 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     _configureThemes();
-    if (_tabController.index == 0) {
+    if (tabController.index == 0) {
       selectedTheme = luxuryThemeData;
-    } else if (_tabController.index == 1) {
+    } else if (tabController.index == 1) {
       selectedTheme = playfulThemeData;
-    } else if (_tabController.index == 2) {
+    } else if (tabController.index == 2) {
       selectedTheme = darkTheme;
     } else {
       selectedTheme = luxuryThemeData;
@@ -224,27 +224,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  new PageRouteBuilder<Null>(
-                    settings: new RouteSettings(),
-                    pageBuilder: (BuildContext context, Animation<double> _,
-                        Animation<double> __) {
-                      return new AssetsDetailDemo();
-                    },
-                    transitionsBuilder: (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child,
-                    ) {
-                      return new FadeTransition(
-                          opacity: animation, child: child);
-                    },
-                  ),
-                );
-              },
+              onPressed: pressedNextButton,
             ),
           ),
         ],
@@ -267,6 +247,27 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
 
     _configureUI();
     _registerObservables();
+  }
+
+  pressedNextButton() {
+    Navigator.push(
+      context,
+      new PageRouteBuilder<Null>(
+        settings: new RouteSettings(),
+        pageBuilder:
+            (BuildContext context, Animation<double> _, Animation<double> __) {
+          return new AssetsDetailDemo(themeIndex: tabController.index);
+        },
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) {
+          return new FadeTransition(opacity: animation, child: child);
+        },
+      ),
+    );
   }
 
   Widget _buildBottomSheet() {
@@ -310,7 +311,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   }
 
   _buildRadialGradient() {
-    if (_tabController.index == 1) {
+    if (tabController.index == 1) {
       return new BoxDecoration(
         gradient: new RadialGradient(
           center: FractionalOffset.center,
@@ -330,7 +331,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
 
   Widget _buildTabBar() {
     TabBar tabBar = new TabBar(
-      controller: _tabController,
+      controller: tabController,
       isScrollable: false,
       labelColor: Theme.of(context).primaryColor,
       unselectedLabelColor: const Color(0xFFAAAAAA),
@@ -362,7 +363,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         controller: _heroAnimationController);
   }
 
-  void _configureThemes() {
+  _configureThemes() {
     targetPlatform = TargetPlatform.iOS;
     TextTheme luxuryTextTheme = Theme.of(context).textTheme;
     TextStyle luxuryTitleTextStyle =
@@ -407,8 +408,8 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     );
   }
 
-  void _configureUI() {
-    _tabController = new TabController(
+  _configureUI() {
+    tabController = new TabController(
       vsync: this,
       length: _tabs.length,
     );
@@ -448,8 +449,8 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
   }
 
-  void _registerObservables() {
-    _tabController.addListener(() {
+  _registerObservables() {
+    tabController.addListener(() {
       setState(() {});
     });
   }

@@ -1,57 +1,55 @@
+// ignore: invalid_constant
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import 'package:posse_gallery/screens/items/assets_demo.dart';
 
 class AssetsDetailDemo extends AssetsDemo {
+  final int _themeIndex;
+
+  AssetsDetailDemo({
+    int themeIndex,
+  })
+      : _themeIndex = themeIndex;
+
   @override
-  _AssetsDetailDemoState createState() => new _AssetsDetailDemoState();
+  _AssetsDetailDemoState createState() =>
+      new _AssetsDetailDemoState(themeIndex: _themeIndex);
 }
 
 class _AssetsDetailDemoState extends AssetsDemoState {
+  static const int _kSlideInDuration = 700;
+  static const int _kFadeInDuration = 400;
+  static const int _kSizeInDuration = 500;
 
-//  Widget _buildAppBar() {
-//    final double statusBarHeight = MediaQuery.of(context).padding.top;
-//    TextAlign titleTextAlignment = targetPlatform == TargetPlatform.iOS ? TextAlign.center : TextAlign.left;
-//    return new Container(
-//      height: 76.0,
-//      padding: new EdgeInsets.only(top: statusBarHeight),
-//      child: new Row(
-//        crossAxisAlignment: CrossAxisAlignment.center,
-//        children: [
-//          new IconButton(
-//            icon: new Icon(Icons.arrow_back,
-//                color: _selectedTheme.iconTheme.color),
-//            onPressed: () {
-//              Navigator.of(context).pop();
-//            },
-//          ),
-//          new Expanded(
-//            child: new Text(
-//              "Classic Apple Pie",
-//              style: new TextStyle(
-//                color: _selectedTheme.textTheme.title.color,
-//                fontWeight: FontWeight.w500,
-//                fontSize: 16.0,
-//              ),
-//              textAlign: titleTextAlignment,
-//            ),
-//          ),
-//          new IconButton(
-//            icon: new Icon(
-//              Icons.more_vert,
-//              color: _selectedTheme.iconTheme.color,
-//            ),
-//            onPressed: null,
-//          )
-//        ],
-//      ),
-//    );
-//  }
+  int _themeIndex = 0;
 
+  Animation<FractionalOffset> _slideInLeftAnimation;
+  Animation<FractionalOffset> _slideInRightAnimation;
+  Animation<FractionalOffset> _slideInDownAnimation;
+  Animation<FractionalOffset> _slideInUpAnimation;
+  Animation<double> _fadeInAnimation;
+  Animation<double> _sizeInAnimation;
+
+  AnimationController _slideInAnimationController;
+  AnimationController _fadeInAnimationController;
+  AnimationController _sizeInAnimationController;
+
+  _AssetsDetailDemoState({
+    int themeIndex,
+  })
+      : _themeIndex = themeIndex;
+
+  @override
   Widget buildBody() {
+    _slideInAnimationController.forward().whenComplete(() {
+      _fadeInAnimationController.forward().whenComplete(() {
+        _sizeInAnimationController.forward();
+      });
+    });
     return new Expanded(
       child: new Column(
         children: [
@@ -63,16 +61,23 @@ class _AssetsDetailDemoState extends AssetsDemoState {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    new Padding(
-                      padding: const EdgeInsets.only(top: 14.0, right: 10.0),
-                      child: new Image(
-                        image: new AssetImage("assets/images/brand_egg.png"),
+                    new SlideTransition(
+                      position: _slideInRightAnimation,
+                      child: new Padding(
+                        padding: const EdgeInsets.only(top: 14.0, right: 10.0),
+                        child: new Image(
+                          image: new AssetImage("assets/images/brand_egg.png"),
+                        ),
                       ),
                     ),
-                    new Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
-                      child: new Image(
-                        image: new AssetImage("assets/images/brand_flour.png"),
+                    new SlideTransition(
+                      position: _slideInDownAnimation,
+                      child: new Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: new Image(
+                          image:
+                              new AssetImage("assets/images/brand_flour.png"),
+                        ),
                       ),
                     ),
                   ],
@@ -81,138 +86,157 @@ class _AssetsDetailDemoState extends AssetsDemoState {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    new Padding(
-                      padding: const EdgeInsets.only(top: 12.0),
-                      child: new Image(
-                        image:
-                            new AssetImage("assets/images/brand_cinnamon.png"),
+                    new SlideTransition(
+                      position: _slideInUpAnimation,
+                      child: new Padding(
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: new Image(
+                          image: new AssetImage(
+                              "assets/images/brand_cinnamon.png"),
+                        ),
                       ),
                     ),
-                    new Image(
-                      image: new AssetImage("assets/images/brand_salt.png"),
+                    new SlideTransition(
+                      position: _slideInLeftAnimation,
+                      child: new Image(
+                        image: new AssetImage("assets/images/brand_salt.png"),
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
           ),
-          new Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
-            child: new Text(
-              "INGREDIENTS",
-              style: new TextStyle(
-                color: _selectedTheme.textTheme.title.color,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w300,
-                letterSpacing: 2.0,
-              ),
-            ),
-          ),
-          new Text(
-            "2 Cups all-purpose flour\n"
-                "3/4 teaspoon salt\n"
-                "1 cup vegetable shortening\n"
-                "1 egg\n"
-                "2 tablespoons of cold water\n"
-                "1 tablespoon of cinnamon",
-            textAlign: TextAlign.center,
-            style: new TextStyle(
-                color: _selectedTheme.textTheme.body1.color,
-                fontSize: 14.0,
-                fontWeight: FontWeight.normal,
-                height: 1.6),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildBottomButton() {
-    return new Container(
-      height: 50.0,
-      margin: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
-      child: new Row(
-        children: [
-          new Expanded(
-            child: new FlatButton(
-              color: selectedTheme.buttonColor,
+          new FadeTransition(
+            opacity: _fadeInAnimation,
+            child: new Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
               child: new Text(
-                "Step 1: Make Crust",
+                "INGREDIENTS",
                 style: new TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: selectedTheme.textTheme.title.color,
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w300,
+                  letterSpacing: 2.0,
                 ),
               ),
-              onPressed: () {},
+            ),
+          ),
+          new FadeTransition(
+            opacity: _sizeInAnimation,
+            child: new SizeTransition(
+              sizeFactor: _sizeInAnimation,
+              child: new Center(
+                child: new Text(
+                  "2 Cups all-purpose flour\n"
+                      "3/4 teaspoon salt\n"
+                      "1 cup vegetable shortening\n"
+                      "1 egg\n"
+                      "2 tablespoons of cold water\n"
+                      "1 tablespoon of cinnamon",
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                      color: selectedTheme.textTheme.body1.color,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.normal,
+                      height: 1.6),
+                ),
+              ),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _contentWidget() {
-    return new Column(
-      children: [
-        buildAppBar(),
-        buildBody(),
-        buildBottomButton(),
-      ],
     );
   }
 
   @override
-  Widget build(BuildContext context) {
-    _targetPlatform = TargetPlatform.android;
-    TextTheme luxuryTextTheme = Theme.of(context).textTheme;
-    TextStyle luxuryTitleTextStyle =
-        luxuryTextTheme.title.copyWith(color: const Color(0xFF4A4A4A));
-    TextStyle luxurySubheadTextStyle =
-        luxuryTextTheme.subhead.copyWith(color: const Color(0xFFAAAAAA));
-    TextStyle luxuryBody1TextStyle =
-        luxuryTextTheme.body1.copyWith(color: const Color(0xFF4A4A4A));
-    TextStyle luxuryBody2TextStyle =
-        luxuryTextTheme.body2.copyWith(color: const Color(0xFF979797));
-    TextStyle luxuryButtonTextStyle =
-        luxuryTextTheme.button.copyWith(color: Colors.white);
-    ThemeData luxuryThemeData = new ThemeData(
-      primaryColor: Colors.white,
-      buttonColor: const Color(0xFF5FAD2C),
-      iconTheme: const IconThemeData(color: const Color(0xFFD1D1D1)),
-      textTheme: new TextTheme(
-        title: luxuryTitleTextStyle,
-        subhead: luxurySubheadTextStyle,
-        body1: luxuryBody1TextStyle,
-        body2: luxuryBody2TextStyle,
-        button: luxuryButtonTextStyle,
-      ),
-      brightness: Brightness.light,
-      platform: _targetPlatform,
+  dispose() {
+    _slideInAnimationController.dispose();
+    _fadeInAnimationController.dispose();
+    _sizeInAnimationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  initState() {
+    super.initState();
+    _configureAnimation();
+    setState(() {
+      tabController.index = _themeIndex;
+      appBarTitle = "Classic Apple Pie";
+      bottomButtonTitle = "Step 1: Make Crust";
+    });
+  }
+
+  @override
+  pressedNextButton() {}
+
+  _configureAnimation() {
+    _slideInAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kSlideInDuration),
+      vsync: this,
     );
-    ThemeData playfulThemeData = new ThemeData(
-      primaryColor: const Color(0xFFF0465A),
-      buttonColor: const Color(0xFF1DBC98),
-      iconTheme: const IconThemeData(color: Colors.white),
-      textTheme: new Typography(platform: _targetPlatform).white,
-      brightness: Brightness.light,
-      platform: Theme.of(context).platform,
+    _fadeInAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kFadeInDuration),
+      vsync: this,
     );
-    ThemeData darkTheme = new ThemeData(
-      primaryColor: const Color(0xFF212121),
-      buttonColor: const Color(0xFF4A4A4A),
-      iconTheme: const IconThemeData(color: Colors.white),
-      textTheme: new Typography(platform: _targetPlatform).white,
-      brightness: Brightness.dark,
-      platform: Theme.of(context).platform,
+    _sizeInAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kSizeInDuration),
+      vsync: this,
     );
-    _selectedTheme = luxuryThemeData;
-    return new Theme(
-      data: _selectedTheme,
-      child: new Material(
-        color: _selectedTheme.primaryColor,
-        child: _contentWidget(),
-      ),
+    _slideInLeftAnimation = _initSlideAnimation(
+        from: const FractionalOffset(1.5, 0.0),
+        to: const FractionalOffset(0.0, 0.0),
+        curve: Curves.easeInOut,
+        controller: _slideInAnimationController);
+    _slideInRightAnimation = _initSlideAnimation(
+        from: const FractionalOffset(-1.5, 0.0),
+        to: const FractionalOffset(0.0, 0.0),
+        curve: Curves.easeInOut,
+        controller: _slideInAnimationController);
+    _slideInUpAnimation = _initSlideAnimation(
+        from: const FractionalOffset(0.0, 1.0),
+        to: const FractionalOffset(0.0, 0.0),
+        curve: Curves.decelerate,
+        controller: _slideInAnimationController);
+    _slideInDownAnimation = _initSlideAnimation(
+        from: const FractionalOffset(0.0, -1.0),
+        to: const FractionalOffset(0.0, 0.0),
+        curve: Curves.decelerate,
+        controller: _slideInAnimationController);
+    _fadeInAnimation = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.linear,
+        controller: _fadeInAnimationController);
+    _sizeInAnimation = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.linear,
+        controller: _sizeInAnimationController);
+  }
+
+  Animation<double> _initAnimation(
+      {@required double from,
+      @required double to,
+      @required Curve curve,
+      @required AnimationController controller}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+      parent: controller,
+      curve: curve,
     );
+    return new Tween<double>(begin: from, end: to).animate(animation);
+  }
+
+  Animation<FractionalOffset> _initSlideAnimation(
+      {@required FractionalOffset from,
+      @required FractionalOffset to,
+      @required Curve curve,
+      @required AnimationController controller}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+      parent: controller,
+      curve: curve,
+    );
+    return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
   }
 }
