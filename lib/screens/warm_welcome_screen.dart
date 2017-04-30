@@ -62,12 +62,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   static const double _kSwipeThreshold = 40.0;
 
-  static const int _kAnimateOutDuration = 600;
-  static const int _kAnimateInDuration = 800;
-  static const int _kParallaxAnimationDuration = 1450;
+  static const int _kAnimateOutDuration = 400;
+  static const int _kAnimateInDuration = 600;
+  static const int _kParallaxAnimationDuration = 600;
   static const int _kWidgetScaleInDuration = 200;
   static const int _kImageSlideUpDuration = 500;
-  static const int _kSlideInDuration = 1000;
+  static const int _kSlideInDuration = 600;
 
   double _swipeAmount = 0.0;
 
@@ -416,7 +416,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                   ),
                 ),
               ),
-              _buildBody(nextStep: nextStep, imageSize: imageSize),
+              _buildBody(nextStep: nextStep, imageSize: imageSize, slideInAnimation: slideInAnimation),
             ],
           ),
         ],
@@ -424,12 +424,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     );
   }
 
-  Widget _buildBody({@required int nextStep, @required double imageSize}) {
+  Widget _buildBody({@required int nextStep, @required double imageSize, @required Animation<FractionalOffset> slideInAnimation}) {
     if (nextStep == 2) {
       return new Stack(
         children: [
           new SlideTransition(
-            position: _imageSlideUpAnimation,
+            position: slideInAnimation,
             child: new Padding(
               padding: const EdgeInsets.only(top: 40.0),
               child: new Center(
@@ -558,7 +558,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             ),
           ),
           new SlideTransition(
-            position: _imageSlideUpAnimation,
+            position: slideInAnimation,
             child: new Padding(
               padding: const EdgeInsets.only(top: 40.0),
               child: new Center(
@@ -580,7 +580,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       );
     } else {
       return new SlideTransition(
-        position: _imageSlideUpAnimation,
+        position: slideInAnimation,
         child: new Padding(
           padding: const EdgeInsets.only(top: 40.0),
           child: new Center(

@@ -21,8 +21,8 @@ class AssetsDetailDemo extends AssetsDemo {
 }
 
 class _AssetsDetailDemoState extends AssetsDemoState {
-  static const int _kSlideInDuration = 700;
-  static const int _kFadeInDuration = 400;
+  static const int _kSlideInDuration = 500;
+  static const int _kFadeInDuration = 500;
   static const int _kSizeInDuration = 500;
 
   int _themeIndex = 0;
@@ -237,10 +237,8 @@ class _AssetsDetailDemoState extends AssetsDemoState {
   }
 
   _startAnimation() {
-    _slideInAnimationController.forward().whenComplete(() {
-      _fadeInAnimationController.forward().whenComplete(() {
-        _sizeInAnimationController.forward();
-      });
-    });
+    _slideInAnimationController.forward();
+    _fadeInAnimationController.forward();
+    _sizeInAnimationController.forward();
   }
 }

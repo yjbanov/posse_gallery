@@ -115,7 +115,7 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
 
   Widget _buildBottomButton() {
     return new Container(
-      height: 46.0,
+      height: 76.0,
       margin: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
       child: new Row(
         children: [

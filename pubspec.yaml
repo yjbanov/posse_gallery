@@ -49,6 +49,9 @@ flutter:
     - assets/images/brand_stars.png
     - assets/images/category_cell_left_shape.png
     - assets/images/category_cell_right_shape.png
+    - assets/images/images_platform_hero.png
+    - assets/images/images_platform_lamp.png
+    - assets/images/images_platform_table.png
     - assets/images/welcome_explore_flutter.png
     - assets/images/welcome_flutter_logo.png
     - assets/images/welcome_iphone.png

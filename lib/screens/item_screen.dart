@@ -66,7 +66,7 @@ class _ItemScreenState extends State<ItemScreen> with TickerProviderStateMixin {
       child: new Container(
         decoration: new BoxDecoration(
           borderRadius: new BorderRadius.circular(3.0),
-          backgroundColor: Colors.white,
+          color: Colors.white,
         ),
         margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
         child: new ClipRRect(

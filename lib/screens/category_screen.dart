@@ -53,32 +53,34 @@ class _CategoryScreenState extends State<CategoryScreen>
         height: 163.0,
         child: new Stack(
           children: [
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                new Padding(
-                  padding: const EdgeInsets.only(left: 50.0),
-                  child: new Image(
-                    width: 50.0,
-                    image: new AssetImage(item.iconUri),
-                    fit: BoxFit.scaleDown,
+            new Center(
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  new Padding(
+                    padding: const EdgeInsets.only(left: 50.0),
+                    child: new Image(
+                      width: 50.0,
+                      image: new AssetImage(item.iconUri),
+                      fit: BoxFit.scaleDown,
+                    ),
                   ),
-                ),
-                new Expanded(
-                  child: new Padding(
-                    padding: const EdgeInsets.only(left: 50.0, right: 20.0),
-                    child: new Text(
-                      item.title,
-                      style: new TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14.0,
-                        color: textColor,
+                  new Expanded(
+                    child: new Padding(
+                      padding: const EdgeInsets.only(left: 50.0, right: 20.0),
+                      child: new Text(
+                        item.title,
+                        style: new TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14.0,
+                          color: textColor,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             new Material(
               color: const Color(0x00FFFFFF),

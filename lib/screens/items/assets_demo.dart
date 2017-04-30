@@ -13,8 +13,8 @@ class AssetsDemo extends StatefulWidget {
 }
 
 class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
-  static const int _kHeroAnimationDuration = 1000;
-  static const int _kFadeInAnimationDuration = 400;
+  static const int _kHeroAnimationDuration = 800;
+  static const int _kFadeInAnimationDuration = 800;
   ThemeData selectedTheme;
   ThemeData luxuryThemeData;
   ThemeData playfulThemeData;
@@ -149,72 +149,69 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
               ),
             ),
           ),
-          new FadeTransition(
-            opacity: _fadeInAnimation,
-            child: new Column(
-              children: [
-                new Text(
+          new SlideTransition(
+            position: _slideInAnimation,
+            child: new FadeTransition(
+              opacity: _fadeInAnimation,
+              child: new Column(
+                children: [
+                  new Text(
                     "Classic Apple Pie",
                     style: new TextStyle(
-                        color: selectedTheme.textTheme.title.color,
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.w300,
-                    ),
-                ),
-                new RotationTransition(
-                  turns: _bodyRotationAnimation,
-                  child: new Column(children: [
-                    new Padding(
-                      padding: const EdgeInsets.only(top: 20.0, bottom: 5.0),
-                      child: new Image(
-                        image:
-                            new AssetImage("assets/images/brand_profile.png"),
-                      ),
-                    ),
-                    new Text(
-                      "By Jenny Flay",
-                      style: new TextStyle(
-                        color: selectedTheme.textTheme.subhead.color,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                  ]),
-                ),
-                new Container(
-                  margin: const EdgeInsets.only(top: 20.0),
-                  child: new Center(
-                    child: new Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        new Padding(
-                          padding: const EdgeInsets.only(right: 10.0),
-                          child: new Image(
-                            image:
-                                new AssetImage("assets/images/brand_stars.png"),
-                          ),
-                        ),
-                        new Text(
-                          "120",
-                          style: new TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.normal,
-                            color: selectedTheme.textTheme.body1.color,
-                          ),
-                        ),
-                        new Text(
-                          " Mins",
-                          style: new TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.normal,
-                            color: selectedTheme.textTheme.body2.color,
-                          ),
-                        )
-                      ],
+                      color: selectedTheme.textTheme.title.color,
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.w300,
                     ),
                   ),
-                ),
-              ],
+                  new Padding(
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 5.0),
+                    child: new Image(
+                      image: new AssetImage("assets/images/brand_profile.png"),
+                    ),
+                  ),
+                  new Text(
+                    "By Jenny Flay",
+                    style: new TextStyle(
+                      color: selectedTheme.textTheme.subhead.color,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  new Container(
+                    margin: const EdgeInsets.only(top: 20.0),
+                    child: new Center(
+                      child: new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          new Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: new Image(
+                              image: new AssetImage(
+                                  "assets/images/brand_stars.png"),
+                            ),
+                          ),
+                          new Text(
+                            "120",
+                            style: new TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.normal,
+                              color: selectedTheme.textTheme.body1.color,
+                            ),
+                          ),
+                          new Text(
+                            " Mins",
+                            style: new TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.normal,
+                              color: selectedTheme.textTheme.body2.color,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -234,7 +231,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         children: [
           new Expanded(
             child: new FlatButton(
-              color: const Color(0xFF5FAD2C),
+              color: selectedTheme.buttonColor,
               child: new Text(
                 bottomButtonTitle,
                 style: new TextStyle(
@@ -420,7 +417,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         body2: luxuryBody2TextStyle,
         button: luxuryButtonTextStyle,
       ),
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       platform: targetPlatform,
     );
     playfulThemeData = new ThemeData(
@@ -489,8 +486,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   }
 
   _startAnimation() {
-    _heroAnimationController.forward().whenComplete(() {
-      _fadeInAnimationController.forward();
-    });
+    _heroAnimationController.forward();
+    _fadeInAnimationController.forward();
   }
 }
