@@ -10,6 +10,7 @@ import 'package:posse_gallery/screens/items/assets_demo.dart';
 import 'package:posse_gallery/screens/items/customized_design.dart';
 import 'package:posse_gallery/screens/items/patterns_list.dart';
 import 'package:posse_gallery/screens/items/platform_demo.dart';
+import 'package:posse_gallery/screens/items/platform_demo_detail.dart';
 import 'package:posse_gallery/screens/warm_welcome_screen.dart';
 
 class CategoryManager {
@@ -63,7 +64,7 @@ class CategoryManager {
           iconUri: "assets/icons/ic_customized_painting.png",
           routeName: "painting",
           color: const Color(0xFF0084EA),
-          widget: new PlatformDemo(),
+          widget: new PlatformDetailDemo(),
           needsFullScreen: true,
         ),
         new CategoryItem(

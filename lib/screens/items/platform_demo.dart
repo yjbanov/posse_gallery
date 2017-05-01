@@ -11,8 +11,8 @@ class PlatformDemo extends StatefulWidget {
 
 class PlatformDemoState extends State<PlatformDemo>
     with TickerProviderStateMixin {
-  TargetPlatform _targetPlatform;
 
+  TargetPlatform _targetPlatform;
   ThemeData _themeData;
 
   @override
@@ -68,22 +68,92 @@ class PlatformDemoState extends State<PlatformDemo>
         children: [
           new Expanded(
             child: new Container(
-              child: new Image(
-                image: new AssetImage("assets/images/images_platform_hero.png"),
-                fit: BoxFit.fitHeight,
+              child: new Stack(
+                alignment: FractionalOffset.bottomCenter,
+                children: [
+                  new Image(
+                    image: new AssetImage(
+                        "assets/images/images_platform_hero.png"),
+                    fit: BoxFit.fitHeight,
+                  ),
+                  new Center(
+                    child: new Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        new Text(
+                          "FEATURED",
+                          style: new TextStyle(
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white,
+                          ),
+                        ),
+                        new Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: new Text(
+                            "GEOMETRIC DINING CHAIR",
+                            style: new TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
           new Row(
             children: [
-              new Image(
-                width: MediaQuery.of(context).size.width * 0.5,
-                image: new AssetImage("assets/images/images_platform_lamp.png"),
+              new Container(
+                child: new Stack(
+                  children: [
+                    new Image(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      image: new AssetImage(
+                          "assets/images/images_platform_lamp.png"),
+                    ),
+                    new Positioned(
+                      left: 0.0,
+                      bottom: 0.0,
+                      child: new Text(
+                        "THE\nWALL LAMP",
+                        style: new TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              new Image(
-                width: MediaQuery.of(context).size.width * 0.5,
-                image:
-                    new AssetImage("assets/images/images_platform_table.png"),
+              new Container(
+                child: new Stack(
+                  children: [
+                    new Image(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      image: new AssetImage(
+                          "assets/images/images_platform_table.png"),
+                    ),
+                    new Positioned(
+                      left: 0.0,
+                      bottom: 0.0,
+                      child: new Text(
+                        "NATURAL\nSIDE TABLE",
+                        style: new TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
