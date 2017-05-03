@@ -79,24 +79,24 @@ class _CircularRevealState extends State<CircularReveal> with SingleTickerProvid
         begin: 0.0,
         end: radius,
     );
-    Point origin;
+    Offset origin;
     // TODO(al) - investigate if circle origin is correct
     if (_startPosition == PainterStartPosition.topLeft) {
-      origin = new Point(-offsetWindowWidth, -offsetWindowHeight);
+      origin = new Offset(-offsetWindowWidth, -offsetWindowHeight);
     } else if (_startPosition == PainterStartPosition.topCenter) {
-      origin = new Point(0.0, -offsetWindowHeight);
+      origin = new Offset(0.0, -offsetWindowHeight);
     } else if (_startPosition == PainterStartPosition.topRight) {
-      origin = new Point(offsetWindowWidth, offsetWindowHeight);
+      origin = new Offset(offsetWindowWidth, offsetWindowHeight);
     } else if (_startPosition == PainterStartPosition.centerLeft) {
-      origin = new Point(-offsetWindowWidth, 0.0);
+      origin = new Offset(-offsetWindowWidth, 0.0);
     } else if (_startPosition == PainterStartPosition.center) {
-      origin = new Point(0.0, 0.0);
+      origin = new Offset(0.0, 0.0);
     } else if (_startPosition == PainterStartPosition.centerRight) {
-      origin = new Point(offsetWindowWidth, 0.0);
+      origin = new Offset(offsetWindowWidth, 0.0);
     } else if (_startPosition == PainterStartPosition.bottomLeft) {
-      origin = new Point(-offsetWindowWidth, offsetWindowHeight);
+      origin = new Offset(-offsetWindowWidth, offsetWindowHeight);
     } else if (_startPosition == PainterStartPosition.bottomRight) {
-      origin = new Point(offsetWindowWidth, offsetWindowHeight);
+      origin = new Offset(offsetWindowWidth, offsetWindowHeight);
     }
     return new CustomPaint(
         painter: new CirclePainter(animation: _tween.animate(_animation), color: _color, origin: origin),
@@ -108,7 +108,7 @@ class CirclePainter extends CustomPainter {
   CirclePainter({
     Animation<double> animation,
     Color color,
-    Point origin,
+    Offset origin,
   })
       : _animation = animation,
         _color = color,
@@ -117,7 +117,7 @@ class CirclePainter extends CustomPainter {
 
   final Animation<double> _animation;
   final Color _color;
-  final Point _origin;
+  final Offset _origin;
 
   @override
   void paint(Canvas canvas, Size size) {
