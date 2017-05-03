@@ -82,3 +82,10 @@ strip_invalid_archs() {
   fi
 }
 
+
+if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "${PODS_ROOT}/../../../../../dev/flutter/bin/cache/artifacts/engine/ios/Flutter.framework"
+fi
+if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "${PODS_ROOT}/../../../../../dev/flutter/bin/cache/artifacts/engine/ios/Flutter.framework"
+fi
