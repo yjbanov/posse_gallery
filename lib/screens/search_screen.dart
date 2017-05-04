@@ -4,39 +4,45 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:posse_gallery/views/cells/circular_reveal.dart';
+import 'package:meta/meta.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => new _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends State<SearchScreen>
+    with TickerProviderStateMixin {
+  static const int _kAnimationInDuration = 300;
+
+  List<Widget> _cells = [];
+  bool _isSearching = false;
+
+  Animation<double> _scaleInAnimation;
+  AnimationController _animationController;
+
+  // TODO(al) - Implement indexing
+  final TextEditingController _searchQuery = new TextEditingController();
   _SearchScreenState() {
     _cells = _loadResults();
   }
 
-  List<Widget> _cells = [];
-  // TODO(al) - Implement indexing
-  bool _isSearching = false;
-  final TextEditingController _searchQuery = new TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return _contentWidget();
+  }
 
-  List<Widget> _loadResults() {
-    List<Widget> resultCells = [];
-    for (int i = 0; i < 3; i++) {
-      final resultContainer = new Container(
-        padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 20.0),
-        height: 64.0,
-        child: new Text("Search Result",
-            style: new TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 18.0,
-              color: Colors.white,
-            )),
-      );
-      resultCells.add(resultContainer);
-    }
-    return resultCells;
+  @override
+  dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  initState() {
+    super.initState();
+    _configureAnimation();
+    _animationController.forward();
   }
 
   Widget _buildAppBar() {
@@ -90,6 +96,70 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  _configureAnimation() {
+    _animationController = new AnimationController(
+      duration: const Duration(milliseconds: _kAnimationInDuration),
+      vsync: this,
+    );
+    _scaleInAnimation = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _animationController);
+  }
+
+  Widget _contentWidget() {
+    return new Container(
+      color: const Color(0x00FFFFFF),
+      child: new Hero(
+          tag: "main.search.hero",
+          child: new ScaleTransition(
+              scale: _scaleInAnimation,
+              child: new Material(
+                  color: Theme.of(context).primaryColor,
+                  child: new Column(
+                      children: [
+                        _buildAppBar(),
+                        _buildInputWidget(),
+                        _resultsViewWidget(),
+                      ],
+                  ),
+              ),
+          ),
+      ),
+    );
+  }
+
+  Animation<double> _initAnimation(
+      {@required double from,
+      @required double to,
+      @required Curve curve,
+      @required AnimationController controller}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+      parent: controller,
+      curve: curve,
+    );
+    return new Tween<double>(begin: from, end: to).animate(animation);
+  }
+
+  List<Widget> _loadResults() {
+    List<Widget> resultCells = [];
+    for (int i = 0; i < 3; i++) {
+      final resultContainer = new Container(
+        padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 20.0),
+        height: 64.0,
+        child: new Text("Search Result",
+            style: new TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 18.0,
+              color: Colors.white,
+            )),
+      );
+      resultCells.add(resultContainer);
+    }
+    return resultCells;
+  }
+
   Widget _resultsViewWidget() {
     return new Expanded(
       child: new Container(
@@ -99,41 +169,6 @@ class _SearchScreenState extends State<SearchScreen> {
             children: _cells,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _contentWidget() {
-    return new Column(
-      children: [
-        _buildAppBar(),
-        _buildInputWidget(),
-        _resultsViewWidget(),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Material(
-      color: const Color(0x00FFFFFF),
-      child: new Stack(
-        children: [
-          new Positioned.fill(
-            child: new Center(
-              child: new CircularReveal(
-                  color: const Color(0xFF00A2EE),
-                  duration: const Duration(milliseconds: 2000),
-                  startPosition: PainterStartPosition.center),
-            ),
-          ),
-          new Positioned.fill(
-            child: new Container(
-              color: const Color(0xFF00A2EE),
-              child: _contentWidget(),
-            ),
-          ),
-        ],
       ),
     );
   }

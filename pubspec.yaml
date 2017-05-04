@@ -13,10 +13,16 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/backgrounds/bg_custom_hero.png
+    - assets/backgrounds/bg_welcome.png
     - assets/icons/ic_animation_chains.png
     - assets/icons/ic_animation_gestures.png
     - assets/icons/ic_animation_tweens.png
+    - assets/icons/ic_assets_diamond.png
+    - assets/icons/ic_assets_moon.png
+    - assets/icons/ic_assets_smiley.png
     - assets/icons/ic_components.png
+    - assets/icons/ic_custom_circle_arrow.png
     - assets/icons/ic_customized_assets.png
     - assets/icons/ic_customized_brand_design.png
     - assets/icons/ic_customized_painting.png
@@ -29,6 +35,7 @@ flutter:
     - assets/icons/ic_pattern_edit_image.png
     - assets/icons/ic_patterns_list.png
     - assets/icons/ic_patterns_walkthrough.png
+    - assets/icons/ic_platform_heart.png
     - assets/icons/ic_plug_in_location.png
     - assets/icons/ic_plug_in_motion.png
     - assets/icons/ic_plug_in_photo.png
@@ -37,11 +44,20 @@ flutter:
     - assets/images/bg_flutter_welcome.png
     - assets/images/bg_main_screen.png
     - assets/images/brand_apple_pie.png
+    - assets/images/brand_cinnamon.png
+    - assets/images/brand_egg.png
+    - assets/images/brand_flour.png
     - assets/images/brand_product.png
     - assets/images/brand_profile.png
+    - assets/images/brand_salt.png
     - assets/images/brand_stars.png
     - assets/images/category_cell_left_shape.png
     - assets/images/category_cell_right_shape.png
+    - assets/images/custom_hero.png
+    - assets/images/platform_hero.png
+    - assets/images/platform_detail_hero.png
+    - assets/images/platform_lamp.png
+    - assets/images/platform_table.png
     - assets/images/welcome_explore_flutter.png
     - assets/images/welcome_flutter_logo.png
     - assets/images/welcome_iphone.png
@@ -55,4 +71,3 @@ flutter:
     - assets/images/welcome_widget_4.png
     - assets/images/welcome_widget_5.png
     - assets/images/welcome_widget_collection.png
-    - assets/backgrounds/bg_welcome.png
