@@ -54,7 +54,8 @@ flutter:
     - assets/images/category_cell_left_shape.png
     - assets/images/category_cell_right_shape.png
     - assets/images/custom_hero.png
-    - assets/images/platform_hero.png
+    - assets/images/platform_hero_ios.png
+    - assets/images/platform_hero_android.png
     - assets/images/platform_detail_hero.png
     - assets/images/platform_lamp.png
     - assets/images/platform_table.png

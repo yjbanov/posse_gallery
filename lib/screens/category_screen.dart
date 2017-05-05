@@ -202,7 +202,7 @@ class _CategoryScreenState extends State<CategoryScreen>
             pinned: true,
             expandedHeight: 256.0,
             leading: _buildBackButton(),
-            backgroundColor: _category.centerShapeColor,
+            backgroundColor: _category.centerShapeColor.withAlpha(255),
             flexibleSpace: new FlexibleSpaceBar(
               background: _buildAppBar(),
             ),

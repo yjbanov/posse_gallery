@@ -322,6 +322,9 @@ class PlatformDemoState extends State<PlatformDemo>
       curve: Curves.easeOut,
       controller: _animationController,
     );
+    String imageString = _targetPlatform == TargetPlatform.iOS
+        ? "assets/images/platform_hero_ios.png"
+        : "assets/images/platform_hero_android.png";
     return new Expanded(
       child: new GestureDetector(
         onTap: (() {
@@ -331,13 +334,16 @@ class PlatformDemoState extends State<PlatformDemo>
           position: animation,
           child: new Container(
             child: new Stack(
-              alignment: FractionalOffset.bottomCenter,
               children: [
-                new Hero(
-                  tag: "platform.hero",
-                  child: new Image(
-                      image: new AssetImage("assets/images/platform_hero.png"),
+                new Align(
+                  alignment: FractionalOffset.bottomLeft,
+                  child: new Hero(
+                    tag: "platform.hero",
+                    child: new Image(
+                      fit: BoxFit.fitHeight,
+                      image: new AssetImage(imageString),
                     ),
+                  ),
                 ),
                 new Center(
                   child: new Column(

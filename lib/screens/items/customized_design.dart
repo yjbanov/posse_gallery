@@ -49,7 +49,7 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
       children: [
         new Image(
           height: MediaQuery.of(context).size.height,
-          fit: BoxFit.fill,
+          fit: BoxFit.fitHeight,
           image: new AssetImage(
             "assets/images/custom_hero.png",
           ),
@@ -76,7 +76,7 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
       bottom: 0.0,
       child: new Container(
         color: const Color(0xFF212024),
-        height: 62.0,
+        height: 70.0,
         child: new Stack(
           children: [
             new Positioned(

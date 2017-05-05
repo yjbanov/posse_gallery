@@ -240,8 +240,9 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
               color: selectedTheme.buttonColor,
               child: new Text(
                 bottomButtonTitle,
+                textAlign: TextAlign.center,
                 style: new TextStyle(
-                  fontSize: 12.0,
+                  fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
