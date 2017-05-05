@@ -17,16 +17,20 @@ class PlatformDemoState extends State<PlatformDemo>
   static const int _kAnimationInDuration = 400;
 
   TargetPlatform _targetPlatform;
+  TextAlign _platformTextAlignment;
   ThemeData _themeData;
 
   int _radioValue = 0;
   Animation<double> _fadeInAnimation;
+  Animation<FractionalOffset> _leftPaneAnimation;
+  Animation<FractionalOffset> _rightPaneAnimation;
   Animation<double> _scaleInAnimation;
   Animation<double> _pivotCounterClockwiseAnimation;
-
   Animation<double> _pivotClockwiseAnimation;
 
   AnimationController _animationController;
+  AnimationController _leftPaneAnimationController;
+  AnimationController _rightPaneAnimationController;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +47,8 @@ class PlatformDemoState extends State<PlatformDemo>
   @override
   dispose() {
     _animationController.dispose();
+    _leftPaneAnimationController.dispose();
+    _rightPaneAnimationController.dispose();
     super.dispose();
   }
 
@@ -51,15 +57,14 @@ class PlatformDemoState extends State<PlatformDemo>
     super.initState();
     _configureAnimation();
     _animationController.forward();
+    _leftPaneAnimationController.forward();
+    _rightPaneAnimationController.forward();
   }
 
   Widget _buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    TextAlign titleTextAlignment = _targetPlatform == TargetPlatform.android
-        ? TextAlign.center
-        : TextAlign.left;
     return new Container(
-      height: 76.0,
+      height: 56.0,
       padding: new EdgeInsets.only(top: statusBarHeight),
       child: new Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,7 +78,7 @@ class PlatformDemoState extends State<PlatformDemo>
                 fontWeight: FontWeight.w500,
                 fontSize: 16.0,
               ),
-              textAlign: titleTextAlignment,
+              textAlign: _platformTextAlignment,
             ),
           ),
           new IconButton(
@@ -99,11 +104,13 @@ class PlatformDemoState extends State<PlatformDemo>
     return new Expanded(
       child: new FadeTransition(
         opacity: _fadeInAnimation,
-        child: new Column(
-          children: [
-            _buildHeroWidget(),
-            _buildBottomPanes(),
-          ],
+        child: new Container(
+          child: new Column(
+            children: [
+              _buildHeroWidget(),
+              _buildBottomPanes(),
+            ],
+          ),
         ),
       ),
     );
@@ -164,32 +171,10 @@ class PlatformDemoState extends State<PlatformDemo>
   }
 
   Widget _buildBottomPanes() {
-    AnimationController leftPaneAnimationController = new AnimationController(
-      duration: new Duration(milliseconds: _kAnimationInDuration + 100),
-      vsync: this,
-    );
-    AnimationController rightPaneAnimationController = new AnimationController(
-      duration: new Duration(milliseconds: _kAnimationInDuration + 100),
-      vsync: this,
-    );
-    Animation<FractionalOffset> leftPaneAnimation = _initSlideAnimation(
-      from: new FractionalOffset(0.0, 1.5),
-      to: const FractionalOffset(0.0, 0.0),
-      curve: Curves.easeOut,
-      controller: leftPaneAnimationController,
-    );
-    Animation<FractionalOffset> rightPaneAnimation = _initSlideAnimation(
-      from: new FractionalOffset(0.0, 1.5),
-      to: const FractionalOffset(0.0, 0.0),
-      curve: Curves.easeOut,
-      controller: rightPaneAnimationController,
-    );
-    leftPaneAnimationController.forward();
-    rightPaneAnimationController.forward();
     return new Row(
       children: [
         new SlideTransition(
-          position: leftPaneAnimation,
+          position: _leftPaneAnimation,
           child: new Container(
             child: new Stack(
               children: [
@@ -214,7 +199,7 @@ class PlatformDemoState extends State<PlatformDemo>
           ),
         ),
         new SlideTransition(
-          position: rightPaneAnimation,
+          position: _rightPaneAnimation,
           child: new Container(
             child: new Stack(
               children: [
@@ -262,28 +247,60 @@ class PlatformDemoState extends State<PlatformDemo>
               child: new Center(
                 child: new Padding(
                   padding: const EdgeInsets.only(
-                      left: 50.0, right: 50.0, bottom: 42.0),
+                      left: 20.0, right: 20.0, bottom: 42.0),
                   child: new Column(
                     children: [
-                      new Text(
-                        "Toggle between an iOS and Android design screen to view the unified user experence.",
-                        textAlign: TextAlign.center,
-                        style: new TextStyle(
-                          letterSpacing: 0.6,
-                          fontSize: 16.0,
-                          height: 1.4,
+                      new Padding(
+                        padding: const EdgeInsets.only(bottom: 5.0),
+                        child: new Text(
+                          "Toggle between an iOS and Android design screen to view the unified user experence.",
+                          textAlign: _platformTextAlignment,
+                          style: new TextStyle(
+                            letterSpacing: 0.6,
+                            fontSize: 16.0,
+                            height: 1.4,
+                          ),
                         ),
                       ),
                       new Row(
+                        mainAxisSize: MainAxisSize.max,
                         children: [
-                          new Radio<int>(
-                              value: 0,
-                              groupValue: _radioValue,
-                              onChanged: _handleRadioValueChanged),
-                          new Radio<int>(
-                              value: 1,
-                              groupValue: _radioValue,
-                              onChanged: _handleRadioValueChanged),
+                          new Expanded(
+                            child: new Column(
+                              children: [
+                                new Radio<int>(
+                                    value: 0,
+                                    groupValue: _radioValue,
+                                    onChanged: _handleRadioValueChanged),
+                                new Text(
+                                  "iOS",
+                                  style: new TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: const Color(0xFFAAAAAA),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          new Expanded(
+                            child: new Column(
+                              children: [
+                                new Radio<int>(
+                                    value: 1,
+                                    groupValue: _radioValue,
+                                    onChanged: _handleRadioValueChanged),
+                                new Text(
+                                  "ANDROID",
+                                  style: new TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: const Color(0xFFAAAAAA),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -298,17 +315,13 @@ class PlatformDemoState extends State<PlatformDemo>
   }
 
   Widget _buildHeroWidget() {
-    AnimationController animationController = new AnimationController(
-      duration: new Duration(milliseconds: _kAnimationInDuration),
-      vsync: this,
-    );
+    FractionalOffset offset = new FractionalOffset(1.5, 0.0);
     Animation<FractionalOffset> animation = _initSlideAnimation(
-      from: new FractionalOffset(0.0, 1.5),
+      from: offset,
       to: const FractionalOffset(0.0, 0.0),
       curve: Curves.easeOut,
-      controller: animationController,
+      controller: _animationController,
     );
-    animationController.forward();
     return new Expanded(
       child: new GestureDetector(
         onTap: (() {
@@ -323,9 +336,8 @@ class PlatformDemoState extends State<PlatformDemo>
                 new Hero(
                   tag: "platform.hero",
                   child: new Image(
-                    image: new AssetImage("assets/images/platform_hero.png"),
-                    fit: BoxFit.fitHeight,
-                  ),
+                      image: new AssetImage("assets/images/platform_hero.png"),
+                    ),
                 ),
                 new Center(
                   child: new Column(
@@ -372,25 +384,34 @@ class PlatformDemoState extends State<PlatformDemo>
         to: 1.0,
         curve: Curves.easeOut,
         controller: _animationController);
-    _scaleInAnimation = _initAnimation(
-        from: 0.75,
-        to: 1.0,
-        curve: Curves.easeOut,
-        controller: _animationController);
-    _pivotCounterClockwiseAnimation = _initAnimation(
-        from: 0.25,
-        to: 0.0,
-        curve: Curves.easeOut,
-        controller: _animationController);
-    _pivotClockwiseAnimation = _initAnimation(
-        from: 0.75,
-        to: 1.0,
-        curve: Curves.easeOut,
-        controller: _animationController);
+    _leftPaneAnimationController = new AnimationController(
+      duration: new Duration(milliseconds: _kAnimationInDuration + 100),
+      vsync: this,
+    );
+    _rightPaneAnimationController = new AnimationController(
+      duration: new Duration(milliseconds: _kAnimationInDuration + 100),
+      vsync: this,
+    );
+    FractionalOffset offset = new FractionalOffset(1.5, 0.0);
+    _leftPaneAnimation = _initSlideAnimation(
+      from: offset,
+      to: const FractionalOffset(0.0, 0.0),
+      curve: Curves.easeOut,
+      controller: _leftPaneAnimationController,
+    );
+    _rightPaneAnimation = _initSlideAnimation(
+      from: offset,
+      to: const FractionalOffset(0.0, 0.0),
+      curve: Curves.easeOut,
+      controller: _rightPaneAnimationController,
+    );
   }
 
   _configureThemes() {
-    _targetPlatform = TargetPlatform.iOS;
+    _targetPlatform = Theme.of(context).platform;
+    _platformTextAlignment = _targetPlatform == TargetPlatform.android
+        ? TextAlign.left
+        : TextAlign.center;
     TextTheme textTheme = Theme.of(context).textTheme;
     TextStyle iOSButtonTextStyle = textTheme.button.copyWith(
         fontSize: 14.0, color: Colors.white, fontWeight: FontWeight.bold);
@@ -427,6 +448,8 @@ class PlatformDemoState extends State<PlatformDemo>
   _handleRadioValueChanged(int value) {
     setState(() {
       _radioValue = value;
+      _targetPlatform =
+          _radioValue == 0 ? TargetPlatform.iOS : TargetPlatform.android;
     });
   }
 
@@ -462,14 +485,6 @@ class PlatformDemoState extends State<PlatformDemo>
         pageBuilder:
             (BuildContext context, Animation<double> _, Animation<double> __) {
           return new PlatformDetailDemo(targetPlatform: _targetPlatform);
-        },
-        transitionsBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child,
-        ) {
-          return new FadeTransition(opacity: animation, child: child);
         },
       ),
     );

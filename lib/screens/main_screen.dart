@@ -95,12 +95,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                       Navigator.push(
                         context,
                         new PageRouteBuilder<Null>(
-                          settings: const RouteSettings(name: "/search"),
-                          pageBuilder: (BuildContext context,
-                              Animation<double> _, Animation<double> __) {
-                            return new SearchScreen();
-                          }
-                        ),
+                            settings: const RouteSettings(name: "/search"),
+                            pageBuilder: (BuildContext context,
+                                Animation<double> _, Animation<double> __) {
+                              return new SearchScreen();
+                            }),
                       );
                     },
                   ),
@@ -247,23 +246,14 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                   onTap: () {
                     Navigator.push(
                       context,
-                      new PageRouteBuilder<Null>(
+                      new MaterialPageRoute<Null>(
+                        fullscreenDialog: true,
                         settings:
                             new RouteSettings(name: "/category/$routeName"),
-                        pageBuilder: (BuildContext context, Animation<double> _,
-                            Animation<double> __) {
+                        builder: (BuildContext context) {
                           return new CategoryScreen(
-                              category:
-                                  RouteManager.retrieveCategory(routeName));
-                        },
-                        transitionsBuilder: (
-                          BuildContext context,
-                          Animation<double> animation,
-                          Animation<double> secondaryAnimation,
-                          Widget child,
-                        ) {
-                          return new FadeTransition(
-                              opacity: animation, child: child);
+                            category: RouteManager.retrieveCategory(routeName),
+                          );
                         },
                       ),
                     );
@@ -313,7 +303,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         vsync: this,
       );
       Animation<FractionalOffset> animation = _initSlideAnimation(
-        from: new FractionalOffset(0.0, 1.5),
+        from: new FractionalOffset(1.5, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeOut,
         controller: animationController,

@@ -83,7 +83,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
 
   Widget buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    TextAlign titleTextAlignment = targetPlatform == TargetPlatform.android
+    TextAlign titleTextAlignment = targetPlatform == TargetPlatform.iOS
         ? TextAlign.center
         : TextAlign.left;
     return new Container(
@@ -220,6 +220,12 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   }
 
   Widget buildBottomButton() {
+    targetPlatform = Theme.of(context).platform;
+//    print(targetPlatform);
+    if (targetPlatform == TargetPlatform.iOS) {
+      print(targetPlatform);
+      bottomButtonTitle.toUpperCase();
+    }
     double buttonBorderRadius =
         targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
     return new Container(
@@ -273,14 +279,6 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         pageBuilder:
             (BuildContext context, Animation<double> _, Animation<double> __) {
           return new AssetsDetailDemo(themeIndex: tabController.index);
-        },
-        transitionsBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child,
-        ) {
-          return new FadeTransition(opacity: animation, child: child);
         },
       ),
     );
@@ -394,7 +392,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   }
 
   _configureThemes() {
-    targetPlatform = TargetPlatform.iOS;
+    targetPlatform = Theme.of(context).platform;
     TextTheme luxuryTextTheme = Theme.of(context).textTheme;
     TextStyle luxuryTitleTextStyle =
         luxuryTextTheme.title.copyWith(color: const Color(0xFF4A4A4A));

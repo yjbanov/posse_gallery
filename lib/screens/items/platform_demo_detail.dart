@@ -218,15 +218,19 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
               color: const Color(0x00FFFFFF),
               child: new CloseButton(),
             ),
-            expandedHeight: MediaQuery.of(context).size.height * 0.47,
+            expandedHeight: MediaQuery.of(context).size.height * 0.5,
             flexibleSpace: new FlexibleSpaceBar(
               background: new Stack(
                 children: [
                   new Hero(
                     tag: "platform.hero",
-                    child: new Image(
-                      image: new AssetImage(
-                          "assets/images/platform_detail_hero.png"),
+                    child: new OverflowBox(
+                      maxWidth: double.INFINITY,
+                      maxHeight: double.INFINITY,
+                      child: new Image(
+                        image: new AssetImage(
+                            "assets/images/platform_detail_hero.png"),
+                      ),
                     ),
                   ),
                   _buildAppBar(),

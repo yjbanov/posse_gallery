@@ -173,9 +173,13 @@ class _CategoryScreenState extends State<CategoryScreen>
   }
 
   Widget _buildBackButton() {
+    TargetPlatform platform = Theme.of(context).platform;
+    final IconData backIcon = platform == TargetPlatform.android
+        ? Icons.arrow_back
+        : Icons.arrow_back_ios;
     return new IconButton(
       padding: EdgeInsets.zero,
-      icon: new Icon(Icons.arrow_back, color: Colors.white),
+      icon: new Icon(Icons.close, color: Colors.white),
       onPressed: () {
         Navigator.of(context).pop();
       },
@@ -265,20 +269,10 @@ class _CategoryScreenState extends State<CategoryScreen>
                 }
                 Navigator.push(
                   context,
-                  new PageRouteBuilder<Null>(
+                  new MaterialPageRoute<Null>(
                     settings: new RouteSettings(name: "/item/$routeName"),
-                    pageBuilder: (BuildContext context, Animation<double> _,
-                        Animation<double> __) {
+                    builder: (BuildContext context) {
                       return nextScreen;
-                    },
-                    transitionsBuilder: (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child,
-                    ) {
-                      return new FadeTransition(
-                          opacity: animation, child: child);
                     },
                   ),
                 );
