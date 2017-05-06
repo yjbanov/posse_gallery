@@ -19,7 +19,7 @@ addons:
       - ubuntu-toolchain-r-test # if we don't specify this, the libstdc++6 we get is the wrong version
     packages:
       - libstdc++6
-      - fonts-droid
+      - mesa-utils
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
