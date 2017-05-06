@@ -1,6 +1,6 @@
-<div style="margin-top: 80px; margin-bottom: 70px">
+<br/>
 <img src="https://flutter.io/images/flutter-mark-square-100.png" width="70">
-</div>
+<br/><br/><br/>
 
 Welcome to the **Flutter Gallery**. This project serves to provide a walkthrough of Flutter's capabilities and to showcase Flutter's key features in a single, exciting package.
 
