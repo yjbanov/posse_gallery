@@ -50,10 +50,14 @@ flutter:
     - assets/images/brand_product.png
     - assets/images/brand_profile.png
     - assets/images/brand_salt.png
+    - assets/images/brand_star_gold.png
+    - assets/images/brand_star_gray.png
     - assets/images/brand_stars.png
     - assets/images/category_cell_left_shape.png
     - assets/images/category_cell_right_shape.png
     - assets/images/custom_hero.png
+    - assets/images/custom_path.png
+    - assets/images/custom_runner_bg.png
     - assets/images/platform_hero_ios.png
     - assets/images/platform_hero_android.png
     - assets/images/platform_detail_hero.png

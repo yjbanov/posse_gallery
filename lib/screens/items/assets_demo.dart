@@ -236,18 +236,21 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
       child: new Row(
         children: [
           new Expanded(
-            child: new FlatButton(
-              color: selectedTheme.buttonColor,
-              child: new Text(
-                bottomButtonTitle,
-                textAlign: TextAlign.center,
-                style: new TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+            child: new Container(
+              height: 50.0,
+              child: new FlatButton(
+                color: selectedTheme.buttonColor,
+                child: new Text(
+                  bottomButtonTitle,
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
+                onPressed: pressedNextButton,
               ),
-              onPressed: pressedNextButton,
             ),
           ),
         ],
