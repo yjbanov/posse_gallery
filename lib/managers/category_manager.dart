@@ -6,11 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:posse_gallery/models/app_category.dart';
 import 'package:posse_gallery/models/category_item.dart';
-import 'package:posse_gallery/screens/items/assets_demo.dart';
-import 'package:posse_gallery/screens/items/customized_design.dart';
-import 'package:posse_gallery/screens/items/patterns_list.dart';
-import 'package:posse_gallery/screens/items/platform_demo.dart';
-import 'package:posse_gallery/screens/items/platform_demo_detail.dart';
+import 'package:posse_gallery/screens/demos/assets_demo.dart';
+import 'package:posse_gallery/screens/demos/customized_design.dart';
+import 'package:posse_gallery/screens/demos/patterns_list.dart';
+import 'package:posse_gallery/screens/demos/platform_demo.dart';
 import 'package:posse_gallery/screens/warm_welcome_screen.dart';
 
 class CategoryManager {
@@ -164,7 +163,7 @@ class CategoryManager {
           iconUri: "assets/icons/ic_patterns_walkthrough.png",
           routeName: "walkthrough",
           color: const Color(0xFFFF6600),
-          widget: new WarmWelcomeScreen(),
+          widget: new WarmWelcomeScreen(isInitialScreen: false),
           needsFullScreen: true,
         ),
         new CategoryItem(

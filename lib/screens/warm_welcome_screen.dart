@@ -11,8 +11,16 @@ import 'package:posse_gallery/models/welcome_step.dart';
 import 'package:posse_gallery/screens/main_screen.dart';
 
 class WarmWelcomeScreen extends StatefulWidget {
+  bool _isInitialScreen = false;
+
+  WarmWelcomeScreen({
+    bool isInitialScreen,
+  })
+      : _isInitialScreen = isInitialScreen;
+
   @override
-  _WarmWelcomeScreenState createState() => new _WarmWelcomeScreenState();
+  _WarmWelcomeScreenState createState() =>
+      new _WarmWelcomeScreenState(isInitialScreen: _isInitialScreen);
 }
 
 class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
@@ -28,6 +36,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   static const int _kSlideInDuration = 600;
 
   String _title, _subtitle, _nextTitle, _nextSubtitle;
+
+  bool _isInitialScreen = true;
 
   Animation<double> _fadeOutAnimation;
   Animation<double> _fadeInAnimation;
@@ -71,18 +81,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   double _swipeAmount = 0.0;
 
-  _WarmWelcomeScreenState() {
-    _steps = new WelcomeManager().steps();
-    if (_steps[_currentStep] != null) {
-      _title = _steps[_currentStep].title;
-      _subtitle = _steps[_currentStep].subtitle;
-    }
-    if (_steps[_currentStep + 1] != null) {
-      _nextTitle = _steps[_currentStep + 1].title;
-      _nextSubtitle = _steps[_currentStep + 1].subtitle;
-    }
-    _configureAnimation();
-  }
+  _WarmWelcomeScreenState({
+    bool isInitialScreen,
+  })
+      : _isInitialScreen = isInitialScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +111,16 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   @override
   initState() {
     super.initState();
+    _steps = new WelcomeManager().steps();
+    if (_steps[_currentStep] != null) {
+      _title = _steps[_currentStep].title;
+      _subtitle = _steps[_currentStep].subtitle;
+    }
+    if (_steps[_currentStep + 1] != null) {
+      _nextTitle = _steps[_currentStep + 1].title;
+      _nextSubtitle = _steps[_currentStep + 1].subtitle;
+    }
+    _configureAnimation();
   }
 
   Widget _buildAnimatedContentView({int nextStep, bool movingNext}) {
@@ -419,16 +431,20 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             ),
           ),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              new PageRouteBuilder<Null>(
-                settings: const RouteSettings(name: "/main"),
-                pageBuilder: (BuildContext context, Animation<double> _,
-                    Animation<double> __) {
-                  return new MainScreen();
-                },
-              ),
-            );
+            if (_isInitialScreen) {
+              Navigator.push(
+                context,
+                new PageRouteBuilder<Null>(
+                  settings: const RouteSettings(name: "/main"),
+                  pageBuilder: (BuildContext context, Animation<double> _,
+                      Animation<double> __) {
+                    return new MainScreen();
+                  },
+                ),
+              );
+            } else {
+              Navigator.of(context).pop();
+            }
           },
         ),
       ),

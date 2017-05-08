@@ -111,21 +111,18 @@ class _SearchScreenState extends State<SearchScreen>
   Widget _contentWidget() {
     return new Container(
       color: const Color(0x00FFFFFF),
-      child: new Hero(
-          tag: "main.search.hero",
-          child: new ScaleTransition(
-              scale: _scaleInAnimation,
-              child: new Material(
-                  color: Theme.of(context).primaryColor,
-                  child: new Column(
-                      children: [
-                        _buildAppBar(),
-                        _buildInputWidget(),
-                        _resultsViewWidget(),
-                      ],
-                  ),
-              ),
+      child: new ScaleTransition(
+        scale: _scaleInAnimation,
+        child: new Material(
+          color: Theme.of(context).primaryColor,
+          child: new Column(
+            children: [
+              _buildAppBar(),
+              _buildInputWidget(),
+              _resultsViewWidget(),
+            ],
           ),
+        ),
       ),
     );
   }

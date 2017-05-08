@@ -65,6 +65,11 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     return new Container(
       child: new Stack(
         children: [
+          new Positioned.fill(
+            child: new Container(
+              color: const Color(0x40333333),
+            ),
+          ),
           new Center(
             child: new ScaleTransition(
               scale: _scaleInAnimation,
@@ -76,7 +81,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
                     "THE GEO COLLECTION",
                     style: new TextStyle(
                       fontSize: 12.0,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.w500,
                       color: Colors.white,
                     ),
                   ),

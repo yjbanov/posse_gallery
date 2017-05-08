@@ -5,7 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:posse_gallery/screens/items/platform_demo_detail.dart';
+import 'package:posse_gallery/screens/demos/platform_demo_detail.dart';
 
 class PlatformDemo extends StatefulWidget {
   @override
@@ -64,9 +64,10 @@ class PlatformDemoState extends State<PlatformDemo>
   Widget _buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return new Container(
-      height: 56.0,
+      height: 76.0,
       padding: new EdgeInsets.only(top: statusBarHeight),
       child: new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           new BackButton(),
@@ -182,6 +183,11 @@ class PlatformDemoState extends State<PlatformDemo>
                   width: MediaQuery.of(context).size.width * 0.5,
                   image: new AssetImage("assets/images/platform_lamp.png"),
                 ),
+                new Positioned.fill(
+                  child: new Container(
+                    color: const Color(0x40333333),
+                  ),
+                ),
                 new Positioned(
                   left: 10.0,
                   bottom: 12.0,
@@ -189,7 +195,7 @@ class PlatformDemoState extends State<PlatformDemo>
                     "THE\nWALL LAMP",
                     style: new TextStyle(
                       fontSize: 16.0,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
                   ),
@@ -207,6 +213,11 @@ class PlatformDemoState extends State<PlatformDemo>
                   width: MediaQuery.of(context).size.width * 0.5,
                   image: new AssetImage("assets/images/platform_table.png"),
                 ),
+                new Positioned.fill(
+                  child: new Container(
+                    color: const Color(0x40333333),
+                  ),
+                ),
                 new Positioned(
                   left: 10.0,
                   bottom: 12.0,
@@ -214,7 +225,7 @@ class PlatformDemoState extends State<PlatformDemo>
                     "NATURAL\nSIDE TABLE",
                     style: new TextStyle(
                       fontSize: 16.0,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
                   ),
@@ -229,13 +240,14 @@ class PlatformDemoState extends State<PlatformDemo>
 
   Widget _buildBottomSheet() {
     return new Container(
-      height: MediaQuery.of(context).size.height * 0.34,
+      height: MediaQuery.of(context).size.height * 0.4,
       color: Colors.white,
       child: new Material(
-        child: new Column(
+        child: new Stack(
           children: [
-            new Align(
-              alignment: FractionalOffset.centerRight,
+            new Positioned(
+              top: 10.0,
+              right: 10.0,
               child: new IconButton(
                 icon: new Icon(Icons.close, color: Colors.black),
                 onPressed: () {
@@ -243,74 +255,68 @@ class PlatformDemoState extends State<PlatformDemo>
                 },
               ),
             ),
-            new Expanded(
-              child: new Center(
-                child: new Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20.0, right: 20.0, bottom: 42.0),
-                  child: new Column(
-                    children: [
-                      new Padding(
-                        padding: const EdgeInsets.only(bottom: 5.0),
-                        child: new Text(
-                          "Toggle between an iOS and Android design screen to view the unified user experence.",
-                          textAlign: _platformTextAlignment,
-                          style: new TextStyle(
-                            letterSpacing: 0.6,
-                            fontSize: 16.0,
-                            height: 1.4,
-                          ),
-                        ),
-                      ),
-                      new Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          new Expanded(
-                            child: new Column(
-                              children: [
-                                new Radio<int>(
-                                    value: 0,
-                                    groupValue: _radioValue,
-                                    onChanged: _handleRadioValueChanged),
-                                new Text(
-                                  "iOS",
-                                  style: new TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w500,
-                                    color: const Color(0xFFAAAAAA),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          new Expanded(
-                            child: new Column(
-                              children: [
-                                new Radio<int>(
-                                    value: 1,
-                                    groupValue: _radioValue,
-                                    onChanged: _handleRadioValueChanged),
-                                new Text(
-                                  "ANDROID",
-                                  style: new TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w500,
-                                    color: const Color(0xFFAAAAAA),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+            new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                new Padding(
+                  padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 5.0),
+                  child: new Text(
+                    "Toggle between an iOS and Android design screen to view the unified user experence.",
+                    textAlign: _platformTextAlignment,
+                    style: new TextStyle(
+                      letterSpacing: 0.6,
+                      fontSize: 16.0,
+                      height: 1.4,
+                    ),
                   ),
                 ),
-              ),
+                _buildRadioButtons(),
+              ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  _buildRadioButtons() {
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        new Column(
+          children: [
+            new Radio<int>(
+                value: 0,
+                groupValue: _radioValue,
+                onChanged: _handleRadioValueChanged),
+            new Text(
+              "iOS",
+              style: new TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFFAAAAAA),
+              ),
+            ),
+          ],
+        ),
+        new Column(
+          children: [
+            new Radio<int>(
+                value: 1,
+                groupValue: _radioValue,
+                onChanged: _handleRadioValueChanged),
+            new Text(
+              "ANDROID",
+              style: new TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFFAAAAAA),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -336,12 +342,18 @@ class PlatformDemoState extends State<PlatformDemo>
             child: new Stack(
               children: [
                 new Align(
-                  alignment: FractionalOffset.bottomLeft,
-                  child: new Hero(
-                    tag: "platform.hero",
-                    child: new Image(
-                      fit: BoxFit.fitHeight,
-                      image: new AssetImage(imageString),
+                  alignment: FractionalOffset.topLeft,
+                  child: new Padding(
+                    padding: new EdgeInsets.only(top: 80.0),
+                    child: new Hero(
+                      tag: "platform.hero",
+                      child: new OverflowBox(
+                        maxWidth: double.INFINITY,
+                        maxHeight: double.INFINITY,
+                        child: new Image(
+                          image: new AssetImage(imageString),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -354,7 +366,7 @@ class PlatformDemoState extends State<PlatformDemo>
                         "FEATURED",
                         style: new TextStyle(
                           fontSize: 12.0,
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.w500,
                           color: Colors.white,
                         ),
                       ),
@@ -364,7 +376,7 @@ class PlatformDemoState extends State<PlatformDemo>
                           "GEOMETRIC DINING CHAIR",
                           style: new TextStyle(
                             fontSize: 16.0,
-                            fontWeight: FontWeight.normal,
+                            fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),
                         ),
