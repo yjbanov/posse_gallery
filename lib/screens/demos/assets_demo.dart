@@ -221,9 +221,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
 
   Widget buildBottomButton() {
     targetPlatform = Theme.of(context).platform;
-//    print(targetPlatform);
     if (targetPlatform == TargetPlatform.iOS) {
-      print(targetPlatform);
       bottomButtonTitle.toUpperCase();
     }
     double buttonBorderRadius =

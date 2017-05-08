@@ -245,6 +245,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                       style: new TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 14.0,
+                        height: 1.3,
                         color: textColor,
                       ),
                     ),

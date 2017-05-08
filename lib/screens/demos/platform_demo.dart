@@ -32,9 +32,15 @@ class PlatformDemoState extends State<PlatformDemo>
   AnimationController _leftPaneAnimationController;
   AnimationController _rightPaneAnimationController;
 
+  String _heroImageString;
+
   @override
   Widget build(BuildContext context) {
+    _heroImageString = Theme.of(context).platform == TargetPlatform.iOS
+        ? "assets/images/platform_hero_ios.png"
+        : "assets/images/platform_hero_android.png";
     _configureThemes();
+    _buildBottomSheet();
     return new Theme(
       data: _themeData,
       child: new Material(
@@ -172,6 +178,13 @@ class PlatformDemoState extends State<PlatformDemo>
   }
 
   Widget _buildBottomPanes() {
+    FractionalOffset itemTextFractionalOffset =
+        _targetPlatform == TargetPlatform.android
+            ? FractionalOffset.bottomLeft
+            : FractionalOffset.center;
+    TextAlign itemTextAlignment = _targetPlatform == TargetPlatform.android
+        ? TextAlign.left
+        : TextAlign.center;
     return new Row(
       children: [
         new SlideTransition(
@@ -190,13 +203,20 @@ class PlatformDemoState extends State<PlatformDemo>
                 ),
                 new Positioned(
                   left: 10.0,
+                  top: 0.0,
+                  right: 0.0,
                   bottom: 12.0,
-                  child: new Text(
-                    "THE\nWALL LAMP",
-                    style: new TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                  child: new Align(
+                    alignment: itemTextFractionalOffset,
+                    child: new Text(
+                      "THE\nWALL LAMP",
+                      textAlign: itemTextAlignment,
+                      style: new TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        height: 1.3,
+                      ),
                     ),
                   ),
                 ),
@@ -220,13 +240,20 @@ class PlatformDemoState extends State<PlatformDemo>
                 ),
                 new Positioned(
                   left: 10.0,
+                  top: 0.0,
+                  right: 0.0,
                   bottom: 12.0,
-                  child: new Text(
-                    "NATURAL\nSIDE TABLE",
-                    style: new TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                  child: new Align(
+                    alignment: itemTextFractionalOffset,
+                    child: new Text(
+                      "NATURAL\nSIDE TABLE",
+                      textAlign: itemTextAlignment,
+                      style: new TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        height: 1.3,
+                      ),
                     ),
                   ),
                 ),
@@ -260,7 +287,8 @@ class PlatformDemoState extends State<PlatformDemo>
               mainAxisSize: MainAxisSize.max,
               children: [
                 new Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 5.0),
+                  padding: const EdgeInsets.only(
+                      left: 20.0, right: 20.0, bottom: 5.0),
                   child: new Text(
                     "Toggle between an iOS and Android design screen to view the unified user experence.",
                     textAlign: _platformTextAlignment,
@@ -328,9 +356,10 @@ class PlatformDemoState extends State<PlatformDemo>
       curve: Curves.easeOut,
       controller: _animationController,
     );
-    String imageString = _targetPlatform == TargetPlatform.iOS
-        ? "assets/images/platform_hero_ios.png"
-        : "assets/images/platform_hero_android.png";
+    Image heroImage = new Image(
+      fit: BoxFit.fitHeight,
+        image: new AssetImage(_heroImageString),
+    );
     return new Expanded(
       child: new GestureDetector(
         onTap: (() {
@@ -342,18 +371,12 @@ class PlatformDemoState extends State<PlatformDemo>
             child: new Stack(
               children: [
                 new Align(
-                  alignment: FractionalOffset.topLeft,
+                  alignment: FractionalOffset.bottomCenter,
                   child: new Padding(
-                    padding: new EdgeInsets.only(top: 80.0),
+                    padding: new EdgeInsets.only(top: 0.0),
                     child: new Hero(
                       tag: "platform.hero",
-                      child: new OverflowBox(
-                        maxWidth: double.INFINITY,
-                        maxHeight: double.INFINITY,
-                        child: new Image(
-                          image: new AssetImage(imageString),
-                        ),
-                      ),
+                        child: heroImage,
                     ),
                   ),
                 ),
@@ -426,7 +449,12 @@ class PlatformDemoState extends State<PlatformDemo>
   }
 
   _configureThemes() {
-    _targetPlatform = Theme.of(context).platform;
+    if (_targetPlatform == null) {
+      _targetPlatform = Theme.of(context).platform;
+    }
+    if (_radioValue == null) {
+      _radioValue = _targetPlatform == TargetPlatform.android ? 1 : 0;
+    }
     _platformTextAlignment = _targetPlatform == TargetPlatform.android
         ? TextAlign.left
         : TextAlign.center;
@@ -465,6 +493,7 @@ class PlatformDemoState extends State<PlatformDemo>
 
   _handleRadioValueChanged(int value) {
     setState(() {
+      Navigator.of(context).pop();
       _radioValue = value;
       _targetPlatform =
           _radioValue == 0 ? TargetPlatform.iOS : TargetPlatform.android;
