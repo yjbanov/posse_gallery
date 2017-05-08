@@ -419,7 +419,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             ),
           ),
           onPressed: () {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               new PageRouteBuilder<Null>(
                 settings: const RouteSettings(name: "/main"),

@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:posse_gallery/screens/items/customized_design_detail.dart';
 
 class CustomizedDesign extends StatefulWidget {
   @override
@@ -61,7 +62,7 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
         ),
         new Positioned(
           left: -7.0,
-            top: 13.0,
+          top: 13.0,
           child: _buildBackButton(),
         ),
         _buildBottomBar(),
@@ -104,7 +105,16 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
                   new AssetImage("assets/icons/ic_custom_circle_arrow.png"),
                 ),
                 onPressed: (() {
-                  print("tapped");
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute<Null>(
+                      fullscreenDialog: true,
+                      settings: new RouteSettings(),
+                      builder: (BuildContext context) {
+                        return new CustomizedDesignDetail();
+                      },
+                    ),
+                  );
                 }),
               ),
             ),

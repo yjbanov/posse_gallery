@@ -64,9 +64,10 @@ class PlatformDemoState extends State<PlatformDemo>
   Widget _buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return new Container(
-      height: 56.0,
+      height: 76.0,
       padding: new EdgeInsets.only(top: statusBarHeight),
       child: new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           new BackButton(),
@@ -182,6 +183,11 @@ class PlatformDemoState extends State<PlatformDemo>
                   width: MediaQuery.of(context).size.width * 0.5,
                   image: new AssetImage("assets/images/platform_lamp.png"),
                 ),
+                new Positioned.fill(
+                  child: new Container(
+                    color: const Color(0x40333333),
+                  ),
+                ),
                 new Positioned(
                   left: 10.0,
                   bottom: 12.0,
@@ -189,7 +195,7 @@ class PlatformDemoState extends State<PlatformDemo>
                     "THE\nWALL LAMP",
                     style: new TextStyle(
                       fontSize: 16.0,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
                   ),
@@ -207,6 +213,11 @@ class PlatformDemoState extends State<PlatformDemo>
                   width: MediaQuery.of(context).size.width * 0.5,
                   image: new AssetImage("assets/images/platform_table.png"),
                 ),
+                new Positioned.fill(
+                  child: new Container(
+                    color: const Color(0x40333333),
+                  ),
+                ),
                 new Positioned(
                   left: 10.0,
                   bottom: 12.0,
@@ -214,7 +225,7 @@ class PlatformDemoState extends State<PlatformDemo>
                     "NATURAL\nSIDE TABLE",
                     style: new TextStyle(
                       fontSize: 16.0,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
                   ),
@@ -336,12 +347,18 @@ class PlatformDemoState extends State<PlatformDemo>
             child: new Stack(
               children: [
                 new Align(
-                  alignment: FractionalOffset.bottomLeft,
-                  child: new Hero(
-                    tag: "platform.hero",
-                    child: new Image(
-                      fit: BoxFit.fitHeight,
-                      image: new AssetImage(imageString),
+                  alignment: FractionalOffset.topLeft,
+                  child: new Padding(
+                    padding: new EdgeInsets.only(top: 80.0),
+                    child: new Hero(
+                      tag: "platform.hero",
+                      child: new OverflowBox(
+                        maxWidth: double.INFINITY,
+                        maxHeight: double.INFINITY,
+                        child: new Image(
+                          image: new AssetImage(imageString),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -354,7 +371,7 @@ class PlatformDemoState extends State<PlatformDemo>
                         "FEATURED",
                         style: new TextStyle(
                           fontSize: 12.0,
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.w500,
                           color: Colors.white,
                         ),
                       ),
@@ -364,7 +381,7 @@ class PlatformDemoState extends State<PlatformDemo>
                           "GEOMETRIC DINING CHAIR",
                           style: new TextStyle(
                             fontSize: 16.0,
-                            fontWeight: FontWeight.normal,
+                            fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),
                         ),

@@ -61,7 +61,7 @@ class _CustomizedDesignDetailDemoState extends State<CustomizedDesignDetail>
                 ),
               ),
               onPressed: (() {
-                print("tapped");
+                Navigator.of(context).pop();
               }),
             ),
           ),

@@ -8,10 +8,8 @@ import 'package:posse_gallery/models/app_category.dart';
 import 'package:posse_gallery/models/category_item.dart';
 import 'package:posse_gallery/screens/items/assets_demo.dart';
 import 'package:posse_gallery/screens/items/customized_design.dart';
-import 'package:posse_gallery/screens/items/customized_design_detail.dart';
 import 'package:posse_gallery/screens/items/patterns_list.dart';
 import 'package:posse_gallery/screens/items/platform_demo.dart';
-import 'package:posse_gallery/screens/items/platform_demo_detail.dart';
 import 'package:posse_gallery/screens/warm_welcome_screen.dart';
 
 class CategoryManager {
@@ -50,7 +48,7 @@ class CategoryManager {
           iconUri: "assets/icons/ic_customized_brand_design.png",
           routeName: "customized_brand_design",
           color: const Color(0xFF30BDFF),
-          widget: new CustomizedDesignDetail(),
+          widget: new CustomizedDesign(),
           needsFullScreen: true,
         ),
         new CategoryItem(
