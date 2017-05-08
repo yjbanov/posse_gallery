@@ -149,59 +149,62 @@ class _CustomizedDesignDetailDemoState extends State<CustomizedDesignDetail>
       fontStyle: FontStyle.italic,
       color: Colors.white,
     );
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        new Row(
-          mainAxisSize: MainAxisSize.min,
+    return new Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            new Icon(Icons.timer, color: Colors.white),
-            new Padding(
-              padding: const EdgeInsets.only(left: 4.0),
-              child: new Text(
-                "00:26:13",
-                style: statsTextStyle,
-              ),
+            new Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  new Icon(Icons.timer, color: Colors.white),
+                  new Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: new Text(
+                          "00:26:13",
+                          style: statsTextStyle,
+                      ),
+                  ),
+                ],
+            ),
+            new Row(
+                children: [
+                  new Icon(Icons.access_time, color: Colors.white),
+                  new Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: new Text(
+                          "7'13\"",
+                          style: statsTextStyle,
+                      ),
+                  )
+                ],
+            ),
+            new Row(
+                children: [
+                  new Icon(Icons.landscape, color: Colors.white),
+                  new Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: new Text(
+                          "120ft",
+                          style: statsTextStyle,
+                      ),
+                  ),
+                ],
+            ),
+            new Row(
+                children: [
+                  new Icon(Icons.favorite, color: Colors.white),
+                  new Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: new Text(
+                          "97bpm",
+                          style: statsTextStyle,
+                      ),
+                  ),
+                ],
             ),
           ],
-        ),
-        new Row(
-          children: [
-            new Icon(Icons.access_time, color: Colors.white),
-            new Padding(
-              padding: const EdgeInsets.only(left: 4.0),
-              child: new Text(
-                "7'13\"",
-                style: statsTextStyle,
-              ),
-            )
-          ],
-        ),
-        new Row(
-          children: [
-            new Icon(Icons.landscape, color: Colors.white),
-            new Padding(
-              padding: const EdgeInsets.only(left: 4.0),
-              child: new Text(
-                "120ft",
-                style: statsTextStyle,
-              ),
-            ),
-          ],
-        ),
-        new Row(
-          children: [
-            new Icon(Icons.favorite, color: Colors.white),
-            new Padding(
-              padding: const EdgeInsets.only(left: 4.0),
-              child: new Text(
-                "97bpm",
-                style: statsTextStyle,
-              ),
-            ),
-          ],
-        ),
-      ],
+      ),
     );
   }
 

@@ -5,7 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:posse_gallery/screens/items/assets_demo_detail.dart';
+import 'package:posse_gallery/screens/demos/assets_demo_detail.dart';
 
 class AssetsDemo extends StatefulWidget {
   @override

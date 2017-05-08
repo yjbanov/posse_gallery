@@ -5,7 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:posse_gallery/screens/items/platform_demo_detail.dart';
+import 'package:posse_gallery/screens/demos/platform_demo_detail.dart';
 
 class PlatformDemo extends StatefulWidget {
   @override
@@ -240,13 +240,14 @@ class PlatformDemoState extends State<PlatformDemo>
 
   Widget _buildBottomSheet() {
     return new Container(
-      height: MediaQuery.of(context).size.height * 0.34,
+      height: MediaQuery.of(context).size.height * 0.4,
       color: Colors.white,
       child: new Material(
-        child: new Column(
+        child: new Stack(
           children: [
-            new Align(
-              alignment: FractionalOffset.centerRight,
+            new Positioned(
+              top: 10.0,
+              right: 10.0,
               child: new IconButton(
                 icon: new Icon(Icons.close, color: Colors.black),
                 onPressed: () {
@@ -254,74 +255,68 @@ class PlatformDemoState extends State<PlatformDemo>
                 },
               ),
             ),
-            new Expanded(
-              child: new Center(
-                child: new Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20.0, right: 20.0, bottom: 42.0),
-                  child: new Column(
-                    children: [
-                      new Padding(
-                        padding: const EdgeInsets.only(bottom: 5.0),
-                        child: new Text(
-                          "Toggle between an iOS and Android design screen to view the unified user experence.",
-                          textAlign: _platformTextAlignment,
-                          style: new TextStyle(
-                            letterSpacing: 0.6,
-                            fontSize: 16.0,
-                            height: 1.4,
-                          ),
-                        ),
-                      ),
-                      new Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          new Expanded(
-                            child: new Column(
-                              children: [
-                                new Radio<int>(
-                                    value: 0,
-                                    groupValue: _radioValue,
-                                    onChanged: _handleRadioValueChanged),
-                                new Text(
-                                  "iOS",
-                                  style: new TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w500,
-                                    color: const Color(0xFFAAAAAA),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          new Expanded(
-                            child: new Column(
-                              children: [
-                                new Radio<int>(
-                                    value: 1,
-                                    groupValue: _radioValue,
-                                    onChanged: _handleRadioValueChanged),
-                                new Text(
-                                  "ANDROID",
-                                  style: new TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w500,
-                                    color: const Color(0xFFAAAAAA),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+            new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                new Padding(
+                  padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 5.0),
+                  child: new Text(
+                    "Toggle between an iOS and Android design screen to view the unified user experence.",
+                    textAlign: _platformTextAlignment,
+                    style: new TextStyle(
+                      letterSpacing: 0.6,
+                      fontSize: 16.0,
+                      height: 1.4,
+                    ),
                   ),
                 ),
-              ),
+                _buildRadioButtons(),
+              ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  _buildRadioButtons() {
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        new Column(
+          children: [
+            new Radio<int>(
+                value: 0,
+                groupValue: _radioValue,
+                onChanged: _handleRadioValueChanged),
+            new Text(
+              "iOS",
+              style: new TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFFAAAAAA),
+              ),
+            ),
+          ],
+        ),
+        new Column(
+          children: [
+            new Radio<int>(
+                value: 1,
+                groupValue: _radioValue,
+                onChanged: _handleRadioValueChanged),
+            new Text(
+              "ANDROID",
+              style: new TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFFAAAAAA),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 

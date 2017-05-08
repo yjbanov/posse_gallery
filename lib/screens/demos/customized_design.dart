@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:posse_gallery/screens/items/customized_design_detail.dart';
+import 'package:posse_gallery/screens/demos/customized_design_detail.dart';
 
 class CustomizedDesign extends StatefulWidget {
   @override
@@ -12,7 +12,9 @@ class CustomizedDesign extends StatefulWidget {
 
 class _CustomizedDesignState extends State<CustomizedDesign> {
   TargetPlatform _targetPlatform;
+  TextAlign _platformTextAlignment;
   ThemeData _themeData;
+
   @override
   Widget build(BuildContext context) {
     _configureThemes();
@@ -127,7 +129,7 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
   Widget _buildTextBody() {
     final firstText = new Text(
       "EASILY TRACK YOUR ACTIVITY",
-      textAlign: TextAlign.center,
+      textAlign: _platformTextAlignment,
       style: new TextStyle(
         fontStyle: FontStyle.italic,
         fontSize: 40.0,
@@ -153,16 +155,26 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
           padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
           child: combinedText,
         ),
-        new Container(
-          height: 3.0,
-          width: 66.0,
-          color: Colors.white,
+        new Padding(
+          padding: _targetPlatform == TargetPlatform.android
+              ? const EdgeInsets.only(left: 20.0)
+              : const EdgeInsets.only(left: 0.0, right: 0.0),
+          child: new Align(
+            alignment: _targetPlatform == TargetPlatform.android
+                ? FractionalOffset.centerLeft
+                : FractionalOffset.center,
+            child: new Container(
+              height: 3.0,
+              width: 66.0,
+              color: Colors.white,
+            ),
+          ),
         ),
         new Padding(
-          padding: const EdgeInsets.only(top: 20.0, left: 50.0, right: 50.0),
+          padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 50.0),
           child: new Text(
             "Keep your phone with you while running, cycling, or walking to get stats on your activity.",
-            textAlign: TextAlign.center,
+            textAlign: _platformTextAlignment,
             style: new TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.w600,
@@ -176,7 +188,10 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
   }
 
   _configureThemes() {
-    _targetPlatform = TargetPlatform.iOS;
+    _targetPlatform = Theme.of(context).platform;
+    _platformTextAlignment = _targetPlatform == TargetPlatform.android
+        ? TextAlign.left
+        : TextAlign.center;
     TextTheme textTheme = Theme.of(context).textTheme;
     TextStyle iOSButtonTextStyle = textTheme.button.copyWith(
         fontSize: 14.0, color: Colors.white, fontWeight: FontWeight.bold);
