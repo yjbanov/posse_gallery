@@ -35,6 +35,7 @@ class PlatformDemoState extends State<PlatformDemo>
   @override
   Widget build(BuildContext context) {
     _configureThemes();
+    _buildBottomSheet();
     return new Theme(
       data: _themeData,
       child: new Material(
@@ -172,6 +173,14 @@ class PlatformDemoState extends State<PlatformDemo>
   }
 
   Widget _buildBottomPanes() {
+    FractionalOffset itemTextFractionalOffset =
+        _targetPlatform == TargetPlatform.android
+            ? FractionalOffset.bottomLeft
+            : FractionalOffset.center;
+    TextAlign itemTextAlignment = _targetPlatform == TargetPlatform.android
+        ? TextAlign.left
+        : TextAlign.center;
+    print(_targetPlatform);
     return new Row(
       children: [
         new SlideTransition(
@@ -190,13 +199,19 @@ class PlatformDemoState extends State<PlatformDemo>
                 ),
                 new Positioned(
                   left: 10.0,
+                  top: 0.0,
+                  right: 0.0,
                   bottom: 12.0,
-                  child: new Text(
-                    "THE\nWALL LAMP",
-                    style: new TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                  child: new Align(
+                    alignment: itemTextFractionalOffset,
+                    child: new Text(
+                      "THE\nWALL LAMP",
+                      textAlign: itemTextAlignment,
+                      style: new TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -220,13 +235,19 @@ class PlatformDemoState extends State<PlatformDemo>
                 ),
                 new Positioned(
                   left: 10.0,
+                  top: 0.0,
+                  right: 0.0,
                   bottom: 12.0,
-                  child: new Text(
-                    "NATURAL\nSIDE TABLE",
-                    style: new TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                  child: new Align(
+                    alignment: itemTextFractionalOffset,
+                    child: new Text(
+                      "NATURAL\nSIDE TABLE",
+                      textAlign: itemTextAlignment,
+                      style: new TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -260,7 +281,8 @@ class PlatformDemoState extends State<PlatformDemo>
               mainAxisSize: MainAxisSize.max,
               children: [
                 new Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 5.0),
+                  padding: const EdgeInsets.only(
+                      left: 20.0, right: 20.0, bottom: 5.0),
                   child: new Text(
                     "Toggle between an iOS and Android design screen to view the unified user experence.",
                     textAlign: _platformTextAlignment,
@@ -277,46 +299,6 @@ class PlatformDemoState extends State<PlatformDemo>
           ],
         ),
       ),
-    );
-  }
-
-  _buildRadioButtons() {
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        new Column(
-          children: [
-            new Radio<int>(
-                value: 0,
-                groupValue: _radioValue,
-                onChanged: _handleRadioValueChanged),
-            new Text(
-              "iOS",
-              style: new TextStyle(
-                fontSize: 14.0,
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFFAAAAAA),
-              ),
-            ),
-          ],
-        ),
-        new Column(
-          children: [
-            new Radio<int>(
-                value: 1,
-                groupValue: _radioValue,
-                onChanged: _handleRadioValueChanged),
-            new Text(
-              "ANDROID",
-              style: new TextStyle(
-                fontSize: 14.0,
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFFAAAAAA),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 
@@ -392,6 +374,46 @@ class PlatformDemoState extends State<PlatformDemo>
     );
   }
 
+  _buildRadioButtons() {
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        new Column(
+          children: [
+            new Radio<int>(
+                value: 0,
+                groupValue: _radioValue,
+                onChanged: _handleRadioValueChanged),
+            new Text(
+              "iOS",
+              style: new TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFFAAAAAA),
+              ),
+            ),
+          ],
+        ),
+        new Column(
+          children: [
+            new Radio<int>(
+                value: 1,
+                groupValue: _radioValue,
+                onChanged: _handleRadioValueChanged),
+            new Text(
+              "ANDROID",
+              style: new TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFFAAAAAA),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   _configureAnimation() {
     _animationController = new AnimationController(
       duration: const Duration(milliseconds: _kAnimationInDuration),
@@ -426,7 +448,9 @@ class PlatformDemoState extends State<PlatformDemo>
   }
 
   _configureThemes() {
-    _targetPlatform = Theme.of(context).platform;
+    if (_targetPlatform == null) {
+      _targetPlatform = Theme.of(context).platform;
+    }
     _platformTextAlignment = _targetPlatform == TargetPlatform.android
         ? TextAlign.left
         : TextAlign.center;
@@ -465,6 +489,7 @@ class PlatformDemoState extends State<PlatformDemo>
 
   _handleRadioValueChanged(int value) {
     setState(() {
+      Navigator.of(context).pop();
       _radioValue = value;
       _targetPlatform =
           _radioValue == 0 ? TargetPlatform.iOS : TargetPlatform.android;

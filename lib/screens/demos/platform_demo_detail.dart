@@ -218,7 +218,6 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
   }
 
   _configureThemes() {
-    _targetPlatform = TargetPlatform.iOS;
     TextTheme textTheme = Theme.of(context).textTheme;
     TextStyle iOSButtonTextStyle = textTheme.button.copyWith(
         fontSize: 14.0, color: Colors.white, fontWeight: FontWeight.bold);
