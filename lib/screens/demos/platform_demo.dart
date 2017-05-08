@@ -308,82 +308,6 @@ class PlatformDemoState extends State<PlatformDemo>
     );
   }
 
-  Widget _buildHeroWidget() {
-    FractionalOffset offset = new FractionalOffset(1.5, 0.0);
-    Animation<FractionalOffset> animation = _initSlideAnimation(
-      from: offset,
-      to: const FractionalOffset(0.0, 0.0),
-      curve: Curves.easeOut,
-      controller: _animationController,
-    );
-    Image heroImage = new Image(
-      fit: BoxFit.fitHeight,
-        image: new AssetImage(_heroImageString),
-    );
-    return new Expanded(
-      child: new GestureDetector(
-        onTap: (() {
-          _tappedHero();
-        }),
-        child: new SlideTransition(
-          position: animation,
-          child: new Container(
-            child: new Stack(
-              children: [
-                new Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: new Padding(
-                    padding: new EdgeInsets.only(top: 0.0),
-                    child: new Hero(
-                      tag: "platform.hero",
-                        child: heroImage,
-                    ),
-                  ),
-                ),
-//                new Positioned(
-//                  left: 0.0,
-//                    top: 0.0,
-//                    right: 0.0,
-//                    bottom: 0.0,
-//                    child: new Container(
-//                        color: const Color(0x40333333),
-//                    ),
-//                ),
-                new Center(
-                  child: new Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      new Text(
-                        "FEATURED",
-                        style: new TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                      new Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
-                        child: new Text(
-                          "GEOMETRIC DINING CHAIR",
-                          style: new TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   _buildRadioButtons() {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -421,6 +345,73 @@ class PlatformDemoState extends State<PlatformDemo>
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildHeroWidget() {
+    FractionalOffset offset = new FractionalOffset(1.5, 0.0);
+    Animation<FractionalOffset> animation = _initSlideAnimation(
+      from: offset,
+      to: const FractionalOffset(0.0, 0.0),
+      curve: Curves.easeOut,
+      controller: _animationController,
+    );
+    Image heroImage = new Image(
+      fit: BoxFit.fitHeight,
+        image: new AssetImage(_heroImageString),
+    );
+    return new Expanded(
+      child: new GestureDetector(
+        onTap: (() {
+          _tappedHero();
+        }),
+        child: new SlideTransition(
+          position: animation,
+          child: new Container(
+            child: new Stack(
+              children: [
+                new Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: new Padding(
+                    padding: new EdgeInsets.only(top: 0.0),
+                    child: new Hero(
+                      tag: "platform.hero",
+                        child: heroImage,
+                    ),
+                  ),
+                ),
+                new Center(
+                  child: new Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      new Text(
+                        "FEATURED",
+                        style: new TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                      new Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: new Text(
+                          "GEOMETRIC DINING CHAIR",
+                          style: new TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
