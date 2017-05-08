@@ -47,7 +47,7 @@ class _GalleryAppState extends State<GalleryApp> {
     bool hasSeenWelcome = Application.settings
         .boolValue(Constants.ConfigKeySeenWelcome, defaultValue: false);
     Widget launchScreen =
-        !hasSeenWelcome ? new WarmWelcomeScreen() : new MainScreen();
+        !hasSeenWelcome ? new WarmWelcomeScreen(isInitialScreen: true) : new MainScreen();
     return new MaterialApp(
       title: 'Flutter Gallery',
       theme: new ThemeData(

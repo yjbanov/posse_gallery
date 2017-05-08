@@ -163,7 +163,7 @@ class CategoryManager {
           iconUri: "assets/icons/ic_patterns_walkthrough.png",
           routeName: "walkthrough",
           color: const Color(0xFFFF6600),
-          widget: new WarmWelcomeScreen(),
+          widget: new WarmWelcomeScreen(isInitialScreen: false),
           needsFullScreen: true,
         ),
         new CategoryItem(
