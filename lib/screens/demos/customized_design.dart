@@ -118,6 +118,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       right: 0.0,
       child: new GestureDetector(
         onVerticalDragUpdate: (details) {
+          print("1: $details");
           setState(() {
 
             if (details.primaryDelta > -20 &&

@@ -81,28 +81,28 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            new Positioned(
-              right: 8.0,
-              top: 26.0,
-              child: new Material(
-                color: const Color(0x00FFFFFF),
-                child: new IconButton(
-                  padding: EdgeInsets.zero,
-                  icon: searchIcon,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      new PageRouteBuilder<Null>(
-                          settings: const RouteSettings(name: "/search"),
-                          pageBuilder: (BuildContext context,
-                              Animation<double> _, Animation<double> __) {
-                            return new SearchScreen();
-                          }),
-                    );
-                  },
-                ),
-              ),
-            ),
+//            new Positioned(
+//              right: 8.0,
+//              top: 26.0,
+//              child: new Material(
+//                color: const Color(0x00FFFFFF),
+//                child: new IconButton(
+//                  padding: EdgeInsets.zero,
+//                  icon: searchIcon,
+//                  onPressed: () {
+//                    Navigator.push(
+//                      context,
+//                      new PageRouteBuilder<Null>(
+//                          settings: const RouteSettings(name: "/search"),
+//                          pageBuilder: (BuildContext context,
+//                              Animation<double> _, Animation<double> __) {
+//                            return new SearchScreen();
+//                          }),
+//                    );
+//                  },
+//                ),
+//              ),
+//            ),
           ],
         ),
       ),

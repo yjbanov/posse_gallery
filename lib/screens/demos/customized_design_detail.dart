@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/src/gestures/multidrag.dart';
 
 class CustomizedDesignDetail extends StatefulWidget {
 
@@ -27,7 +28,7 @@ class _CustomizedDesignDetailDemoState extends State<CustomizedDesignDetail>
   _buildGestureDetector() {
     return new GestureDetector(
       onVerticalDragUpdate: (details) {
-        print(details);
+        print("2: $details");
       },
       child: new Material(
         color: const Color(0xFFFFFFFF),

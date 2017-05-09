@@ -49,7 +49,7 @@ class _SearchScreenState extends State<SearchScreen>
     return new Material(
       color: const Color(0x00FFFFFF),
       child: new Container(
-        height: 86.0,
+        height: 80.0,
         padding: const EdgeInsets.only(left: 10.0, top: 15.0),
         child: new Align(
           alignment: FractionalOffset.centerLeft,
