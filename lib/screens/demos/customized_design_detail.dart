@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 
 class CustomizedDesignDetail extends StatefulWidget {
+
   @override
   _CustomizedDesignDetailDemoState createState() =>
       new _CustomizedDesignDetailDemoState();
@@ -33,6 +34,10 @@ class _CustomizedDesignDetailDemoState extends State<CustomizedDesignDetail>
         child: _contentWidget(),
       ),
     );
+  }
+
+  animateTransition(DragUpdateDetails details) {
+    print(details);
   }
 
   _buildAppBar() {
@@ -70,7 +75,7 @@ class _CustomizedDesignDetailDemoState extends State<CustomizedDesignDetail>
                 ),
               ),
               onPressed: (() {
-                Navigator.of(context).pop();
+//                Navigator.of(context).pop();
               }),
             ),
           ),

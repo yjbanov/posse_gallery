@@ -26,10 +26,12 @@ class _CustomizedDesignState extends State<CustomizedDesign>
 
   AnimationController _textAnimationController;
 
+  CustomizedDesignDetail _detailScreen;
   double _verticalOffset;
 
   @override
   Widget build(BuildContext context) {
+    _detailScreen = new CustomizedDesignDetail();
     _configureThemes();
     return new Theme(
       data: _themeData,
@@ -117,6 +119,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       child: new GestureDetector(
         onVerticalDragUpdate: (details) {
           setState(() {
+
             if (details.primaryDelta > -20 &&
                 details.primaryDelta < 20 &&
                 _verticalOffset >= _kDetailTabHeight &&
@@ -138,7 +141,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
         },
         child: new Container(
           height: MediaQuery.of(context).size.height,
-          child: new CustomizedDesignDetail(),
+          child: _detailScreen,
         ),
       ),
     );
