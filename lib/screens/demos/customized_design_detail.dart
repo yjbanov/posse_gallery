@@ -5,7 +5,6 @@
 import 'package:flutter/material.dart';
 
 class CustomizedDesignDetail extends StatefulWidget {
-  D
 
   @override
   _CustomizedDesignDetailDemoState createState() =>
@@ -76,7 +75,7 @@ class _CustomizedDesignDetailDemoState extends State<CustomizedDesignDetail>
                 ),
               ),
               onPressed: (() {
-                Navigator.of(context).pop();
+//                Navigator.of(context).pop();
               }),
             ),
           ),
