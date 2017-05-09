@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import 'package:posse_gallery/screens/demos/customized_design_detail.dart';
 
 class CustomizedDesign extends StatefulWidget {
@@ -10,11 +11,22 @@ class CustomizedDesign extends StatefulWidget {
   _CustomizedDesignState createState() => new _CustomizedDesignState();
 }
 
-class _CustomizedDesignState extends State<CustomizedDesign> {
+class _CustomizedDesignState extends State<CustomizedDesign>
+    with TickerProviderStateMixin {
+  static const int _kAnimateHeroFadeDuration = 600;
+  static const int _kAnimateTextDuration = 500;
+  static const double _kDetailTabHeight = 70.0;
+
   TargetPlatform _targetPlatform;
   TextAlign _platformTextAlignment;
   ThemeData _themeData;
-  double _verticalOffset = 70.0;
+  Animation<double> _heroFadeInAnimation;
+  Animation<double> textFadeInAnimation;
+  AnimationController _heroAnimationController;
+
+  AnimationController _textAnimationController;
+
+  double _verticalOffset;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +38,23 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
         child: _contentWidget(),
       ),
     );
+  }
+
+  @override
+  dispose() {
+    _heroAnimationController.dispose();
+    _textAnimationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  initState() {
+    super.initState();
+    _verticalOffset = _kDetailTabHeight;
+    _configureAnimation();
+    _heroAnimationController.forward().whenComplete(() {
+      _textAnimationController.forward();
+    });
   }
 
   Widget _buildBackButton() {
@@ -51,16 +80,22 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
   Widget _buildBody() {
     return new Stack(
       children: [
-        new Image(
-          height: MediaQuery.of(context).size.height,
-          fit: BoxFit.fitHeight,
-          image: new AssetImage(
-            "assets/images/custom_hero.png",
+        new FadeTransition(
+          opacity: _heroFadeInAnimation,
+          child: new Image(
+            height: MediaQuery.of(context).size.height,
+            fit: BoxFit.fitHeight,
+            image: new AssetImage(
+              "assets/images/custom_hero.png",
+            ),
           ),
         ),
         new Positioned.fill(
           child: new Center(
-            child: _buildTextBody(),
+            child: new FadeTransition(
+              opacity: textFadeInAnimation,
+              child: _buildTextBody(),
+            ),
           ),
         ),
         new Positioned(
@@ -82,9 +117,13 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
       child: new GestureDetector(
         onVerticalDragUpdate: (details) {
           setState(() {
-            if (details.primaryDelta > -20 && details.primaryDelta < 20 && _verticalOffset >= 70.0 && _verticalOffset <= screenHeight) {
+            if (details.primaryDelta > -20 &&
+                details.primaryDelta < 20 &&
+                _verticalOffset >= 70.0 &&
+                _verticalOffset <= screenHeight) {
               _verticalOffset -= details.primaryDelta;
-            } else if (details.primaryDelta < -30 && _verticalOffset <= screenHeight) {
+            } else if (details.primaryDelta < -30 &&
+                _verticalOffset <= screenHeight) {
               _verticalOffset = screenHeight;
             } else if (details.primaryDelta > 30 && _verticalOffset >= 70.0) {
               _verticalOffset = 70.0;
@@ -165,6 +204,29 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
     );
   }
 
+  _configureAnimation() {
+    _heroAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kAnimateHeroFadeDuration),
+      vsync: this,
+    );
+    _textAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kAnimateTextDuration),
+      vsync: this,
+    );
+    _heroFadeInAnimation = _initAnimation(
+      from: 0.0,
+      to: 1.0,
+      curve: Curves.easeOut,
+      controller: _heroAnimationController,
+    );
+    textFadeInAnimation = _initAnimation(
+      from: 0.0,
+      to: 1.0,
+      curve: Curves.easeIn,
+      controller: _textAnimationController,
+    );
+  }
+
   _configureThemes() {
     _targetPlatform = Theme.of(context).platform;
     _platformTextAlignment = _targetPlatform == TargetPlatform.android
@@ -196,5 +258,17 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
         _buildBody(),
       ],
     );
+  }
+
+  Animation<double> _initAnimation(
+      {@required double from,
+      @required double to,
+      @required Curve curve,
+      @required AnimationController controller}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+      parent: controller,
+      curve: curve,
+    );
+    return new Tween<double>(begin: from, end: to).animate(animation);
   }
 }
