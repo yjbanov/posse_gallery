@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:posse_gallery/models/checklist.dart';
 import 'package:posse_gallery/models/checklist_item.dart';
 
 class PatternsList extends StatefulWidget {
@@ -13,12 +14,15 @@ class PatternsList extends StatefulWidget {
 class _PatternsListState extends State<PatternsList>
     with TickerProviderStateMixin {
   final TextEditingController _controller = new TextEditingController();
-  List<ChecklistItem> _demoData = [
-    new ChecklistItem(title: "Drink a gallon of water", isSelected: false),
-    new ChecklistItem(title: "Read a novel", isSelected: false),
-    new ChecklistItem(title: "Learn a new language", isSelected: false),
-    new ChecklistItem(title: "Visit a new place", isSelected: false),
-  ];
+
+  final Checklist _checklist = new Checklist(
+    items: [
+      new ChecklistItem(title: "Drink a gallon of water", isSelected: false),
+      new ChecklistItem(title: "Read a novel", isSelected: false),
+      new ChecklistItem(title: "Learn a new language", isSelected: false),
+      new ChecklistItem(title: "Visit a new place", isSelected: false),
+    ]
+  );
   List<Widget> _cells;
   Animation<double> _cellSizeInAnimation;
   AnimationController _animateInController;
@@ -52,7 +56,7 @@ class _PatternsListState extends State<PatternsList>
 
   List<Widget> _loadItems() {
     List<Widget> cells = [];
-    for (int i = 0; i < _demoData.length; i++) {
+    for (int i = 0; i < _checklist.items().length; i++) {
       final cellContainer = new Container(
         decoration: new BoxDecoration(
           border: new Border(
@@ -67,14 +71,14 @@ class _PatternsListState extends State<PatternsList>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             new Checkbox(
-              value: _demoData[i].isSelected,
+              value: _checklist[i].isSelected,
               onChanged: (bool value) {
                 setState(() {
-                  _demoData[i].isSelected = value;
+                  _checklist[i].isSelected = value;
                 });
               },
             ),
-            new Text(_demoData[i].title),
+            new Text(_checklist[i].title),
           ],
         ),
       );
@@ -101,11 +105,10 @@ class _PatternsListState extends State<PatternsList>
                   ChecklistItem item = new ChecklistItem(
                       title: _controller.text, isSelected: false);
                   setState(() {
-                    _demoData.insert(0, item);
+                    _checklist.addItem(item, index: 0);
                     _controller.clear();
                   });
                 }
-                ;
               },
             ),
           ),

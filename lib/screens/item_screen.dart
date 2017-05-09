@@ -20,42 +20,49 @@ class _ItemScreenState extends State<ItemScreen> with TickerProviderStateMixin {
   final CategoryItem item;
 
   Widget _buildAppBar(String title) {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final double statusBarHeight = MediaQuery
+        .of(context)
+        .padding
+        .top;
+    final barWidgets = [
+      new IconButton(
+        icon: new Icon(
+          Icons.close,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+      new Expanded(
+        child: new Text(
+          title,
+          style: new TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+            fontSize: 14.0,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    ];
+    if (item.showMoreButton) {
+      barWidgets.add(new IconButton(
+        icon: new Icon(
+          Icons.more_vert,
+          color: Colors.white,
+        ),
+        onPressed: () {},
+      ));
+    }
+
     return new Container(
       height: 76.0,
       padding: new EdgeInsets.only(left: 8.0, top: statusBarHeight, right: 8.0),
       child: new Center(
         child: new Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            new IconButton(
-              icon: new Icon(
-                Icons.close,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new Expanded(
-              child: new Text(
-                title,
-                style: new TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14.0,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            new IconButton(
-              icon: new Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ),
-              onPressed: null,
-            ),
-          ],
+          children: barWidgets,
         ),
       ),
     );
