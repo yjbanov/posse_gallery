@@ -113,11 +113,14 @@ class _PatternsListState extends State<PatternsList>
             ),
           ),
           new Expanded(
-            child: new TextField(
-              controller: _controller,
-              decoration: new InputDecoration(
-                hintText: 'Add new goal',
-                hideDivider: true,
+            child: new Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: new TextField(
+                controller: _controller,
+                decoration: new InputDecoration(
+                  hintText: 'Add new goal',
+                  hideDivider: true,
+                ),
               ),
             ),
           ),
