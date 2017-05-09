@@ -119,17 +119,18 @@ class _CustomizedDesignState extends State<CustomizedDesign>
           setState(() {
             if (details.primaryDelta > -20 &&
                 details.primaryDelta < 20 &&
-                _verticalOffset >= 70.0 &&
+                _verticalOffset >= _kDetailTabHeight &&
                 _verticalOffset <= screenHeight) {
               _verticalOffset -= details.primaryDelta;
             } else if (details.primaryDelta < -30 &&
                 _verticalOffset <= screenHeight) {
               _verticalOffset = screenHeight;
-            } else if (details.primaryDelta > 30 && _verticalOffset >= 70.0) {
-              _verticalOffset = 70.0;
+            } else if (details.primaryDelta > 30 &&
+                _verticalOffset >= _kDetailTabHeight) {
+              _verticalOffset = _kDetailTabHeight;
             }
-            if (_verticalOffset < 70.0) {
-              _verticalOffset = 70.0;
+            if (_verticalOffset < _kDetailTabHeight) {
+              _verticalOffset = _kDetailTabHeight;
             } else if (_verticalOffset > screenHeight) {
               _verticalOffset = screenHeight;
             }
