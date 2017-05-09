@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:posse_gallery/config/constants.dart';
 import 'package:posse_gallery/models/category_item.dart';
 
 class ItemScreen extends StatefulWidget {
@@ -24,45 +25,64 @@ class _ItemScreenState extends State<ItemScreen> with TickerProviderStateMixin {
         .of(context)
         .padding
         .top;
-    final barWidgets = [
-      new IconButton(
-        icon: new Icon(
-          Icons.close,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
+
+    final topWidgets = <Widget>[
+      new Positioned(
+          top: 0.0, left: 0.0, right: 0.0,
+          child: new Container(
+            height: 4.0,
+            color: new Color(0x11000000),
+          )
       ),
-      new Expanded(
-        child: new Text(
-          title,
-          style: new TextStyle(
+      new Positioned(
+        top: 0.0, bottom: 0.0, left: 5.0,
+        child: new IconButton(
+          icon: new Icon(
+            Icons.close,
             color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 14.0,
           ),
-          textAlign: TextAlign.center,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      new Positioned.fill(
+        left: 60.0, right: 60.0,
+        child: new Center(
+          child: new Text(
+            title,
+            style: new TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              fontSize: 16.0,
+              letterSpacing: 0.5,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     ];
     if (item.showMoreButton) {
-      barWidgets.add(new IconButton(
-        icon: new Icon(
-          Icons.more_vert,
-          color: Colors.white,
+      topWidgets.add(
+        new Positioned(
+          right: 5.0, top: 0.0, bottom: 0.0,
+          child: new IconButton(
+            icon: new Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
+            onPressed: () {},
+          ),
         ),
-        onPressed: () {},
-      ));
+      );
     }
 
-    return new Container(
-      height: 76.0,
-      padding: new EdgeInsets.only(left: 8.0, top: statusBarHeight, right: 8.0),
-      child: new Center(
-        child: new Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: barWidgets,
+    return new Padding(
+      padding: new EdgeInsets.only(top: statusBarHeight),
+      child: new ConstrainedBox(
+        constraints: new BoxConstraints.expand(height: Constants.TopSectionHeight),
+        child: new Stack(
+          children: topWidgets,
         ),
       ),
     );
