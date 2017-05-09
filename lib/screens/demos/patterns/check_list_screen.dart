@@ -118,7 +118,7 @@ class _PatternsListState extends State<PatternsList>
               child: new TextField(
                 controller: _controller,
                 decoration: new InputDecoration(
-                  hintText: 'Add new goal',
+                  hintText: 'Enter your note',
                   hideDivider: true,
                 ),
               ),
