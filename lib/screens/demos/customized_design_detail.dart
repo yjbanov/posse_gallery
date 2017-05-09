@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 
 class CustomizedDesignDetail extends StatefulWidget {
+
   @override
   _CustomizedDesignDetailDemoState createState() =>
       new _CustomizedDesignDetailDemoState();
@@ -20,10 +21,23 @@ class _CustomizedDesignDetailDemoState extends State<CustomizedDesignDetail>
         Theme.of(context).platform == TargetPlatform.android
             ? TextAlign.left
             : TextAlign.center;
-    return new Material(
-      color: const Color(0xFFFFFFFF),
-      child: _contentWidget(),
+    return _contentWidget();
+  }
+
+  _buildGestureDetector() {
+    return new GestureDetector(
+      onVerticalDragUpdate: (details) {
+        print(details);
+      },
+      child: new Material(
+        color: const Color(0xFFFFFFFF),
+        child: _contentWidget(),
+      ),
     );
+  }
+
+  animateTransition(DragUpdateDetails details) {
+    print(details);
   }
 
   _buildAppBar() {
@@ -35,7 +49,7 @@ class _CustomizedDesignDetailDemoState extends State<CustomizedDesignDetail>
         children: [
           new Positioned(
             left: 26.0,
-            top: statusBarHeight,
+            top: 0.0,
             bottom: 0.0,
             child: new Center(
               child: new Text(
@@ -50,7 +64,7 @@ class _CustomizedDesignDetailDemoState extends State<CustomizedDesignDetail>
           ),
           new Positioned(
             right: 10.0,
-            top: statusBarHeight,
+            top: 0.0,
             bottom: 0.0,
             child: new IconButton(
               color: Colors.white,
@@ -61,7 +75,7 @@ class _CustomizedDesignDetailDemoState extends State<CustomizedDesignDetail>
                 ),
               ),
               onPressed: (() {
-                Navigator.of(context).pop();
+//                Navigator.of(context).pop();
               }),
             ),
           ),
@@ -152,58 +166,58 @@ class _CustomizedDesignDetailDemoState extends State<CustomizedDesignDetail>
     return new Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            new Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  new Icon(Icons.timer, color: Colors.white),
-                  new Padding(
-                      padding: const EdgeInsets.only(left: 4.0),
-                      child: new Text(
-                          "00:26:13",
-                          style: statsTextStyle,
-                      ),
-                  ),
-                ],
-            ),
-            new Row(
-                children: [
-                  new Icon(Icons.access_time, color: Colors.white),
-                  new Padding(
-                      padding: const EdgeInsets.only(left: 4.0),
-                      child: new Text(
-                          "7'13\"",
-                          style: statsTextStyle,
-                      ),
-                  )
-                ],
-            ),
-            new Row(
-                children: [
-                  new Icon(Icons.landscape, color: Colors.white),
-                  new Padding(
-                      padding: const EdgeInsets.only(left: 4.0),
-                      child: new Text(
-                          "120ft",
-                          style: statsTextStyle,
-                      ),
-                  ),
-                ],
-            ),
-            new Row(
-                children: [
-                  new Icon(Icons.favorite, color: Colors.white),
-                  new Padding(
-                      padding: const EdgeInsets.only(left: 4.0),
-                      child: new Text(
-                          "97bpm",
-                          style: statsTextStyle,
-                      ),
-                  ),
-                ],
-            ),
-          ],
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          new Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              new Icon(Icons.timer, color: Colors.white),
+              new Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: new Text(
+                  "00:26:13",
+                  style: statsTextStyle,
+                ),
+              ),
+            ],
+          ),
+          new Row(
+            children: [
+              new Icon(Icons.access_time, color: Colors.white),
+              new Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: new Text(
+                  "7'13\"",
+                  style: statsTextStyle,
+                ),
+              )
+            ],
+          ),
+          new Row(
+            children: [
+              new Icon(Icons.landscape, color: Colors.white),
+              new Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: new Text(
+                  "120ft",
+                  style: statsTextStyle,
+                ),
+              ),
+            ],
+          ),
+          new Row(
+            children: [
+              new Icon(Icons.favorite, color: Colors.white),
+              new Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: new Text(
+                  "97bpm",
+                  style: statsTextStyle,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -451,6 +451,7 @@ class PlatformDemoState extends State<PlatformDemo>
   _configureThemes() {
     if (_targetPlatform == null) {
       _targetPlatform = Theme.of(context).platform;
+      _radioValue = _targetPlatform == TargetPlatform.android ? 1 : 0;
     }
     if (_radioValue == null) {
       _radioValue = _targetPlatform == TargetPlatform.android ? 1 : 0;
