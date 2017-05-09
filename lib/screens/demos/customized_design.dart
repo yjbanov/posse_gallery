@@ -27,7 +27,6 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   AnimationController _textAnimationController;
 
   CustomizedDesignDetail _detailScreen;
-
   double _verticalOffset;
 
   @override
@@ -120,7 +119,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       child: new GestureDetector(
         onVerticalDragUpdate: (details) {
           setState(() {
-            _detailScreen.bu;
+
             if (details.primaryDelta > -20 &&
                 details.primaryDelta < 20 &&
                 _verticalOffset >= _kDetailTabHeight &&
