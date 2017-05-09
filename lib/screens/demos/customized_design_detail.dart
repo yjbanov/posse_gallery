@@ -35,7 +35,7 @@ class _CustomizedDesignDetailDemoState extends State<CustomizedDesignDetail>
         children: [
           new Positioned(
             left: 26.0,
-            top: statusBarHeight,
+            top: 0.0,
             bottom: 0.0,
             child: new Center(
               child: new Text(
@@ -50,7 +50,7 @@ class _CustomizedDesignDetailDemoState extends State<CustomizedDesignDetail>
           ),
           new Positioned(
             right: 10.0,
-            top: statusBarHeight,
+            top: 0.0,
             bottom: 0.0,
             child: new IconButton(
               color: Colors.white,

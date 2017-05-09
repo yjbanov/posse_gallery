@@ -14,6 +14,7 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
   TargetPlatform _targetPlatform;
   TextAlign _platformTextAlignment;
   ThemeData _themeData;
+  double _verticalOffset = 70.0;
 
   @override
   Widget build(BuildContext context) {
@@ -73,54 +74,31 @@ class _CustomizedDesignState extends State<CustomizedDesign> {
   }
 
   _buildBottomBar() {
+    double screenHeight = MediaQuery.of(context).size.height;
     return new Positioned(
       left: 0.0,
+      top: screenHeight - _verticalOffset,
       right: 0.0,
-      bottom: 0.0,
-      child: new Container(
-        color: const Color(0xFF212024),
-        height: 70.0,
-        child: new Stack(
-          children: [
-            new Positioned(
-              left: 26.0,
-              top: 0.0,
-              bottom: 0.0,
-              child: new Center(
-                child: new Text(
-                  "VIEW MY STATS",
-                  style: new TextStyle(
-                    color: const Color(0xFF02CEA1),
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-              ),
-            ),
-            new Positioned(
-              right: 10.0,
-              top: 0.0,
-              bottom: 0.0,
-              child: new IconButton(
-                color: Colors.white,
-                icon: new ImageIcon(
-                  new AssetImage("assets/icons/ic_custom_circle_arrow.png"),
-                ),
-                onPressed: (() {
-                  Navigator.push(
-                    context,
-                    new MaterialPageRoute<Null>(
-                      fullscreenDialog: true,
-                      settings: new RouteSettings(),
-                      builder: (BuildContext context) {
-                        return new CustomizedDesignDetail();
-                      },
-                    ),
-                  );
-                }),
-              ),
-            ),
-          ],
+      child: new GestureDetector(
+        onVerticalDragUpdate: (details) {
+          setState(() {
+            if (details.primaryDelta > -20 && details.primaryDelta < 20 && _verticalOffset >= 70.0 && _verticalOffset <= screenHeight) {
+              _verticalOffset -= details.primaryDelta;
+            } else if (details.primaryDelta < -30 && _verticalOffset <= screenHeight) {
+              _verticalOffset = screenHeight;
+            } else if (details.primaryDelta > 30 && _verticalOffset >= 70.0) {
+              _verticalOffset = 70.0;
+            }
+            if (_verticalOffset < 70.0) {
+              _verticalOffset = 70.0;
+            } else if (_verticalOffset > screenHeight) {
+              _verticalOffset = screenHeight;
+            }
+          });
+        },
+        child: new Container(
+          height: MediaQuery.of(context).size.height,
+          child: new CustomizedDesignDetail(),
         ),
       ),
     );
