@@ -67,18 +67,43 @@ class _PatternsListState extends State<PatternsList>
           ),
         ),
         height: 60.0,
-        child: new Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: new Stack(
           children: [
-            new Checkbox(
-              value: _checklist[i].isSelected,
-              onChanged: (bool value) {
-                setState(() {
-                  _checklist[i].isSelected = value;
-                });
-              },
+            new Positioned(
+              left: 0.0,
+              top: 0.0,
+              right: 10.0,
+              bottom: 0.0,
+              child: new Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  new Checkbox(
+                    value: _checklist[i].isSelected,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _checklist[i].isSelected = value;
+                      });
+                    },
+                  ),
+                  new Expanded(
+                    child: new Text(
+                      _checklist[i].title,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                ],
+              ),
             ),
-            new Text(_checklist[i].title),
+            new Material(
+              color: const Color(0x00FFFFFF),
+              child: new InkWell(
+                highlightColor: Colors.grey.withAlpha(30),
+                splashColor: Colors.grey.withAlpha(20),
+                onTap: (() {
+                  print("tapped");
+                }),
+              ),
+            ),
           ],
         ),
       );
