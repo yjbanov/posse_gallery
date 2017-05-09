@@ -69,6 +69,16 @@ class _PatternsListState extends State<PatternsList>
         height: 60.0,
         child: new Stack(
           children: [
+            new Material(
+              color: const Color(0x00FFFFFF),
+              child: new InkWell(
+                highlightColor: Colors.grey.withAlpha(30),
+                splashColor: Colors.grey.withAlpha(20),
+                onTap: (() {
+                  print("tapped");
+                }),
+              ),
+            ),
             new Positioned(
               left: 0.0,
               top: 0.0,
@@ -92,16 +102,6 @@ class _PatternsListState extends State<PatternsList>
                     ),
                   )
                 ],
-              ),
-            ),
-            new Material(
-              color: const Color(0x00FFFFFF),
-              child: new InkWell(
-                highlightColor: Colors.grey.withAlpha(30),
-                splashColor: Colors.grey.withAlpha(20),
-                onTap: (() {
-                  print("tapped");
-                }),
               ),
             ),
           ],
