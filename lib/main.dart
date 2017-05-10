@@ -60,6 +60,15 @@ class _GalleryAppState extends State<GalleryApp> {
 
   @override
   Widget build(BuildContext context) {
-    return mainWidget;
+//    return mainWidget;
+  // TODO(al) - Remove
+    return new MaterialApp(
+        title: 'Flutter Gallery',
+        theme: new ThemeData(
+            primarySwatch: Colors.blue,
+        ),
+        home: new WarmWelcomeScreen(isInitialScreen: true),
+        routes: new RouteManager().routes(),
+    );
   }
 }

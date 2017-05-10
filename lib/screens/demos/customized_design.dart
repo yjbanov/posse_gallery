@@ -385,7 +385,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     );
     NumberFormat elevation = new NumberFormat("#,###.#", "en_US");
     return new Container(
-      height: MediaQuery.of(context).size.height * 0.4,
+      height: MediaQuery.of(context).size.height * 0.38,
       color: const Color(0xFFF6FB09),
       child: new Stack(
         children: [
