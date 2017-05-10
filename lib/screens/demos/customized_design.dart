@@ -4,7 +4,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:posse_gallery/screens/demos/customized_design_detail.dart';
 
 class CustomizedDesign extends StatefulWidget {
   @override
@@ -16,23 +15,31 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   static const int _kAnimateHeroFadeDuration = 600;
   static const int _kAnimateTextDuration = 500;
   static const double _kDetailTabHeight = 70.0;
+  static const int _kStatsAnimationDuration = 100;
 
+  List<Widget> _stats;
   TargetPlatform _targetPlatform;
   TextAlign _platformTextAlignment;
   ThemeData _themeData;
+  double _statsOpacity = 1.0;
   Animation<double> _heroFadeInAnimation;
-  Animation<double> textFadeInAnimation;
+  Animation<double> _textFadeInAnimation;
+  Animation<double> _statsAnimationOne;
+  Animation<double> _statsAnimationTwo;
+  Animation<double> _statsAnimationThree;
+  Animation<double> _statsAnimationFour;
+
   AnimationController _heroAnimationController;
-
   AnimationController _textAnimationController;
-
-  CustomizedDesignDetail _detailScreen;
-  double _verticalOffset;
+  AnimationController _statsAnimationControllerOne;
+  AnimationController _statsAnimationControllerTwo;
+  AnimationController _statsAnimationControllerThree;
+  AnimationController _statsAnimationControllerFour;
 
   @override
   Widget build(BuildContext context) {
-    _detailScreen = new CustomizedDesignDetail();
     _configureThemes();
+    _stats = [_buildStatsContentWidget()];
     return new Theme(
       data: _themeData,
       child: new Material(
@@ -46,17 +53,61 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   dispose() {
     _heroAnimationController.dispose();
     _textAnimationController.dispose();
+    _statsAnimationControllerOne.dispose();
+    _statsAnimationControllerTwo.dispose();
+    _statsAnimationControllerThree.dispose();
+    _statsAnimationControllerFour.dispose();
     super.dispose();
   }
 
   @override
   initState() {
     super.initState();
-    _verticalOffset = _kDetailTabHeight;
     _configureAnimation();
     _heroAnimationController.forward().whenComplete(() {
       _textAnimationController.forward();
     });
+  }
+
+  _buildAppBar() {
+    return new Container(
+      color: const Color(0xFF212024),
+      height: 70.0,
+      child: new Stack(
+        children: [
+          new Positioned(
+            left: 26.0,
+            top: 0.0,
+            bottom: 0.0,
+            child: new Center(
+              child: new Text(
+                "VIEW MY STATS",
+                style: new TextStyle(
+                  color: const Color(0xFF02CEA1),
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
+          ),
+          new Positioned(
+            right: 10.0,
+            top: 0.0,
+            bottom: 0.0,
+            child: new IconButton(
+              color: Colors.white,
+              icon: new RotatedBox(
+                quarterTurns: 2,
+                child: new ImageIcon(
+                  new AssetImage("assets/icons/ic_custom_circle_arrow.png"),
+                ),
+              ),
+              onPressed: (() {}),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildBackButton() {
@@ -80,70 +131,302 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   Widget _buildBody() {
-    return new Stack(
-      children: [
-        new FadeTransition(
-          opacity: _heroFadeInAnimation,
-          child: new Image(
-            height: MediaQuery.of(context).size.height,
-            fit: BoxFit.fitHeight,
-            image: new AssetImage(
-              "assets/images/custom_hero.png",
+    return new Opacity(
+      opacity: _statsOpacity,
+      child: new Stack(
+        children: [
+          new FadeTransition(
+            opacity: _heroFadeInAnimation,
+            child: new OverflowBox(
+              alignment: FractionalOffset.topLeft,
+              maxHeight: 1000.0,
+              child: new Image(
+                height: MediaQuery.of(context).size.height,
+                fit: BoxFit.fill,
+                image: new AssetImage(
+                  "assets/images/custom_hero.png",
+                ),
+              ),
             ),
           ),
-        ),
-        new Positioned.fill(
-          child: new Center(
-            child: new FadeTransition(
-              opacity: textFadeInAnimation,
-              child: _buildTextBody(),
+          new Positioned.fill(
+            child: new Center(
+              child: new FadeTransition(
+                opacity: _textFadeInAnimation,
+                child: _buildTextBody(),
+              ),
             ),
           ),
-        ),
-        new Positioned(
-          left: -7.0,
-          top: 13.0,
-          child: _buildBackButton(),
-        ),
-        _buildBottomBar(),
-      ],
+        ],
+      ),
     );
   }
 
-  _buildBottomBar() {
-    double screenHeight = MediaQuery.of(context).size.height;
-    return new Positioned(
-      left: 0.0,
-      top: screenHeight - _verticalOffset,
-      right: 0.0,
-      child: new GestureDetector(
-        onVerticalDragUpdate: (details) {
-          print("1: $details");
-          setState(() {
+  _buildPathContent() {
+    return new Container(
+      color: const Color(0xFF333333),
+      child: new Stack(
+        children: [
+          new Positioned(
+            right: 18.0,
+            top: 35.0,
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                new Text(
+                  "3.5mi",
+                  textAlign: TextAlign.left,
+                  style: new TextStyle(
+                    color: const Color(0xFFF6FB09),
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                new Text(
+                  "974 calories",
+                  textAlign: TextAlign.left,
+                  style: new TextStyle(
+                    color: Colors.white,
+                    fontSize: 11.0,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          new Positioned(
+            left: 5.0,
+            right: 5.0,
+            top: 20.0,
+            child: new Image(
+              image: new AssetImage("assets/images/custom_path.png"),
+            ),
+          ),
+          new Positioned(
+            left: 14.0,
+            bottom: 60.0,
+            child: new Text(
+              "4/9/17 Run",
+              style: new TextStyle(
+                color: Colors.white,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              ),
+            ),
+          ),
+          new Positioned(
+            right: 10.0,
+            bottom: 60.0,
+            child: new Icon(Icons.event, color: const Color(0xFF02CEA1)),
+          ),
+          new Positioned(
+            left: 0.0,
+            bottom: 20.0,
+            right: 0.0,
+            child: new Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: _buildPathStatsRow(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-            if (details.primaryDelta > -20 &&
-                details.primaryDelta < 20 &&
-                _verticalOffset >= _kDetailTabHeight &&
-                _verticalOffset <= screenHeight) {
-              _verticalOffset -= details.primaryDelta;
-            } else if (details.primaryDelta < -30 &&
-                _verticalOffset <= screenHeight) {
-              _verticalOffset = screenHeight;
-            } else if (details.primaryDelta > 30 &&
-                _verticalOffset >= _kDetailTabHeight) {
-              _verticalOffset = _kDetailTabHeight;
-            }
-            if (_verticalOffset < _kDetailTabHeight) {
-              _verticalOffset = _kDetailTabHeight;
-            } else if (_verticalOffset > screenHeight) {
-              _verticalOffset = screenHeight;
-            }
-          });
-        },
-        child: new Container(
-          height: MediaQuery.of(context).size.height,
-          child: _detailScreen,
-        ),
+  _buildPathStatsRow() {
+    TextStyle statsTextStyle = new TextStyle(
+      fontSize: 12.0,
+      fontWeight: FontWeight.w500,
+      fontStyle: FontStyle.italic,
+      color: Colors.white,
+    );
+    return new Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      child: new Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          new ScaleTransition(
+            scale: _statsAnimationOne,
+            child: new Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                new Icon(Icons.timer, color: Colors.white),
+                new Padding(
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: new Text(
+                    "00:26:13",
+                    style: statsTextStyle,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          new ScaleTransition(
+            scale: _statsAnimationTwo,
+            child: new Row(
+              children: [
+                new Icon(Icons.access_time, color: Colors.white),
+                new Padding(
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: new Text(
+                    "7'13\"",
+                    style: statsTextStyle,
+                  ),
+                )
+              ],
+            ),
+          ),
+          new ScaleTransition(
+            scale: _statsAnimationThree,
+            child: new Row(
+              children: [
+                new Icon(Icons.landscape, color: Colors.white),
+                new Padding(
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: new Text(
+                    "120ft",
+                    style: statsTextStyle,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          new ScaleTransition(
+            scale: _statsAnimationFour,
+            child: new Row(
+              children: [
+                new Icon(Icons.favorite, color: Colors.white),
+                new Padding(
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: new Text(
+                    "97bpm",
+                    style: statsTextStyle,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildStatsBox() {
+    final TextStyle figureStyle = new TextStyle(
+      fontSize: 24.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    );
+    final TextStyle titleStyle = new TextStyle(
+      fontSize: 9.0,
+      fontWeight: FontWeight.w400,
+      color: Colors.black,
+    );
+    return new Container(
+      height: MediaQuery.of(context).size.height * 0.4,
+      color: const Color(0xFFF6FB09),
+      child: new Stack(
+        children: [
+          new Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                new Column(
+                  children: [
+                    new Text(
+                      "158",
+                      style: figureStyle,
+                    ),
+                    new Text(
+                      "TOTAL RUNS",
+                      style: titleStyle,
+                    ),
+                  ],
+                ),
+                new Column(
+                  children: [
+                    new Text(
+                      "6'45\"",
+                      style: figureStyle,
+                    ),
+                    new Text(
+                      "AVG PACE",
+                      style: titleStyle,
+                    ),
+                  ],
+                ),
+                new Column(
+                  children: [
+                    new Text(
+                      "9,365FT",
+                      style: figureStyle,
+                    ),
+                    new Text(
+                      "TOTAL ELEVATION",
+                      style: titleStyle,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          new Positioned(
+            left: 0.0,
+            right: 0.0,
+            bottom: 24.0,
+            child: new Column(
+              children: [
+                new Text(
+                  "643.6",
+                  style: new TextStyle(
+                    fontSize: 82.0,
+                    fontWeight: FontWeight.w900,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black,
+                  ),
+                ),
+                new Text(
+                  "TOTAL MILES",
+                  style: new TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w900,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatsContentWidget() {
+    return new Container(
+      height: MediaQuery.of(context).size.height -
+          MediaQuery.of(context).padding.top,
+      width: MediaQuery.of(context).size.width,
+      child: new Stack(
+        children: [
+          _buildAppBar(),
+          new Positioned(
+            left: 0.0,
+            right: 0.0,
+            top: 70.0,
+            bottom: MediaQuery.of(context).size.height * 0.4,
+            child: _buildPathContent(),
+          ),
+          new Positioned(
+            left: 0.0,
+            right: 0.0,
+            bottom: 0.0,
+            child: _buildStatsBox(),
+          ),
+        ],
       ),
     );
   }
@@ -218,18 +501,54 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       duration: const Duration(milliseconds: _kAnimateTextDuration),
       vsync: this,
     );
+    _statsAnimationControllerOne = new AnimationController(
+      duration: const Duration(milliseconds: _kStatsAnimationDuration),
+      vsync: this,
+    );
+    _statsAnimationControllerTwo = new AnimationController(
+      duration: const Duration(milliseconds: _kStatsAnimationDuration),
+      vsync: this,
+    );
+    _statsAnimationControllerThree = new AnimationController(
+      duration: const Duration(milliseconds: _kStatsAnimationDuration),
+      vsync: this,
+    );
+    _statsAnimationControllerFour = new AnimationController(
+      duration: const Duration(milliseconds: _kStatsAnimationDuration),
+      vsync: this,
+    );
     _heroFadeInAnimation = _initAnimation(
       from: 0.0,
       to: 1.0,
       curve: Curves.easeOut,
       controller: _heroAnimationController,
     );
-    textFadeInAnimation = _initAnimation(
+    _textFadeInAnimation = _initAnimation(
       from: 0.0,
       to: 1.0,
       curve: Curves.easeIn,
       controller: _textAnimationController,
     );
+    _statsAnimationOne = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _statsAnimationControllerOne);
+    _statsAnimationTwo = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _statsAnimationControllerTwo);
+    _statsAnimationThree = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _statsAnimationControllerThree);
+    _statsAnimationFour = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _statsAnimationControllerFour);
   }
 
   _configureThemes() {
@@ -256,13 +575,50 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   Widget _contentWidget() {
-    return new Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        _buildBody(),
-      ],
+    double screenHeight = MediaQuery.of(context).size.height;
+    return new Scaffold(
+      body: new NotificationListener<ScrollNotification>(
+        onNotification: _handleScrollNotification,
+        child: new CustomScrollView(
+          slivers: [
+            new SliverAppBar(
+              pinned: false,
+              expandedHeight: screenHeight -
+                  _kDetailTabHeight -
+                  MediaQuery.of(context).padding.top,
+              leading: _buildBackButton(),
+              backgroundColor: const Color(0xFF212024),
+              flexibleSpace: new FlexibleSpaceBar(
+                background: _buildBody(),
+              ),
+            ),
+            new SliverList(
+              delegate: new SliverChildListDelegate(_stats),
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    double visibleStatsHeight = notification.metrics.pixels;
+    double screenHeight = MediaQuery.of(context).size.height -
+        _kDetailTabHeight -
+        MediaQuery.of(context).padding.top;
+    double opacity = visibleStatsHeight / screenHeight;
+    _statsOpacity = 1.0 - opacity;
+    if (opacity == 1.0) {
+      _statsAnimationControllerOne.forward().whenComplete(() {
+        _statsAnimationControllerTwo.forward().whenComplete(() {
+          _statsAnimationControllerThree.forward().whenComplete(() {
+            _statsAnimationControllerFour.forward().whenComplete(() {});
+          });
+        });
+      });
+    }
+    setState(() {});
+    return false;
   }
 
   Animation<double> _initAnimation(
