@@ -6,22 +6,25 @@ import 'package:flutter/material.dart';
 import 'package:posse_gallery/models/checklist.dart';
 import 'package:posse_gallery/models/checklist_item.dart';
 
+typedef void ChecklistItemChangedCallback(ChecklistItem checklistItem,
+    bool value);
+
 class ChecklistListItem extends StatelessWidget {
   ChecklistListItem({
     Key key,
     this.animation,
-    this.onTap,
     this.checklistItem,
-    this.selected: false
+    this.onTap,
+    this.onCheckboxChanged,
   }) : super(key: key) {
     assert(animation != null);
-    assert(selected != null);
   }
 
   final Animation<double> animation;
-  final VoidCallback onTap;
-  final bool selected;
   final ChecklistItem checklistItem;
+  final VoidCallback onTap;
+  final ChecklistItemChangedCallback onCheckboxChanged;
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +50,7 @@ class ChecklistListItem extends StatelessWidget {
                 highlightColor: Colors.grey.withAlpha(30),
                 splashColor: Colors.grey.withAlpha(20),
                 onTap: (() {
-                  print("tapped");
+                  this.onTap();
                 }),
               ),
             ),
@@ -62,9 +65,7 @@ class ChecklistListItem extends StatelessWidget {
                   new Checkbox(
                     value: checklistItem.isSelected,
                     onChanged: (bool value) {
-//                    setState(() {
-//                      checklistItem.isSelected = value;
-//                    });
+                      onCheckboxChanged(checklistItem, value);
                     },
                   ),
                   new Expanded(
@@ -145,6 +146,14 @@ class _PatternsListState extends State<PatternsList>
     return new ChecklistListItem(
       animation: animation,
       checklistItem: _checklist[index],
+      onTap: () {
+        print("tapped");
+      },
+      onCheckboxChanged: (checklistItem, value) {
+        setState(() {
+          checklistItem.isSelected = value;
+        });
+      },
     );
   }
 
@@ -153,8 +162,6 @@ class _PatternsListState extends State<PatternsList>
     return new ChecklistListItem(
       animation: animation,
       checklistItem: item,
-      selected: false,
-      // No gesture detector here: we don't want removed items to be interactive.
     );
   }
 
