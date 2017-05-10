@@ -4,6 +4,7 @@ description: Posse's fancy new gallery for Flutter.
 dependencies:
   flutter:
     sdk: flutter
+  path_provider: "^0.2.0"
 dev_dependencies:
   flutter_test:
     sdk: flutter
