@@ -385,7 +385,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     );
     NumberFormat elevation = new NumberFormat("#,###.#", "en_US");
     return new Container(
-      height: MediaQuery.of(context).size.height * 0.38,
+      height: MediaQuery.of(context).size.height * 0.4,
       color: const Color(0xFFF6FB09),
       child: new Stack(
         children: [
@@ -693,6 +693,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
         });
       });
     } else if (_statsOpacity == 1.0) {
+      _statsAnimationControllerOne.value = 0.0;
+      _statsAnimationControllerTwo.value = 0.0;
+      _statsAnimationControllerThree.value = 0.0;
+      _statsAnimationControllerFour.value = 0.0;
       _rotationAnimationController.reverse();
     }
     setState(() {});
