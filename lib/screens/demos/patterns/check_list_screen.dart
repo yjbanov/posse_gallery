@@ -6,58 +6,30 @@ import 'package:flutter/material.dart';
 import 'package:posse_gallery/models/checklist.dart';
 import 'package:posse_gallery/models/checklist_item.dart';
 
-class PatternsList extends StatefulWidget {
+class ChecklistListItem extends StatelessWidget {
+  ChecklistListItem({
+    Key key,
+    this.animation,
+    this.onTap,
+    this.checklistItem,
+    this.selected: false
+  }) : super(key: key) {
+    assert(animation != null);
+    assert(selected != null);
+  }
+
+  final Animation<double> animation;
+  final VoidCallback onTap;
+  final bool selected;
+  final ChecklistItem checklistItem;
+
   @override
-  _PatternsListState createState() => new _PatternsListState();
-}
-
-class _PatternsListState extends State<PatternsList>
-    with TickerProviderStateMixin {
-  final TextEditingController _controller = new TextEditingController();
-
-  final Checklist _checklist = new Checklist(
-    items: [
-      new ChecklistItem(title: "Drink a gallon of water", isSelected: false),
-      new ChecklistItem(title: "Read a novel", isSelected: false),
-      new ChecklistItem(title: "Learn a new language", isSelected: false),
-      new ChecklistItem(title: "Visit a new place", isSelected: false),
-    ]
-  );
-  List<Widget> _cells;
-  Animation<double> _cellSizeInAnimation;
-  AnimationController _animateInController;
-
-  static const int _kAnimateInDuration = 700;
-
-  _PatternsListState() {
-    _configureAnimation();
-  }
-
-  void _configureAnimation() {
-    _animateInController = new AnimationController(
-      duration: const Duration(milliseconds: _kAnimateInDuration),
-      vsync: this,
-    );
-    _cellSizeInAnimation = _initAnimation(
-        from: 0.0,
-        to: 1.0,
-        curve: Curves.easeIn,
-        controller: _animateInController);
-  }
-
-  Animation<double> _initAnimation(
-      {double from, double to, Curve curve, AnimationController controller}) {
-    final CurvedAnimation animation = new CurvedAnimation(
-      parent: controller,
-      curve: curve,
-    );
-    return new Tween<double>(begin: from, end: to).animate(animation);
-  }
-
-  List<Widget> _loadItems() {
-    List<Widget> cells = [];
-    for (int i = 0; i < _checklist.items().length; i++) {
-      final cellContainer = new Container(
+  Widget build(BuildContext context) {
+    final cellContainer = new SizeTransition(
+      axis: Axis.vertical,
+      sizeFactor: animation,
+      child:
+      new Container(
         decoration: new BoxDecoration(
           border: new Border(
             bottom: new BorderSide(
@@ -88,18 +60,18 @@ class _PatternsListState extends State<PatternsList>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   new Checkbox(
-                    value: _checklist[i].isSelected,
+                    value: checklistItem.isSelected,
                     onChanged: (bool value) {
-                      setState(() {
-                        _checklist[i].isSelected = value;
-                      });
+//                    setState(() {
+//                      checklistItem.isSelected = value;
+//                    });
                     },
                   ),
                   new Expanded(
                     child: new IgnorePointer(
                       ignoring: true,
                       child: new Text(
-                        _checklist[i].title,
+                        checklistItem.title,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -109,11 +81,81 @@ class _PatternsListState extends State<PatternsList>
             ),
           ],
         ),
-      );
-      cells.add(cellContainer);
+      ),
+    );
+
+    return cellContainer;
+  }
+}
+
+// Keeps a Checklist in sync with the AnimatedList that is used.
+class AnimatedChecklist extends Checklist {
+  // todo (kg) - make required params required with @required annotation
+  AnimatedChecklist({List<ChecklistItem> items,
+    this.removedItemBuilder,
+    this.listKey}) : super(items: items);
+
+  final dynamic removedItemBuilder;
+  final GlobalKey<AnimatedListState> listKey;
+
+  AnimatedListState get _animatedList => listKey.currentState;
+
+  @override
+  void addItem(ChecklistItem item, {int index = -1}) {
+    super.addItem(item, index: index);
+    if (index == -1) {
+      _animatedList.insertItem(items().length);
+    } else {
+      _animatedList.insertItem(index);
     }
-    _cells = cells;
-    return _cells;
+  }
+}
+
+class PatternsList extends StatefulWidget {
+  @override
+  _PatternsListState createState() => new _PatternsListState();
+}
+
+class _PatternsListState extends State<PatternsList>
+    with TickerProviderStateMixin {
+
+  final TextEditingController _controller = new TextEditingController();
+  final GlobalKey<AnimatedListState> _listKey = new GlobalKey<AnimatedListState>();
+  AnimatedChecklist _checklist;
+
+  @override
+  void initState() {
+    super.initState();
+    List<ChecklistItem> defaultItems = [
+      new ChecklistItem(title: "Drink a gallon of water", isSelected: false),
+      new ChecklistItem(title: "Read a novel", isSelected: false),
+      new ChecklistItem(title: "Learn a new language", isSelected: false),
+      new ChecklistItem(title: "Visit a new place", isSelected: false),
+    ];
+
+    _checklist = new AnimatedChecklist(
+        listKey: _listKey,
+        removedItemBuilder: _buildRemovedItem,
+        items: defaultItems,
+    );
+  }
+
+  // Used to build list items that haven't been removed.
+  Widget _buildItem(BuildContext context, int index, Animation<double> animation) {
+    return new ChecklistListItem(
+      animation: animation,
+      checklistItem: _checklist[index],
+    );
+  }
+
+  // Used to build an item after it has been removed from the list.
+  Widget _buildRemovedItem(ChecklistItem item, BuildContext context, Animation<double> animation) {
+    return new ChecklistListItem(
+      animation: animation,
+      checklistItem: item,
+      selected: false,
+      // No gesture detector here: we don't want removed items to be interactive.
+    );
   }
 
   Widget _buildInputField() {
@@ -159,8 +201,10 @@ class _PatternsListState extends State<PatternsList>
 
   Widget _buildListView() {
     return new Expanded(
-      child: new ListView(
-        children: _cells,
+      child: new AnimatedList(
+        key: _listKey,
+        initialItemCount: _checklist.items().length,
+        itemBuilder: _buildItem,
       ),
     );
   }
@@ -176,7 +220,6 @@ class _PatternsListState extends State<PatternsList>
 
   @override
   Widget build(BuildContext context) {
-    _cells = _loadItems();
     return new Material(
       color: const Color(0xFFFFFFFF),
       child: _contentWidget(),

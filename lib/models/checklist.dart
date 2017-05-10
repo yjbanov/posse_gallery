@@ -27,6 +27,7 @@ class Checklist {
   void removeItemAtIndex(int index) {
     _items.removeAt(index);
   }
+
   void removeItem(ChecklistItem item) {
     _items.remove(item);
   }
