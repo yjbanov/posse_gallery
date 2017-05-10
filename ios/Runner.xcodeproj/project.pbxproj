@@ -21,6 +21,8 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		A3B3CA8D1EC3CC6C00F17D49 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = A3B3CA8A1EC3CC6C00F17D49 /* GeneratedPluginRegistrant.m */; };
+		A3B3CA8E1EC3CC6C00F17D49 /* PluginRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = A3B3CA8C1EC3CC6C00F17D49 /* PluginRegistry.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -55,6 +57,10 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A3B3CA891EC3CC6C00F17D49 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
+		A3B3CA8A1EC3CC6C00F17D49 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
+		A3B3CA8B1EC3CC6C00F17D49 /* PluginRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginRegistry.h; sourceTree = "<group>"; };
+		A3B3CA8C1EC3CC6C00F17D49 /* PluginRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginRegistry.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +120,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				A3B3CA8F1EC3CC7A00F17D49 /* Generated */,
 				7AFFD8ED1D35381100E5BB4D /* AppDelegate.h */,
 				7AFFD8EE1D35381100E5BB4D /* AppDelegate.m */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
@@ -131,6 +138,17 @@
 				97C146F21CF9000F007C117D /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A3B3CA8F1EC3CC7A00F17D49 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				A3B3CA891EC3CC6C00F17D49 /* GeneratedPluginRegistrant.h */,
+				A3B3CA8A1EC3CC6C00F17D49 /* GeneratedPluginRegistrant.m */,
+				A3B3CA8B1EC3CC6C00F17D49 /* PluginRegistry.h */,
+				A3B3CA8C1EC3CC6C00F17D49 /* PluginRegistry.m */,
+			);
+			name = Generated;
 			sourceTree = "<group>";
 		};
 		CF3B75C9A7D2FA2A4C99F110 /* Frameworks */ = {
@@ -300,6 +318,8 @@
 			files = (
 				978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */,
 				97C146F31CF9000F007C117D /* main.m in Sources */,
+				A3B3CA8D1EC3CC6C00F17D49 /* GeneratedPluginRegistrant.m in Sources */,
+				A3B3CA8E1EC3CC6C00F17D49 /* PluginRegistry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
