@@ -96,11 +96,14 @@ class _PatternsListState extends State<PatternsList>
                     },
                   ),
                   new Expanded(
-                    child: new Text(
-                      _checklist[i].title,
-                      overflow: TextOverflow.ellipsis,
+                    child: new IgnorePointer(
+                      ignoring: true,
+                      child: new Text(
+                        _checklist[i].title,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
