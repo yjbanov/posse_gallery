@@ -15,7 +15,7 @@ class CustomizedDesign extends StatefulWidget {
 
 class _CustomizedDesignState extends State<CustomizedDesign>
     with TickerProviderStateMixin {
-  static const int _kAnimateHeroFadeDuration = 900;
+  static const int _kAnimateHeroFadeDuration = 1000;
   static const int _kAnimateTextDuration = 400;
   static const double _kDetailTabHeight = 70.0;
   static const int _kStatsAnimationDuration = 100;
