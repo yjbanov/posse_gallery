@@ -4,14 +4,14 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - Flutter (from `/Users/albertlardizabal/dev/flutter/bin/cache/artifacts/engine/ios`)
-  - path_provider (from `/Users/albertlardizabal/.pub-cache/hosted/pub.dartlang.org/path_provider-0.2.0/ios`)
+  - Flutter (from `/Users/luke/Development/third-party/flutter/bin/cache/artifacts/engine/ios`)
+  - path_provider (from `/Users/luke/.pub-cache/hosted/pub.dartlang.org/path_provider-0.2.0/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
-    :path: /Users/albertlardizabal/dev/flutter/bin/cache/artifacts/engine/ios
+    :path: /Users/luke/Development/third-party/flutter/bin/cache/artifacts/engine/ios
   path_provider:
-    :path: /Users/albertlardizabal/.pub-cache/hosted/pub.dartlang.org/path_provider-0.2.0/ios
+    :path: /Users/luke/.pub-cache/hosted/pub.dartlang.org/path_provider-0.2.0/ios
 
 SPEC CHECKSUMS:
   Flutter: d674e78c937094a75ac71dd77e921e840bea3dbf
@@ -19,4 +19,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: cc70c01bca487bebd110b87397f017f3b76a89f1
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.1
