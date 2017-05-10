@@ -310,6 +310,39 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		19638130C9193F1F5644C6646E096931 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1B948588559D38B6667179BBC5B62A4F /* path_provider.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/path_provider/path_provider-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/path_provider/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/path_provider/path_provider.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = path_provider;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		34FE9531DA9AF2820790339988D5FF41 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -354,11 +387,10 @@
 			};
 			name = Release;
 		};
-		3EAB5ACA26C74442B6A3E07B16C85EED /* Debug */ = {
+		4D49CFC2422E5D517B01FEC86610E798 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1B948588559D38B6667179BBC5B62A4F /* path_provider.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -388,11 +420,10 @@
 			};
 			name = Debug;
 		};
-		6F164B7A8CC4540EEC4673BFAB46C232 /* Release */ = {
+		70CC464A4FDD9E1E67BE4F3F92DF1A0E /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 60BA499A645871628CFA2E5806E78269 /* Pods-Runner.release.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -426,45 +457,10 @@
 			};
 			name = Release;
 		};
-		787283E096EE4994E54211D41037BC48 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1B948588559D38B6667179BBC5B62A4F /* path_provider.xcconfig */;
-			buildSettings = {
-				ARCHS = arm64;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/path_provider/path_provider-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/path_provider/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/path_provider/path_provider.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = path_provider;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		79C69D9F9725731C5F35BBCE0CCBD7C1 /* Debug */ = {
+		B182845E247E7A899EF3D9B4662F68A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 63BC99522783D0218755FDE8464650E4 /* Pods-Runner.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -561,8 +557,8 @@
 		D539934C414E6965B703CB3D7B1F1BF6 /* Build configuration list for PBXNativeTarget "Pods-Runner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				79C69D9F9725731C5F35BBCE0CCBD7C1 /* Debug */,
-				6F164B7A8CC4540EEC4673BFAB46C232 /* Release */,
+				B182845E247E7A899EF3D9B4662F68A1 /* Debug */,
+				70CC464A4FDD9E1E67BE4F3F92DF1A0E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -570,8 +566,8 @@
 		E7632FE225D15541A9088338F29A3C3E /* Build configuration list for PBXNativeTarget "path_provider" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3EAB5ACA26C74442B6A3E07B16C85EED /* Debug */,
-				787283E096EE4994E54211D41037BC48 /* Release */,
+				4D49CFC2422E5D517B01FEC86610E798 /* Debug */,
+				19638130C9193F1F5644C6646E096931 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
