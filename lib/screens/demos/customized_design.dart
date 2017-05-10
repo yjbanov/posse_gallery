@@ -20,6 +20,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   static const double _kDetailTabHeight = 70.0;
   static const int _kStatsAnimationDuration = 100;
   static const int _kRotationAnimationDuration = 200;
+  static const int _kAnimateRunnerHeroFadeDuration = 400;
 
   List<Widget> _stats;
   TargetPlatform _targetPlatform;
@@ -38,6 +39,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   Animation<double> _statsAnimationThree;
   Animation<double> _statsAnimationFour;
   Animation<double> _rotationAnimation;
+  Animation<double> _runnerFadeAnimation;
 
   AnimationController _heroAnimationController;
   AnimationController _textAnimationController;
@@ -46,6 +48,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   AnimationController _statsAnimationControllerThree;
   AnimationController _statsAnimationControllerFour;
   AnimationController _rotationAnimationController;
+  AnimationController _runnerAnimationController;
 
   @override
   Widget build(BuildContext context) {
@@ -385,7 +388,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     );
     NumberFormat elevation = new NumberFormat("#,###.#", "en_US");
     return new Container(
-      height: MediaQuery.of(context).size.height * 0.38,
+      height: MediaQuery.of(context).size.height * 0.4,
       color: const Color(0xFFF6FB09),
       child: new Stack(
         children: [
@@ -620,6 +623,12 @@ class _CustomizedDesignState extends State<CustomizedDesign>
         to: 0.5,
         curve: Curves.easeOut,
         controller: _rotationAnimationController);
+    _runnerFadeAnimation = _initAnimation(
+      from: 0.0,
+      to: 1.0,
+      curve: Curves.easeIn,
+      controller: _runnerAnimationController
+    );
   }
 
   _configureThemes() {
@@ -687,6 +696,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
           _statsAnimationControllerThree.forward().whenComplete(() {
             _statsAnimationControllerFour.forward().whenComplete(() {
               _rotationAnimationController.forward();
+              _runnerAnimationController.forward();
               _animateCounters();
             });
           });
@@ -694,6 +704,11 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       });
     } else if (_statsOpacity == 1.0) {
       _rotationAnimationController.reverse();
+      _statsAnimationControllerOne.value = 0.0;
+      _statsAnimationControllerTwo.value = 0.0;
+      _statsAnimationControllerThree.value = 0.0;
+      _statsAnimationControllerFour.value = 0.0;
+      _runnerAnimationController.value = 0.0;
     }
     setState(() {});
     return false;
