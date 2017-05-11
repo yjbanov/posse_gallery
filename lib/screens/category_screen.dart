@@ -30,6 +30,7 @@ class _CategoryScreenState extends State<CategoryScreen>
 
   final AppCategory _category;
   List<Widget> _cells;
+  String _categoryTitle = "";
 
   AnimationController _animationController;
 
@@ -86,7 +87,7 @@ class _CategoryScreenState extends State<CategoryScreen>
           padding: const EdgeInsets.only(
               left: 30.0, right: 30.0, top: 15.0, bottom: 15.0),
           child: new Text(
-            _category.title,
+            _category.title.toUpperCase(),
             textAlign: TextAlign.center,
             style: new TextStyle(
               fontWeight: FontWeight.w700,
@@ -196,23 +197,39 @@ class _CategoryScreenState extends State<CategoryScreen>
   Widget _contentWidget() {
     return new Scaffold(
       backgroundColor: _category.centerShapeColor,
-      body: new CustomScrollView(
-        slivers: [
-          new SliverAppBar(
-            pinned: true,
-            expandedHeight: 256.0,
-            leading: _buildBackButton(),
-            backgroundColor: _category.centerShapeColor.withAlpha(255),
-            flexibleSpace: new FlexibleSpaceBar(
-              background: _buildAppBar(),
+      body: new NotificationListener<ScrollNotification>(
+        onNotification: _handleScrollNotification,
+        child: new CustomScrollView(
+          slivers: [
+            new SliverAppBar(
+              pinned: true,
+              title: new Text(
+                _categoryTitle,
+              ),
+              expandedHeight: 256.0,
+              leading: _buildBackButton(),
+              backgroundColor: _category.centerShapeColor.withAlpha(255),
+              flexibleSpace: new FlexibleSpaceBar(
+                background: _buildAppBar(),
+              ),
             ),
-          ),
-          new SliverList(
-            delegate: new SliverChildListDelegate(_cells),
-          ),
-        ],
+            new SliverList(
+              delegate: new SliverChildListDelegate(_cells),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    double visibleStatsHeight = notification.metrics.pixels;
+    double screenHeight =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    double visiblePercentage = visibleStatsHeight / screenHeight;
+    _categoryTitle = visiblePercentage > 0.3 ? _category.title : "";
+    setState(() {});
+    return false;
   }
 
   Widget _createCell({@required CategoryItem item}) {

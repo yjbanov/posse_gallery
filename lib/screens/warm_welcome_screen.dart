@@ -227,7 +227,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           curve: const Interval(0.25, 1.0, curve: Curves.easeOut),
           child: new Image(
             height: MediaQuery.of(context).size.height,
-            image: new AssetImage("assets/images/bg_flutter_welcome.png"),
+            image: new AssetImage("assets/backgrounds/bg_flutter_welcome.png"),
           ),
         ),
       ],
@@ -432,7 +432,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           ),
           onPressed: () {
             if (_isInitialScreen) {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 new PageRouteBuilder<Null>(
                   settings: const RouteSettings(name: "/main"),
