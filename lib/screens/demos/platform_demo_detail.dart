@@ -257,10 +257,8 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
                   new Hero(
                     tag: "platform.hero",
                     child: new OverflowBox(
-                      maxWidth: double.INFINITY,
-                      maxHeight: double.INFINITY,
+                      maxWidth: MediaQuery.of(context).size.width * 1.1,
                       child: new Image(
-                        width: MediaQuery.of(context).size.width,
                         image: new AssetImage(
                             "assets/images/platform_detail_hero.png"),
                       ),

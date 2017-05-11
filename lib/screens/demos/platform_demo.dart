@@ -83,7 +83,7 @@ class PlatformDemoState extends State<PlatformDemo>
               style: new TextStyle(
                 color: _themeData.textTheme.title.color,
                 fontWeight: FontWeight.w500,
-                fontSize: 16.0,
+                fontSize: 20.0,
               ),
               textAlign: _platformTextAlignment,
             ),
@@ -328,8 +328,8 @@ class PlatformDemoState extends State<PlatformDemo>
       controller: _animationController,
     );
     Image heroImage = new Image(
-      fit: BoxFit.fitHeight,
-        image: new AssetImage(_heroImageString),
+      fit: BoxFit.fitWidth,
+      image: new AssetImage(_heroImageString),
     );
     return new Expanded(
       child: new GestureDetector(
@@ -345,9 +345,12 @@ class PlatformDemoState extends State<PlatformDemo>
                   alignment: FractionalOffset.bottomCenter,
                   child: new Padding(
                     padding: new EdgeInsets.only(top: 0.0),
-                    child: new Hero(
-                      tag: "platform.hero",
-                        child: heroImage,
+                    child: new OverflowBox(
+                      maxWidth: MediaQuery.of(context).size.width * 1.1,
+                      child: new Hero(
+                          tag: "platform.hero",
+                          child: heroImage,
+                      ),
                     ),
                   ),
                 ),
