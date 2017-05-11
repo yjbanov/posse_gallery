@@ -20,7 +20,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   static const double _kDetailTabHeight = 70.0;
   static const int _kStatsAnimationDuration = 100;
   static const int _kRotationAnimationDuration = 100;
-  static const int _kAnimateRunnerHeroFadeDuration = 100;
+  static const int _kAnimateRunnerHeroFadeDuration = 400;
 
   List<Widget> _stats;
   TargetPlatform _targetPlatform;
@@ -656,7 +656,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
         curve: Curves.easeOut,
         controller: _rotationAnimationController);
     _runnerFadeAnimation = _initAnimation(
-        from: 1.0,
+        from: 0.0,
         to: 1.0,
         curve: Curves.easeOut,
         controller: _runnerAnimationController);
@@ -728,14 +728,14 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       _statsOpacity = calculatedOpacity;
     }
     if (_statsOpacity == 0.0) {
+      _rotationAnimationController.forward().whenComplete(() {
+        _isStatsBoxFullScreen = true;
+      });
+      _runnerAnimationController.forward();
       _statsAnimationControllerOne.forward().whenComplete(() {
         _statsAnimationControllerTwo.forward().whenComplete(() {
           _statsAnimationControllerThree.forward().whenComplete(() {
             _statsAnimationControllerFour.forward().whenComplete(() {
-              _rotationAnimationController.forward().whenComplete(() {
-                _isStatsBoxFullScreen = true;
-              });
-              _runnerAnimationController.forward();
               _animateCounters();
             });
           });
