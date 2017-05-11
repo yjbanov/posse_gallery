@@ -703,6 +703,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
         });
       });
     } else if (_statsOpacity == 1.0) {
+      _statsAnimationControllerOne.value = 0.0;
+      _statsAnimationControllerTwo.value = 0.0;
+      _statsAnimationControllerThree.value = 0.0;
+      _statsAnimationControllerFour.value = 0.0;
       _rotationAnimationController.reverse();
       _statsAnimationControllerOne.value = 0.0;
       _statsAnimationControllerTwo.value = 0.0;
