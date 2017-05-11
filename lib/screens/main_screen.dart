@@ -178,7 +178,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           top: 0.0,
           right: 0.0,
           child: new Image(
-            image: new AssetImage("assets/images/bg_main_screen.png"),
+            image: new AssetImage("assets/backgrounds/bg_main_screen.png"),
           ),
         ),
         new Positioned(

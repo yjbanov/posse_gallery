@@ -227,13 +227,8 @@ class _CategoryScreenState extends State<CategoryScreen>
     double screenHeight =
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
     double visiblePercentage = visibleStatsHeight / screenHeight;
-    print(visiblePercentage);
-    if (visiblePercentage > 0.3) {
-      _categoryTitle = _category.title;
-    } else {
-      _categoryTitle = "";
-    }
-    setState((){});
+    _categoryTitle = visiblePercentage > 0.3 ? _category.title : "";
+    setState(() {});
     return false;
   }
 
