@@ -17,6 +17,8 @@ jdk:
   - oraclejdk8
 os:
   - linux
+  - osx
+osx_image: xcode8.3
 sudo: false
 addons:
   apt:
