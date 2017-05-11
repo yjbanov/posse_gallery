@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
@@ -19,7 +19,8 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   static const int _kAnimateTextDuration = 400;
   static const double _kDetailTabHeight = 70.0;
   static const int _kStatsAnimationDuration = 100;
-  static const int _kRotationAnimationDuration = 200;
+  static const int _kRotationAnimationDuration = 100;
+  static const int _kAnimateRunnerHeroFadeDuration = 400;
 
   List<Widget> _stats;
   TargetPlatform _targetPlatform;
@@ -30,6 +31,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   int _elevationCounter = 8365;
   int _runCounter = 158;
   bool _hasAnimatedCounters = false;
+  bool _isStatsBoxFullScreen = false;
 
   Animation<double> _heroFadeInAnimation;
   Animation<double> _textFadeInAnimation;
@@ -38,6 +40,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   Animation<double> _statsAnimationThree;
   Animation<double> _statsAnimationFour;
   Animation<double> _rotationAnimation;
+  Animation<double> _runnerFadeAnimation;
 
   AnimationController _heroAnimationController;
   AnimationController _textAnimationController;
@@ -46,6 +49,9 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   AnimationController _statsAnimationControllerThree;
   AnimationController _statsAnimationControllerFour;
   AnimationController _rotationAnimationController;
+  AnimationController _runnerAnimationController;
+
+  ScrollController _scrollController = new ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +146,27 @@ class _CustomizedDesignState extends State<CustomizedDesign>
                     new AssetImage("assets/icons/ic_custom_circle_arrow.png"),
                   ),
                 ),
-                onPressed: (() {}),
+                onPressed: (() {
+                  double screenHeight = MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top;
+                  if (Theme.of(context).platform == TargetPlatform.iOS) {
+                    screenHeight -= 70.0;
+                  }
+                  double halfScreen = screenHeight * 0.5;
+                  double scrollToOffset = _scrollController.offset <= halfScreen
+                      ? 0.0
+                      : screenHeight;
+                  if (_scrollController.offset == 0) {
+                    scrollToOffset = screenHeight;
+                  } else if (_isStatsBoxFullScreen) {
+                    scrollToOffset = 0.0;
+                  }
+                  _scrollController.animateTo(
+                    scrollToOffset,
+                    curve: Curves.easeOut,
+                    duration: const Duration(milliseconds: 300),
+                  );
+                }),
               ),
             ),
           ),
@@ -182,10 +208,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
               alignment: FractionalOffset.topLeft,
               maxHeight: 1000.0,
               child: new Image(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height,
+                height: MediaQuery.of(context).size.height,
                 fit: BoxFit.fill,
                 image: new AssetImage(
                   "assets/images/custom_hero.png",
@@ -211,13 +234,15 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       color: const Color(0xFF333333),
       child: new Stack(
         children: [
-          new Positioned.fill(
-            child: new Image(
-              image: new AssetImage("assets/images/custom_runner_bg.png"),
-              fit: BoxFit.cover,
-              alignment: FractionalOffset.topCenter,
-            ),
-          ),
+          new Positioned(
+              top: 0.0,
+              right: 0.0,
+              child: new FadeTransition(
+                opacity: _runnerFadeAnimation,
+                child: new Image(
+                  image: new AssetImage("assets/images/custom_runner_bg.png"),
+                ),
+              )),
           new Positioned(
             right: 18.0,
             top: 30.0,
@@ -264,7 +289,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
           ),
           new Positioned(
             left: 14.0,
-            bottom: 55.0,
+            bottom: 50.0,
             child: new ScaleTransition(
               scale: _statsAnimationOne,
               child: new Text(
@@ -288,7 +313,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
 //          ),
           new Positioned(
             left: 0.0,
-            bottom: 20.0,
+            bottom: 15.0,
             right: 0.0,
             child: new Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -391,10 +416,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     );
     NumberFormat elevation = new NumberFormat("#,###.#", "en_US");
     return new Container(
-      height: MediaQuery
-          .of(context)
-          .size
-          .height * 0.4,
+      height: MediaQuery.of(context).size.height * 0.4,
       color: const Color(0xFFF6FB09),
       child: new Stack(
         children: [
@@ -478,18 +500,9 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   Widget _buildStatsContentWidget() {
     return new Container(
       color: const Color(0xFF212024),
-      height: MediaQuery
-          .of(context)
-          .size
-          .height -
-          MediaQuery
-              .of(context)
-              .padding
-              .top,
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      height: MediaQuery.of(context).size.height -
+          MediaQuery.of(context).padding.top,
+      width: MediaQuery.of(context).size.width,
       child: new Stack(
         children: [
           _buildAppBar(),
@@ -497,10 +510,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
             left: 0.0,
             right: 0.0,
             top: 70.0,
-            bottom: MediaQuery
-                .of(context)
-                .size
-                .height * 0.4,
+            bottom: MediaQuery.of(context).size.height * 0.4,
             child: _buildPathContent(),
           ),
           new Positioned(
@@ -604,6 +614,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       duration: const Duration(milliseconds: _kRotationAnimationDuration),
       vsync: this,
     );
+    _runnerAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kAnimateRunnerHeroFadeDuration),
+      vsync: this,
+    );
     _heroFadeInAnimation = _initAnimation(
       from: 0.0,
       to: 1.0,
@@ -641,6 +655,11 @@ class _CustomizedDesignState extends State<CustomizedDesign>
         to: 0.5,
         curve: Curves.easeOut,
         controller: _rotationAnimationController);
+    _runnerFadeAnimation = _initAnimation(
+        from: 0.0,
+        to: 1.0,
+        curve: Curves.easeOut,
+        controller: _runnerAnimationController);
   }
 
   _configureThemes() {
@@ -660,29 +679,24 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   Widget _contentWidget() {
-    double screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
-    TargetPlatform platform = Theme
-        .of(context)
-        .platform;
+    double screenHeight = MediaQuery.of(context).size.height;
+    TargetPlatform platform = Theme.of(context).platform;
     String backTitle = platform == TargetPlatform.android ? "TrackFit" : "";
     return new Scaffold(
       backgroundColor: const Color(0xFF212024),
       body: new NotificationListener<ScrollNotification>(
         onNotification: _handleScrollNotification,
         child: new CustomScrollView(
+          controller: _scrollController,
+            physics: new _SnappingScrollPhysics(midScrollOffset: screenHeight),
+          shrinkWrap: true,
           slivers: [
             new SliverAppBar(
               pinned: false,
               title: new Text(backTitle),
               expandedHeight: screenHeight -
                   _kDetailTabHeight -
-                  MediaQuery
-                      .of(context)
-                      .padding
-                      .top,
+                  MediaQuery.of(context).padding.top,
               leading: _buildBackButton(),
               backgroundColor: const Color(0xFF212024),
               flexibleSpace: new FlexibleSpaceBar(
@@ -700,15 +714,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
 
   bool _handleScrollNotification(ScrollNotification notification) {
     double visibleStatsHeight = notification.metrics.pixels;
-    double screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height -
+    double screenHeight = MediaQuery.of(context).size.height -
         _kDetailTabHeight -
-        MediaQuery
-            .of(context)
-            .padding
-            .top;
+        MediaQuery.of(context).padding.top;
+    double halfScreen = screenHeight * 0.5;
     double opacity = visibleStatsHeight / screenHeight;
     double calculatedOpacity = 1.0 - opacity;
     if (calculatedOpacity > 1.0) {
@@ -719,31 +728,38 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       _statsOpacity = calculatedOpacity;
     }
     if (_statsOpacity == 0.0) {
+      _rotationAnimationController.forward().whenComplete(() {
+        _isStatsBoxFullScreen = true;
+      });
+      _runnerAnimationController.forward();
       _statsAnimationControllerOne.forward().whenComplete(() {
         _statsAnimationControllerTwo.forward().whenComplete(() {
           _statsAnimationControllerThree.forward().whenComplete(() {
             _statsAnimationControllerFour.forward().whenComplete(() {
-              _rotationAnimationController.forward();
               _animateCounters();
             });
           });
         });
       });
     } else if (_statsOpacity == 1.0) {
+      _rotationAnimationController.reverse().whenComplete(() {
+        _isStatsBoxFullScreen = false;
+      });
       _statsAnimationControllerOne.value = 0.0;
       _statsAnimationControllerTwo.value = 0.0;
       _statsAnimationControllerThree.value = 0.0;
       _statsAnimationControllerFour.value = 0.0;
-      _rotationAnimationController.reverse();
+      _runnerAnimationController.value = 0.0;
     }
     setState(() {});
     return false;
   }
 
-  Animation<double> _initAnimation({@required double from,
-    @required double to,
-    @required Curve curve,
-    @required AnimationController controller}) {
+  Animation<double> _initAnimation(
+      {@required double from,
+      @required double to,
+      @required Curve curve,
+      @required AnimationController controller}) {
     final CurvedAnimation animation = new CurvedAnimation(
       parent: controller,
       curve: curve,
@@ -767,5 +783,53 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     setState(() {
       _runCounter += 1;
     });
+  }
+}
+
+class _SnappingScrollPhysics extends ClampingScrollPhysics {
+  final double midScrollOffset;
+
+  _SnappingScrollPhysics({
+    ScrollPhysics parent,
+    @required this.midScrollOffset,
+  }) : assert(midScrollOffset != null),
+        super(parent: parent);
+
+  @override
+  _SnappingScrollPhysics applyTo(ScrollPhysics ancestor) {
+    return new _SnappingScrollPhysics(parent: buildParent(ancestor),  midScrollOffset: midScrollOffset);
+  }
+
+  @override
+  Simulation createBallisticSimulation(ScrollMetrics position, double dragVelocity) {
+    final Simulation simulation = super.createBallisticSimulation(position, dragVelocity);
+    final double offset = position.pixels;
+
+    if (simulation != null) {
+      final double simulationEnd = simulation.x(double.INFINITY);
+      if (simulationEnd >= midScrollOffset)
+        return simulation;
+      if (dragVelocity > 0.0)
+        return _toMidScrollOffsetSimulation(offset, dragVelocity);
+      if (dragVelocity < 0.0)
+        return _toZeroScrollOffsetSimulation(offset, dragVelocity);
+    } else {
+      final double snapThreshold = midScrollOffset / 2.0;
+      if (offset >=  snapThreshold && offset < midScrollOffset)
+        return _toMidScrollOffsetSimulation(offset, dragVelocity);
+      if (offset > 0.0 && offset < snapThreshold)
+        return _toZeroScrollOffsetSimulation(offset, dragVelocity);
+    }
+    return simulation;
+  }
+
+  Simulation _toMidScrollOffsetSimulation(double offset, double dragVelocity) {
+    final double velocity = math.max(dragVelocity, minFlingVelocity);
+    return new ScrollSpringSimulation(spring, offset, midScrollOffset, velocity, tolerance: tolerance);
+  }
+
+  Simulation _toZeroScrollOffsetSimulation(double offset, double dragVelocity) {
+    final double velocity = math.max(dragVelocity, minFlingVelocity);
+    return new ScrollSpringSimulation(spring, offset, 0.0, velocity, tolerance: tolerance);
   }
 }

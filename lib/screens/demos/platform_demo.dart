@@ -123,35 +123,6 @@ class PlatformDemoState extends State<PlatformDemo>
     );
   }
 
-  Widget _buildBottomButton() {
-    double buttonBorderRadius =
-        _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
-    return new Container(
-      decoration: new BoxDecoration(
-        borderRadius: new BorderRadius.circular(buttonBorderRadius),
-      ),
-      margin: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
-      child: new Row(
-        children: [
-          new Expanded(
-            child: new FlatButton(
-              color: _themeData.buttonColor,
-              child: new Text(
-                "ADD TO CART",
-                style: new TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              onPressed: () {},
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   List<BottomNavigationBarItem> _buildBottomNavBar() {
     List<BottomNavigationBarItem> buttons = [];
     final homeButton = new BottomNavigationBarItem(

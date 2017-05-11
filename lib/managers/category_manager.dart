@@ -37,7 +37,7 @@ class CategoryManager {
   final List<AppCategory> _categoryList = [
     new AppCategory(
       routeName: "customized_design",
-      title: "CUSTOMIZED DESIGN",
+      title: "Customized Design",
       subtitle: "BRAND FIRST EXPERIENCES",
       leftShapeColor: const Color(0xFF19AAEE),
       centerShapeColor: const Color(0xD800A2EE),
@@ -77,7 +77,7 @@ class CategoryManager {
     ),
     new AppCategory(
       routeName: "layout_positioning",
-      title: "LAYOUT & POSITIONING",
+      title: "Layout & Positioning",
       subtitle: "EASY TO COMPOSE",
       leftShapeColor: const Color(0xFF5BDBFF),
       centerShapeColor: const Color(0xCC45D2F9),
@@ -111,7 +111,7 @@ class CategoryManager {
     ),
     new AppCategory(
       routeName: "animation",
-      title: "ANIMATION & UI MOTION",
+      title: "Animation & UI Motion",
       subtitle: "MADE FOR MOTION",
       leftShapeColor: const Color(0xFF38D3CD),
       centerShapeColor: const Color(0xD825C3BC),
@@ -145,7 +145,7 @@ class CategoryManager {
     ),
     new AppCategory(
       routeName: "patterns",
-      title: "UI PATTERNS",
+      title: "UI Patterns",
       subtitle: "NATURAL AND PRODUCTIVE",
       leftShapeColor: const Color(0xFFF9B640),
       centerShapeColor: const Color(0xD8FFAC18),
@@ -176,7 +176,7 @@ class CategoryManager {
     ),
     new AppCategory(
       routeName: "plug_ins",
-      title: "PLUG INS",
+      title: "Plug Ins",
       subtitle: "UNIFIED BUILDING BLOCKS",
       leftShapeColor: const Color(0xFFFD734E),
       centerShapeColor: const Color(0xD8FF6941),
@@ -210,7 +210,7 @@ class CategoryManager {
     ),
     new AppCategory(
       routeName: "design_components",
-      title: "DESIGN COMPONENTS",
+      title: "Design Components",
       subtitle: "HIGH FIDELITY TOOLKIT",
       leftShapeColor: const Color(0xFFAFD84C),
       centerShapeColor: const Color(0xBFA1CB39),
