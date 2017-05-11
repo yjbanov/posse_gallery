@@ -143,7 +143,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           new Padding(
             padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 7.0),
             child: new Text(
-              category.title,
+              category.title.toUpperCase(),
               textAlign: TextAlign.center,
               style: new TextStyle(
                 fontWeight: FontWeight.w700,

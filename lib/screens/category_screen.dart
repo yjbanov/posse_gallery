@@ -87,7 +87,7 @@ class _CategoryScreenState extends State<CategoryScreen>
           padding: const EdgeInsets.only(
               left: 30.0, right: 30.0, top: 15.0, bottom: 15.0),
           child: new Text(
-            _category.title,
+            _category.title.toUpperCase(),
             textAlign: TextAlign.center,
             style: new TextStyle(
               fontWeight: FontWeight.w700,

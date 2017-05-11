@@ -655,9 +655,9 @@ class _CustomizedDesignState extends State<CustomizedDesign>
         curve: Curves.easeOut,
         controller: _rotationAnimationController);
     _runnerFadeAnimation = _initAnimation(
-        from: 0.0,
+        from: 1.0,
         to: 1.0,
-        curve: Curves.easeIn,
+        curve: Curves.easeOut,
         controller: _runnerAnimationController);
   }
 

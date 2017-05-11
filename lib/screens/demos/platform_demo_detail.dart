@@ -61,7 +61,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     _animationController.forward();
   }
 
-  Widget _buildAppBar() {
+  Widget _buildHeroContent() {
     return new Container(
       child: new Stack(
         children: [
@@ -241,6 +241,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
       body: new CustomScrollView(
         slivers: [
           new SliverAppBar(
+            backgroundColor: const Color(0xFF3D3D3D),
             pinned: true,
             leading: new Material(
               color: const Color(0x00FFFFFF),
@@ -264,13 +265,52 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
                       ),
                     ),
                   ),
-                  _buildAppBar(),
+                  _buildHeroContent(),
                 ],
               ),
             ),
           ),
           new SliverList(
             delegate: new SliverChildListDelegate(_buildListContent()),
+          ),
+        ],
+      ),
+      bottomNavigationBar: new Material(
+        elevation: 10.0,
+        child: _buildBottomButton(),
+      ),
+    );
+  }
+
+  Widget _buildBottomButton() {
+    double buttonBorderRadius =
+        _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
+    double margin = _targetPlatform == TargetPlatform.iOS ? 8.0 : 0.0;
+    Color color = _targetPlatform == TargetPlatform.iOS ? Colors.white : const Color(0XFF3D3D3D);
+    return new Container(
+      decoration: new BoxDecoration(
+        borderRadius: new BorderRadius.circular(buttonBorderRadius),
+        color: color,
+      ),
+      margin: new EdgeInsets.all(margin),
+      child: new Row(
+        children: [
+          new Expanded(
+            child: new Container(
+              height: 50.0,
+              child: new FlatButton(
+                color: _themeData.buttonColor,
+                child: new Text(
+                  "ADD TO CART",
+                  style: new TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {},
+              ),
+            ),
           ),
         ],
       ),
