@@ -5,7 +5,8 @@
 import 'package:flutter/material.dart';
 import 'package:posse_gallery/models/checklist.dart';
 import 'package:posse_gallery/models/checklist_item.dart';
-import 'package:posse_gallery/screens/demos/customized_design.dart';
+import 'package:posse_gallery/models/category_item.dart';
+import 'package:posse_gallery/screens/item_screen.dart';
 
 typedef void ChecklistItemChangedCallback(ChecklistItem checklistItem,
     bool value);
@@ -156,7 +157,13 @@ class _PatternsListState extends State<PatternsList>
             settings:
             new RouteSettings(),
             builder: (BuildContext context) {
-              return new CustomizedDesign();
+              var item = new CategoryItem(
+                  title: "MAKE A LIST",
+                  iconUri: "assets/icons/ic_patterns_list.png",
+                  routeName: "patterns_list",
+                  color: const Color(0xFFFF8B00),
+                  widget: new PatternsList());
+              return new ItemScreen(item: item);
             },
           ),
         );
