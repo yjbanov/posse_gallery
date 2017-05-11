@@ -150,7 +150,9 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   Widget _buildBackButton() {
-    TargetPlatform platform = Theme.of(context).platform;
+    TargetPlatform platform = Theme
+        .of(context)
+        .platform;
     final IconData backIcon = platform == TargetPlatform.android
         ? Icons.arrow_back
         : Icons.arrow_back_ios;
@@ -180,7 +182,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
               alignment: FractionalOffset.topLeft,
               maxHeight: 1000.0,
               child: new Image(
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
                 fit: BoxFit.fill,
                 image: new AssetImage(
                   "assets/images/custom_hero.png",
@@ -206,11 +211,12 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       color: const Color(0xFF333333),
       child: new Stack(
         children: [
-          new Positioned(
-            top: 0.0,
-            right: 0.0,
+          new Positioned.fill(
             child: new Image(
-                image: new AssetImage("assets/images/custom_runner_bg.png")),
+              image: new AssetImage("assets/images/custom_runner_bg.png"),
+              fit: BoxFit.cover,
+              alignment: FractionalOffset.topCenter,
+            ),
           ),
           new Positioned(
             right: 18.0,
@@ -385,7 +391,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     );
     NumberFormat elevation = new NumberFormat("#,###.#", "en_US");
     return new Container(
-      height: MediaQuery.of(context).size.height * 0.4,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height * 0.4,
       color: const Color(0xFFF6FB09),
       child: new Stack(
         children: [
@@ -469,9 +478,18 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   Widget _buildStatsContentWidget() {
     return new Container(
       color: const Color(0xFF212024),
-      height: MediaQuery.of(context).size.height -
-          MediaQuery.of(context).padding.top,
-      width: MediaQuery.of(context).size.width,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height -
+          MediaQuery
+              .of(context)
+              .padding
+              .top,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
       child: new Stack(
         children: [
           _buildAppBar(),
@@ -479,7 +497,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
             left: 0.0,
             right: 0.0,
             top: 70.0,
-            bottom: MediaQuery.of(context).size.height * 0.4,
+            bottom: MediaQuery
+                .of(context)
+                .size
+                .height * 0.4,
             child: _buildPathContent(),
           ),
           new Positioned(
@@ -623,7 +644,9 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   _configureThemes() {
-    _targetPlatform = Theme.of(context).platform;
+    _targetPlatform = Theme
+        .of(context)
+        .platform;
     _platformTextAlignment = _targetPlatform == TargetPlatform.android
         ? TextAlign.left
         : TextAlign.center;
@@ -637,8 +660,13 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   Widget _contentWidget() {
-    double screenHeight = MediaQuery.of(context).size.height;
-    TargetPlatform platform = Theme.of(context).platform;
+    double screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
+    TargetPlatform platform = Theme
+        .of(context)
+        .platform;
     String backTitle = platform == TargetPlatform.android ? "TrackFit" : "";
     return new Scaffold(
       backgroundColor: const Color(0xFF212024),
@@ -651,7 +679,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
               title: new Text(backTitle),
               expandedHeight: screenHeight -
                   _kDetailTabHeight -
-                  MediaQuery.of(context).padding.top,
+                  MediaQuery
+                      .of(context)
+                      .padding
+                      .top,
               leading: _buildBackButton(),
               backgroundColor: const Color(0xFF212024),
               flexibleSpace: new FlexibleSpaceBar(
@@ -669,9 +700,15 @@ class _CustomizedDesignState extends State<CustomizedDesign>
 
   bool _handleScrollNotification(ScrollNotification notification) {
     double visibleStatsHeight = notification.metrics.pixels;
-    double screenHeight = MediaQuery.of(context).size.height -
+    double screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height -
         _kDetailTabHeight -
-        MediaQuery.of(context).padding.top;
+        MediaQuery
+            .of(context)
+            .padding
+            .top;
     double opacity = visibleStatsHeight / screenHeight;
     double calculatedOpacity = 1.0 - opacity;
     if (calculatedOpacity > 1.0) {
@@ -703,11 +740,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     return false;
   }
 
-  Animation<double> _initAnimation(
-      {@required double from,
-      @required double to,
-      @required Curve curve,
-      @required AnimationController controller}) {
+  Animation<double> _initAnimation({@required double from,
+    @required double to,
+    @required Curve curve,
+    @required AnimationController controller}) {
     final CurvedAnimation animation = new CurvedAnimation(
       parent: controller,
       curve: curve,
