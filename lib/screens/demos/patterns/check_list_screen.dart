@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:posse_gallery/models/checklist.dart';
 import 'package:posse_gallery/models/checklist_item.dart';
+import 'package:posse_gallery/screens/demos/customized_design.dart';
 
 typedef void ChecklistItemChangedCallback(ChecklistItem checklistItem,
     bool value);
@@ -148,6 +149,17 @@ class _PatternsListState extends State<PatternsList>
       checklistItem: _checklist[index],
       onTap: () {
         print("tapped");
+        Navigator.push(
+          context,
+          new MaterialPageRoute<Null>(
+            fullscreenDialog: true,
+            settings:
+            new RouteSettings(),
+            builder: (BuildContext context) {
+              return new CustomizedDesign();
+            },
+          ),
+        );
       },
       onCheckboxChanged: (checklistItem, value) {
         setState(() {
