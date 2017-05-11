@@ -328,7 +328,7 @@ class PlatformDemoState extends State<PlatformDemo>
       controller: _animationController,
     );
     Image heroImage = new Image(
-      fit: BoxFit.fitWidth,
+      fit: BoxFit.cover,
       image: new AssetImage(_heroImageString),
     );
     return new Expanded(
@@ -338,50 +338,46 @@ class PlatformDemoState extends State<PlatformDemo>
         }),
         child: new SlideTransition(
           position: animation,
-          child: new Container(
-            child: new Stack(
-              children: [
-                new Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: new Padding(
-                    padding: new EdgeInsets.only(top: 0.0),
+          child: new Hero(
+            tag: "platform.hero",
+            child: new Container(
+              child: new Stack(
+                children: [
+                  new Positioned.fill(
                     child: new OverflowBox(
-                      maxWidth: MediaQuery.of(context).size.width * 1.1,
-                      child: new Hero(
-                          tag: "platform.hero",
-                          child: heroImage,
-                      ),
+                        maxWidth: MediaQuery.of(context).size.width,
+                        child: heroImage,
                     ),
                   ),
-                ),
-                new Center(
-                  child: new Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      new Text(
-                        "FEATURED",
-                        style: new TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                      new Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
-                        child: new Text(
-                          "GEOMETRIC DINING CHAIR",
+                  new Center(
+                    child: new Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        new Text(
+                          "FEATURED",
                           style: new TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500,
                             color: Colors.white,
                           ),
                         ),
-                      ),
-                    ],
+                        new Padding(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: new Text(
+                            "GEOMETRIC DINING CHAIR",
+                            style: new TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

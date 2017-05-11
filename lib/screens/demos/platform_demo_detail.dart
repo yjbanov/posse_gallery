@@ -252,21 +252,21 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
             ),
             expandedHeight: MediaQuery.of(context).size.height * 0.5,
             flexibleSpace: new FlexibleSpaceBar(
-              background: new Stack(
-                children: [
-                  new Hero(
-                    tag: "platform.hero",
-                    child: new OverflowBox(
-                      maxWidth: MediaQuery.of(context).size.width * 1.1,
+              background: new Hero(
+                tag: "platform.hero",
+                child: new Stack(
+                  children: [
+                    new OverflowBox(
+                      maxWidth: MediaQuery.of(context).size.width,
                       child: new Image(
-                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
                         image: new AssetImage(
                             "assets/images/platform_detail_hero.png"),
                       ),
                     ),
-                  ),
-                  _buildHeroContent(),
-                ],
+                    _buildHeroContent(),
+                  ],
+                ),
               ),
             ),
           ),
@@ -286,7 +286,9 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     double buttonBorderRadius =
         _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
     double margin = _targetPlatform == TargetPlatform.iOS ? 8.0 : 0.0;
-    Color color = _targetPlatform == TargetPlatform.iOS ? Colors.white : const Color(0XFF3D3D3D);
+    Color color = _targetPlatform == TargetPlatform.iOS
+        ? Colors.white
+        : const Color(0XFF3D3D3D);
     return new Container(
       decoration: new BoxDecoration(
         borderRadius: new BorderRadius.circular(buttonBorderRadius),
