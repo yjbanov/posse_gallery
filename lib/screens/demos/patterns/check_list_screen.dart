@@ -163,7 +163,8 @@ class _PatternsListState extends State<PatternsList>
                   iconUri: "assets/icons/ic_patterns_list.png",
                   routeName: "patterns_list",
                   color: const Color(0xFFFF8B00),
-                  widget: new PatternsListDetail());
+                  widget: new PatternsListDetail(
+                    checklistItem: _checklist[index],));
               return new ItemScreen(item: item);
             },
           ),
@@ -188,6 +189,7 @@ class _PatternsListState extends State<PatternsList>
   Widget _buildInputField() {
     return new Container(
       color: const Color(0xFFF7F7F7),
+      height: 60.0,
       child: new Row(
         mainAxisSize: MainAxisSize.max,
         children: [
