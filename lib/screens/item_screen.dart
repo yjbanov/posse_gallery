@@ -21,8 +21,12 @@ class _ItemScreenState extends State<ItemScreen> with TickerProviderStateMixin {
 
   Widget _buildAppBar(String title) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
+    TargetPlatform platform = Theme.of(context).platform;
+    final IconData backIcon = platform == TargetPlatform.android
+        ? Icons.arrow_back
+        : Icons.arrow_back_ios;
     return new Container(
-      height: 76.0,
+      height: 90.0,
       padding: new EdgeInsets.only(left: 8.0, top: statusBarHeight, right: 8.0),
       child: new Center(
         child: new Row(
@@ -30,7 +34,7 @@ class _ItemScreenState extends State<ItemScreen> with TickerProviderStateMixin {
           children: [
             new IconButton(
               icon: new Icon(
-                Icons.close,
+                backIcon,
                 color: Colors.white,
               ),
               onPressed: () {
@@ -87,7 +91,8 @@ class _ItemScreenState extends State<ItemScreen> with TickerProviderStateMixin {
   }
 
   Widget build(BuildContext context) {
-    Color color = item.color != Colors.white ? item.color : const Color(0xFF54C5F8);
+    Color color =
+        item.color != Colors.white ? item.color : const Color(0xFF54C5F8);
     return new Material(
       color: color,
       child: _contentWidget(),

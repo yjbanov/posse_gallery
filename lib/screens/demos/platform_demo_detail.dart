@@ -42,7 +42,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     return new Theme(
       data: _themeData,
       child: new Material(
-        color: _themeData.primaryColor,
+        color: Colors.white,
         child: _contentWidget(),
       ),
     );
@@ -242,7 +242,6 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
         slivers: [
           new SliverAppBar(
             pinned: true,
-            backgroundColor: const Color(0xFF4A4A4A),
             leading: new Material(
               color: const Color(0x00FFFFFF),
               child: new ScaleTransition(
