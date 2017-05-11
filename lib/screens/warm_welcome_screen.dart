@@ -261,11 +261,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             ),
           ),
           new Positioned(
-            top: 45.0,
-            right: 20.0,
+            top: 40.0,
+            right: 10.0,
             child: new ScaleTransition(
               scale: _widgetScaleInAnimation1,
               child: new Image(
+                height: 70.0,
                 image: new AssetImage(_steps[nextStep].imageUris[1]),
               ),
             ),
@@ -276,6 +277,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             child: new ScaleTransition(
               scale: _widgetScaleInAnimation2,
               child: new Image(
+                height: 55.0,
                 image: new AssetImage(_steps[nextStep].imageUris[2]),
               ),
             ),
@@ -286,6 +288,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             child: new ScaleTransition(
               scale: _widgetScaleInAnimation3,
               child: new Image(
+                height: 35.0,
                 image: new AssetImage(_steps[nextStep].imageUris[3]),
               ),
             ),
@@ -296,6 +299,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             child: new ScaleTransition(
               scale: _widgetScaleInAnimation4,
               child: new Image(
+                height: 35.0,
                 image: new AssetImage(_steps[nextStep].imageUris[4]),
               ),
             ),
@@ -313,6 +317,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
+                  height: 35.0,
                   image: new AssetImage(_steps[nextStep].imageUris[3]),
                 ),
               ),
@@ -326,6 +331,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
+                  height: 60.0,
                   image: new AssetImage(_steps[nextStep].imageUris[1]),
                 ),
               ),
@@ -339,6 +345,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
+                  height: 35.0,
                   image: new AssetImage(_steps[nextStep].imageUris[2]),
                 ),
               ),
@@ -346,12 +353,13 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           ),
           new Positioned(
             bottom: 0.0,
-            left: 20.0,
+            left: 18.0,
             child: new ScaleTransition(
               scale: _widgetScaleInAnimation4,
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
+                  height: 55.0,
                   image: new AssetImage(_steps[nextStep].imageUris[0]),
                 ),
               ),
@@ -365,6 +373,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
+                  height: 65.0,
                   image: new AssetImage(_steps[nextStep].imageUris[4]),
                 ),
               ),

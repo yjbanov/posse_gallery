@@ -70,7 +70,7 @@ class PlatformDemoState extends State<PlatformDemo>
   Widget _buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return new Container(
-      height: 76.0,
+      height: 80.0,
       padding: new EdgeInsets.only(top: statusBarHeight),
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.center,

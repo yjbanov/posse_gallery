@@ -59,7 +59,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       fit: BoxFit.cover,
     );
     return new Container(
-      height: 76.0,
+      height: 80.0,
       child: new DecoratedBox(
         decoration: new BoxDecoration(),
         child: new Stack(

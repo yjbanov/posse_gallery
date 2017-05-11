@@ -139,8 +139,9 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
                 child: new Container(
                   decoration: _buildRadialGradient(),
                   child: new Padding(
-                    padding: const EdgeInsets.all(30.0),
+                    padding: const EdgeInsets.only(top: 25.0, bottom: 15.0),
                     child: new Image(
+                      width: MediaQuery.of(context).size.width * 0.6,
                       image:
                           new AssetImage("assets/images/brand_apple_pie.png"),
                     ),
@@ -166,6 +167,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
                   new Padding(
                     padding: const EdgeInsets.only(top: 20.0, bottom: 5.0),
                     child: new Image(
+                      width: MediaQuery.of(context).size.width * 0.15,
                       image: new AssetImage("assets/images/brand_profile.png"),
                     ),
                   ),
@@ -178,14 +180,15 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
                     ),
                   ),
                   new Container(
-                    margin: const EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 30.0, bottom: 20.0),
                     child: new Center(
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           new Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
+                            padding: const EdgeInsets.only(right: 15.0),
                             child: new Image(
+                              height: 15.0,
                               image: new AssetImage(
                                   "assets/images/brand_stars.png"),
                             ),
