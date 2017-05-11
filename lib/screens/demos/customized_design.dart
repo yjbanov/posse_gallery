@@ -4,7 +4,6 @@
 
 import 'dart:async';
 import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
@@ -177,7 +176,9 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   Widget _buildBackButton() {
-    TargetPlatform platform = Theme.of(context).platform;
+    TargetPlatform platform = Theme
+        .of(context)
+        .platform;
     final IconData backIcon = platform == TargetPlatform.android
         ? Icons.arrow_back
         : Icons.arrow_back_ios;
@@ -662,7 +663,9 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   _configureThemes() {
-    _targetPlatform = Theme.of(context).platform;
+    _targetPlatform = Theme
+        .of(context)
+        .platform;
     _platformTextAlignment = _targetPlatform == TargetPlatform.android
         ? TextAlign.left
         : TextAlign.center;
@@ -803,10 +806,6 @@ class _SnappingScrollPhysics extends ClampingScrollPhysics {
     final double offset = position.pixels;
 
     if (simulation != null) {
-      // The drag ended with sufficient velocity to trigger creating a simulation.
-      // If the simulation is headed up towards midScrollOffset but will not reach it,
-      // then snap it there. Similarly if the simulation is headed down past
-      // midScrollOffset but will not reach zero, then snap it to zero.
       final double simulationEnd = simulation.x(double.INFINITY);
       if (simulationEnd >= midScrollOffset)
         return simulation;
@@ -815,10 +814,6 @@ class _SnappingScrollPhysics extends ClampingScrollPhysics {
       if (dragVelocity < 0.0)
         return _toZeroScrollOffsetSimulation(offset, dragVelocity);
     } else {
-      // The user ended the drag with little or no velocity. If they
-      // didn't leave the the offset above midScrollOffset, then
-      // snap to midScrollOffset if they're more than halfway there,
-      // otherwise snap to zero.
       final double snapThreshold = midScrollOffset / 2.0;
       if (offset >=  snapThreshold && offset < midScrollOffset)
         return _toMidScrollOffsetSimulation(offset, dragVelocity);
