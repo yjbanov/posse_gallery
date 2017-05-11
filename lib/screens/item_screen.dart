@@ -25,20 +25,18 @@ class _ItemScreenState extends State<ItemScreen> with TickerProviderStateMixin {
         .of(context)
         .padding
         .top;
+    TargetPlatform targetPlatform = Theme.of(context).platform;
+    bool isAndroid = targetPlatform == TargetPlatform.android;
+    final IconData backIcon = isAndroid
+        ? Icons.arrow_back
+        : Icons.arrow_back_ios;
 
     final topWidgets = <Widget>[
-      new Positioned(
-          top: 0.0, left: 0.0, right: 0.0,
-          child: new Container(
-            height: 4.0,
-            color: new Color(0x11000000),
-          )
-      ),
       new Positioned(
         top: 0.0, bottom: 0.0, left: 5.0,
         child: new IconButton(
           icon: new Icon(
-            Icons.close,
+            backIcon,
             color: Colors.white,
           ),
           onPressed: () {
@@ -76,11 +74,23 @@ class _ItemScreenState extends State<ItemScreen> with TickerProviderStateMixin {
         ),
       );
     }
+    if (isAndroid) {
+      var shadowWidget = new Positioned(
+          top: 0.0, left: 0.0, right: 0.0,
+          child: new Container(
+            height: 4.0,
+            color: new Color(0x11000000),
+          )
+      );
+      topWidgets.insert(0, shadowWidget);
+    }
+
 
     return new Padding(
       padding: new EdgeInsets.only(top: statusBarHeight),
       child: new ConstrainedBox(
-        constraints: new BoxConstraints.expand(height: Constants.TopSectionHeight),
+        constraints: new BoxConstraints.expand(
+            height: Constants.TopSectionHeight),
         child: new Stack(
           children: topWidgets,
         ),
@@ -92,10 +102,9 @@ class _ItemScreenState extends State<ItemScreen> with TickerProviderStateMixin {
     return new Expanded(
       child: new Container(
         decoration: new BoxDecoration(
-          borderRadius: new BorderRadius.circular(3.0),
           color: Colors.white,
         ),
-        margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+        margin: const EdgeInsets.only(left: 0.0, right: 0.0, bottom: 15.0),
         child: new ClipRRect(
           borderRadius: new BorderRadius.circular(3.0),
           child: item.widget,
@@ -114,7 +123,8 @@ class _ItemScreenState extends State<ItemScreen> with TickerProviderStateMixin {
   }
 
   Widget build(BuildContext context) {
-    Color color = item.color != Colors.white ? item.color : const Color(0xFF54C5F8);
+    Color color = item.color != Colors.white ? item.color : const Color(
+        0xFF54C5F8);
     return new Material(
       color: color,
       child: _contentWidget(),

@@ -7,6 +7,7 @@ import 'package:posse_gallery/models/checklist.dart';
 import 'package:posse_gallery/models/checklist_item.dart';
 import 'package:posse_gallery/models/category_item.dart';
 import 'package:posse_gallery/screens/item_screen.dart';
+import 'package:posse_gallery/screens/demos/patterns/check_list_detail.dart';
 
 typedef void ChecklistItemChangedCallback(ChecklistItem checklistItem,
     bool value);
@@ -153,7 +154,7 @@ class _PatternsListState extends State<PatternsList>
         Navigator.push(
           context,
           new MaterialPageRoute<Null>(
-            fullscreenDialog: true,
+            fullscreenDialog: false,
             settings:
             new RouteSettings(),
             builder: (BuildContext context) {
@@ -162,7 +163,7 @@ class _PatternsListState extends State<PatternsList>
                   iconUri: "assets/icons/ic_patterns_list.png",
                   routeName: "patterns_list",
                   color: const Color(0xFFFF8B00),
-                  widget: new PatternsList());
+                  widget: new PatternsListDetail());
               return new ItemScreen(item: item);
             },
           ),
