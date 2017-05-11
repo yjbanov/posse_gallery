@@ -45,12 +45,13 @@ class _AssetsDetailDemoState extends AssetsDemoState {
 
   @override
   Widget buildBody() {
+    double imageHeight = MediaQuery.of(context).size.width * 0.25;
     _startAnimation();
     return new Expanded(
       child: new Column(
         children: [
           new Padding(
-            padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 20.0),
             child: new Column(
               children: [
                 new Row(
@@ -62,6 +63,7 @@ class _AssetsDetailDemoState extends AssetsDemoState {
                       child: new Padding(
                         padding: const EdgeInsets.only(top: 14.0, right: 10.0),
                         child: new Image(
+                          height: imageHeight,
                           image: new AssetImage("assets/images/brand_egg.png"),
                         ),
                       ),
@@ -71,6 +73,7 @@ class _AssetsDetailDemoState extends AssetsDemoState {
                       child: new Padding(
                         padding: const EdgeInsets.only(left: 15.0),
                         child: new Image(
+                          height: MediaQuery.of(context).size.width * 0.35,
                           image:
                               new AssetImage("assets/images/brand_flour.png"),
                         ),
@@ -87,6 +90,7 @@ class _AssetsDetailDemoState extends AssetsDemoState {
                       child: new Padding(
                         padding: const EdgeInsets.only(top: 12.0),
                         child: new Image(
+                          height: imageHeight,
                           image: new AssetImage(
                               "assets/images/brand_cinnamon.png"),
                         ),
@@ -95,6 +99,7 @@ class _AssetsDetailDemoState extends AssetsDemoState {
                     new SlideTransition(
                       position: _slideInLeftAnimation,
                       child: new Image(
+                        height: imageHeight,
                         image: new AssetImage("assets/images/brand_salt.png"),
                       ),
                     ),

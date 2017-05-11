@@ -260,6 +260,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
                       maxWidth: double.INFINITY,
                       maxHeight: double.INFINITY,
                       child: new Image(
+                        width: MediaQuery.of(context).size.width,
                         image: new AssetImage(
                             "assets/images/platform_detail_hero.png"),
                       ),

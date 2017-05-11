@@ -75,6 +75,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     _statsAnimationControllerThree.dispose();
     _statsAnimationControllerFour.dispose();
     _rotationAnimationController.dispose();
+    _runnerAnimationController.dispose();
     super.dispose();
   }
 
@@ -242,7 +243,8 @@ class _CustomizedDesignState extends State<CustomizedDesign>
                 child: new Image(
                   image: new AssetImage("assets/images/custom_runner_bg.png"),
                 ),
-              )),
+              ),
+          ),
           new Positioned(
             right: 18.0,
             top: 30.0,
