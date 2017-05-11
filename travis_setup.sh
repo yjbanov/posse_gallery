@@ -1,1 +1,1 @@
-git clone https://github.com/flutter/flutter.git -b alpha --depth 1
+git clone https://github.com/flutter/flutter.git --depth 1
