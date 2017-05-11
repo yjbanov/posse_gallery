@@ -259,6 +259,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
                     child: new OverflowBox(
                       maxWidth: MediaQuery.of(context).size.width * 1.1,
                       child: new Image(
+                        width: MediaQuery.of(context).size.width,
                         image: new AssetImage(
                             "assets/images/platform_detail_hero.png"),
                       ),
