@@ -70,7 +70,7 @@ class PlatformDemoState extends State<PlatformDemo>
   Widget _buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return new Container(
-      height: 76.0,
+      height: 80.0,
       padding: new EdgeInsets.only(top: statusBarHeight),
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -328,7 +328,7 @@ class PlatformDemoState extends State<PlatformDemo>
       controller: _animationController,
     );
     Image heroImage = new Image(
-      fit: BoxFit.fitHeight,
+      fit: BoxFit.cover,
         image: new AssetImage(_heroImageString),
     );
     return new Expanded(
@@ -341,14 +341,13 @@ class PlatformDemoState extends State<PlatformDemo>
           child: new Container(
             child: new Stack(
               children: [
-                new Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: new Padding(
-                    padding: new EdgeInsets.only(top: 0.0),
-                    child: new Hero(
-                      tag: "platform.hero",
+                new Positioned.fill(
+                  child: new Hero(
+                    tag: "platform.hero",
+                      child: new OverflowBox(
+                        maxWidth: MediaQuery.of(context).size.width,
                         child: heroImage,
-                    ),
+                      )
                   ),
                 ),
                 new Center(
@@ -499,10 +498,9 @@ class PlatformDemoState extends State<PlatformDemo>
   _tappedHero() {
     Navigator.push(
       context,
-      new PageRouteBuilder<Null>(
+      new MaterialPageRoute<Null>(
         settings: new RouteSettings(),
-        pageBuilder:
-            (BuildContext context, Animation<double> _, Animation<double> __) {
+        builder: (BuildContext context) {
           return new PlatformDetailDemo(targetPlatform: _targetPlatform);
         },
       ),

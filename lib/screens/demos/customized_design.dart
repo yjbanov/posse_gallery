@@ -75,6 +75,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     _statsAnimationControllerThree.dispose();
     _statsAnimationControllerFour.dispose();
     _rotationAnimationController.dispose();
+    _runnerAnimationController.dispose();
     super.dispose();
   }
 
@@ -242,7 +243,8 @@ class _CustomizedDesignState extends State<CustomizedDesign>
                 child: new Image(
                   image: new AssetImage("assets/images/custom_runner_bg.png"),
                 ),
-              )),
+              ),
+          ),
           new Positioned(
             right: 18.0,
             top: 30.0,
@@ -684,48 +686,63 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     String backTitle = platform == TargetPlatform.android ? "TrackFit" : "";
     return new Scaffold(
       backgroundColor: const Color(0xFF212024),
-      body: new NotificationListener<ScrollNotification>(
+      body: new NotificationListener<Notification>(
         onNotification: _handleScrollNotification,
-        child: new CustomScrollView(
-          controller: _scrollController,
-            physics: new _SnappingScrollPhysics(midScrollOffset: screenHeight),
-          shrinkWrap: true,
-          slivers: [
-            new SliverAppBar(
-              pinned: false,
-              title: new Text(backTitle),
-              expandedHeight: screenHeight -
-                  _kDetailTabHeight -
-                  MediaQuery.of(context).padding.top,
-              leading: _buildBackButton(),
-              backgroundColor: const Color(0xFF212024),
-              flexibleSpace: new FlexibleSpaceBar(
-                background: _buildBody(),
-              ),
-            ),
-            new SliverList(
-              delegate: new SliverChildListDelegate(_stats),
-            ),
-          ],
+        child: new GlowingOverscrollIndicator(
+          color: const Color(0x00FFFFFF),
+            axisDirection: AxisDirection.down,
+            showLeading: false,
+            showTrailing: false,
+          child: new CustomScrollView(
+              controller: _scrollController,
+              physics: new _SnappingScrollPhysics(midScrollOffset: screenHeight),
+              shrinkWrap: true,
+              slivers: [
+                new SliverAppBar(
+                    pinned: false,
+                    title: new Text(backTitle),
+                    expandedHeight: screenHeight -
+                        _kDetailTabHeight -
+                        MediaQuery.of(context).padding.top,
+                    leading: _buildBackButton(),
+                    backgroundColor: const Color(0xFF212024),
+                    flexibleSpace: new FlexibleSpaceBar(
+                        background: _buildBody(),
+                    ),
+                ),
+                new SliverList(
+                    delegate: new SliverChildListDelegate(_stats),
+                ),
+              ],
+          ),
         ),
       ),
     );
   }
 
-  bool _handleScrollNotification(ScrollNotification notification) {
-    double visibleStatsHeight = notification.metrics.pixels;
-    double screenHeight = MediaQuery.of(context).size.height -
-        _kDetailTabHeight -
-        MediaQuery.of(context).padding.top;
-    double halfScreen = screenHeight * 0.5;
-    double opacity = visibleStatsHeight / screenHeight;
-    double calculatedOpacity = 1.0 - opacity;
-    if (calculatedOpacity > 1.0) {
-      _statsOpacity = 1.0;
-    } else if (calculatedOpacity < 0.0) {
-      _statsOpacity = 0.0;
-    } else {
-      _statsOpacity = calculatedOpacity;
+  bool _handleScrollNotification(Notification notification) {
+    if (notification is OverscrollIndicatorNotification) {
+      notification.disallowGlow();
+    }
+    if (notification is ScrollNotification) {
+      double visibleStatsHeight = notification.metrics.pixels;
+      double screenHeight = MediaQuery
+          .of(context)
+          .size
+          .height -
+          _kDetailTabHeight - MediaQuery
+          .of(context)
+          .padding
+          .top;
+      double opacity = visibleStatsHeight / screenHeight;
+      double calculatedOpacity = 1.0 - opacity;
+      if (calculatedOpacity > 1.0) {
+        _statsOpacity = 1.0;
+      } else if (calculatedOpacity < 0.0) {
+        _statsOpacity = 0.0;
+      } else {
+        _statsOpacity = calculatedOpacity;
+      }
     }
     if (_statsOpacity == 0.0) {
       _rotationAnimationController.forward().whenComplete(() {
