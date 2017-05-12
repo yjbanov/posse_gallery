@@ -113,65 +113,64 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   _buildAppBar() {
-    return new Container(
-      color: const Color(0xFF212024),
-      height: 70.0,
-      child: new Stack(
-        children: [
-          new Positioned(
-            left: 26.0,
-            top: 0.0,
-            bottom: 0.0,
-            child: new Center(
-              child: new Text(
-                "VIEW MY STATS",
-                style: new TextStyle(
-                  color: const Color(0xFF02CEA1),
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w900,
+    return new GestureDetector(
+      onTap: (() {
+        double screenHeight = MediaQuery.of(context).size.height -
+            MediaQuery.of(context).padding.top;
+        if (Theme.of(context).platform == TargetPlatform.iOS) {
+          screenHeight -= 70.0;
+        }
+        double halfScreen = screenHeight * 0.5;
+        double scrollToOffset =
+            _scrollController.offset <= halfScreen ? 0.0 : screenHeight;
+        if (_scrollController.offset == 0) {
+          scrollToOffset = screenHeight;
+        } else if (_isStatsBoxFullScreen) {
+          scrollToOffset = 0.0;
+        }
+        _scrollController.animateTo(
+          scrollToOffset,
+          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 300),
+        );
+      }),
+      child: new Container(
+        color: const Color(0xFF212024),
+        height: 70.0,
+        child: new Stack(
+          children: [
+            new Positioned(
+              left: 26.0,
+              top: 0.0,
+              bottom: 0.0,
+              child: new Center(
+                child: new Text(
+                  "VIEW MY STATS",
+                  style: new TextStyle(
+                    color: const Color(0xFF02CEA1),
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ),
             ),
-          ),
-          new Positioned(
-            right: 10.0,
-            top: 0.0,
-            bottom: 0.0,
-            child: new RotationTransition(
-              turns: _rotationAnimation,
-              child: new IconButton(
-                color: Colors.white,
-                icon: new RotatedBox(
+            new Positioned(
+              right: 20.0,
+              top: 0.0,
+              bottom: 0.0,
+              child: new RotationTransition(
+                turns: _rotationAnimation,
+                child: new RotatedBox(
                   quarterTurns: 2,
                   child: new ImageIcon(
                     new AssetImage("assets/icons/ic_custom_circle_arrow.png"),
+                    color: Colors.white,
                   ),
                 ),
-                onPressed: (() {
-                  double screenHeight = MediaQuery.of(context).size.height -
-                      MediaQuery.of(context).padding.top;
-                  if (Theme.of(context).platform == TargetPlatform.iOS) {
-                    screenHeight -= 70.0;
-                  }
-                  double halfScreen = screenHeight * 0.5;
-                  double scrollToOffset = _scrollController.offset <= halfScreen
-                      ? 0.0
-                      : screenHeight;
-                  if (_scrollController.offset == 0) {
-                    scrollToOffset = screenHeight;
-                  } else if (_isStatsBoxFullScreen) {
-                    scrollToOffset = 0.0;
-                  }
-                  _scrollController.animateTo(
-                    scrollToOffset,
-                    curve: Curves.easeOut,
-                    duration: const Duration(milliseconds: 300),
-                  );
-                }),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -466,10 +465,13 @@ class _CustomizedDesignState extends State<CustomizedDesign>
             ),
           ),
           new Positioned(
+            top: 45.0,
             left: 0.0,
             right: 0.0,
-            bottom: 24.0,
+            bottom: 0.0,
             child: new Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 new Text(
                   _mileCounter.toString(),

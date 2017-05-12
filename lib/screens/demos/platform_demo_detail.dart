@@ -3,7 +3,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 class PlatformDetailDemo extends StatefulWidget {
@@ -22,14 +24,21 @@ class PlatformDetailDemo extends StatefulWidget {
 class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     with TickerProviderStateMixin {
   static const int _kAnimationInDuration = 600;
+  static const int _kHeartAnimationDuration = 300;
   TargetPlatform _targetPlatform;
 
   ThemeData _themeData;
 
   Animation<double> _scaleInAnimation;
   Animation<FractionalOffset> _slideInAnimation;
+  Animation<double> _heartAnimation;
 
   AnimationController _animationController;
+  AnimationController _heartAnimationController;
+
+  Color _heartColor = Colors.white;
+
+  int _heartCount = 1324;
 
   _PlatformDetailDemoState({
     TargetPlatform targetPlatform,
@@ -51,6 +60,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
   @override
   dispose() {
     _animationController.dispose();
+    _heartAnimationController.dispose();
     super.dispose();
   }
 
@@ -65,13 +75,33 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     double buttonBorderRadius =
         _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
     double margin = _targetPlatform == TargetPlatform.iOS ? 8.0 : 0.0;
-    Color color = _targetPlatform == TargetPlatform.iOS
-        ? Colors.white
-        : const Color(0XFF3D3D3D);
+    Color borderColor = const Color(0xFF3D3D3D);
+    Color textColor = _targetPlatform == TargetPlatform.iOS
+        ? const Color(0xFF3D3D3D)
+        : Colors.white;
+    Text addToCartText = new Text(
+      "ADD TO CART",
+      style: new TextStyle(
+        fontSize: 12.0,
+        fontWeight: FontWeight.bold,
+        color: textColor,
+      ),
+    );
+    CupertinoButton cupertinoButton = new CupertinoButton(
+      child: addToCartText,
+      onPressed: (() {}),
+    );
+    FlatButton androidButton = new FlatButton(
+      color: _themeData.buttonColor,
+      child: addToCartText,
+      onPressed: () {},
+    );
+    Widget platformButton =
+        _targetPlatform == TargetPlatform.iOS ? cupertinoButton : androidButton;
     return new Container(
       decoration: new BoxDecoration(
         borderRadius: new BorderRadius.circular(buttonBorderRadius),
-        color: color,
+        color: borderColor,
       ),
       margin: new EdgeInsets.all(margin),
       child: new Row(
@@ -79,18 +109,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
           new Expanded(
             child: new Container(
               height: 50.0,
-              child: new FlatButton(
-                color: _themeData.buttonColor,
-                child: new Text(
-                  "ADD TO CART",
-                  style: new TextStyle(
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                onPressed: () {},
-              ),
+              child: platformButton,
             ),
           ),
         ],
@@ -99,6 +118,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
   }
 
   Widget _buildHeroContent() {
+    NumberFormat heart = new NumberFormat("#,###", "en_US");
     return new Container(
       child: new Stack(
         children: [
@@ -144,16 +164,30 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
               scale: _scaleInAnimation,
               child: new Row(
                 children: [
-                  new Image.asset("assets/icons/ic_platform_heart.png"),
-                  new Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: new Text(
-                      "1324",
-                      style: new TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
+                  new ScaleTransition(
+                    scale: _heartAnimation,
+                    child: new IconButton(
+                      icon: new Icon(Icons.favorite, color: _heartColor),
+                      color: _heartColor,
+                      onPressed: (() {
+                        setState(() {
+                          _heartColor = _heartColor == Colors.red
+                              ? Colors.white
+                              : Colors.red;
+                          _heartCount += _heartColor == Colors.red ? 1 : -1;
+                          _heartAnimationController.forward().whenComplete(() {
+                            _heartAnimationController.reverse();
+                          });
+                        });
+                      }),
+                    ),
+                  ),
+                  new Text(
+                    heart.format(_heartCount).toString(),
+                    style: new TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -162,10 +196,18 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
           ),
           new Positioned(
             right: 30.0,
-            bottom: 20.0,
+            bottom: 35.0,
             child: new ScaleTransition(
               scale: _scaleInAnimation,
               child: new Container(
+                decoration: new BoxDecoration(
+                  border: new Border(
+                    left: new BorderSide(
+                      color: const Color(0xFFF5A623),
+                      width: 1.0,
+                    ),
+                  ),
+                ),
                 padding: const EdgeInsets.all(10.0),
                 color: const Color(0xFFF5A623),
                 child: new Text(
@@ -230,6 +272,10 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
       duration: const Duration(milliseconds: _kAnimationInDuration),
       vsync: this,
     );
+    _heartAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kHeartAnimationDuration),
+      vsync: this,
+    );
     _scaleInAnimation = _initAnimation(
         from: 0.0,
         to: 1.0,
@@ -240,6 +286,11 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeOut,
         controller: _animationController);
+    _heartAnimation = _initAnimation(
+        from: 1.0,
+        to: 1.5,
+        curve: Curves.easeOut,
+        controller: _heartAnimationController);
   }
 
   _configureThemes() {
