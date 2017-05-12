@@ -73,7 +73,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       ));
       _cells.add(new MainLinkCell(
         "Flutter Docs",
-        "Visit the Flutter web site for more information on Flutter and how to get started.",
+        "Browse the Flutter API docs from the comfort of your phone.",
         "assets/icons/ic_feed_docs.png",
         tapped: () {
           openURL("https://docs.flutter.io");
