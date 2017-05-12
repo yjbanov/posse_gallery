@@ -11,6 +11,7 @@ import 'package:posse_gallery/models/app_category.dart';
 import 'package:posse_gallery/screens/category_screen.dart';
 import 'package:posse_gallery/screens/search_screen.dart';
 import 'package:posse_gallery/views/cells/main_link_cell.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -49,7 +50,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     super.initState();
     _configureAnimation();
     _animationController.forward();
-    setState((){
+    setState(() {
       _cells = <Widget>[];
       _cells.add(_buildTopSection());
       _cells.addAll(_loadCategories());
@@ -58,52 +59,70 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         "Debug Stuff",
         "Toggle settings and options.",
         "assets/icons/ic_feed_settings.png",
+        tapped: () {
+
+        },
       ));
       _cells.add(new MainLinkCell(
         "Flutter",
         "Visit the Flutter web site for more information on Flutter and how to get started.",
         "assets/icons/ic_feed_flutter.png",
+        tapped: () {
+          openURL("https://flutter.io");
+        },
       ));
       _cells.add(new MainLinkCell(
         "Flutter Docs",
-        "Visit the Flutter web site for more information on Flutter and how to get started.",
+        "Browse the Flutter API docs from the comfort of your phone.",
         "assets/icons/ic_feed_docs.png",
+        tapped: () {
+          openURL("https://docs.flutter.io");
+        },
       ));
       _cells.add(new MainLinkCell(
         "Posse",
         "Check out Posse's website.",
         "assets/icons/ic_feed_posse.png",
+        tapped: () {
+          openURL("http://goposse.com");
+        },
       ));
       _cells.add(new ConstrainedBox(constraints: new BoxConstraints.expand(height: 40.0)));
     });
+  }
+
+  openURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    }
   }
 
   Widget _buildTopSection() {
     return new ConstrainedBox(
       constraints: new BoxConstraints.expand(height: 200.0),
       child: new Padding(
-          padding: new EdgeInsets.only(top: 25.0),
-          child: new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const FlutterLogo(size: 44.0),
-              new Padding(
-                padding: new EdgeInsets.only(left: 10.0),
-                child: new Text(
-                  "FLUTTER GALLERY",
-                  textAlign: TextAlign.center,
-                  style: new TextStyle(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.5,
-                    height: 1.3,
-                    fontSize: 16.0,
-                    color: const Color(0xFF666666),
-                  ),
+        padding: new EdgeInsets.only(top: 25.0),
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const FlutterLogo(size: 44.0),
+            new Padding(
+              padding: new EdgeInsets.only(left: 10.0),
+              child: new Text(
+                "FLUTTER GALLERY",
+                textAlign: TextAlign.center,
+                style: new TextStyle(
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.5,
+                  height: 1.3,
+                  fontSize: 16.0,
+                  color: const Color(0xFF666666),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ),
     );
   }
