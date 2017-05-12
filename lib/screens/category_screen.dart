@@ -9,6 +9,7 @@ import 'package:posse_gallery/managers/category_manager.dart';
 import 'package:posse_gallery/managers/route_manager.dart';
 import 'package:posse_gallery/models/app_category.dart';
 import 'package:posse_gallery/models/category_item.dart';
+import 'package:posse_gallery/physics/snapping_scroll_physics.dart';
 import 'package:posse_gallery/screens/item_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -195,18 +196,27 @@ class _CategoryScreenState extends State<CategoryScreen>
   }
 
   Widget _contentWidget() {
+    double expandedAppBarHeight = 256.0;
+    double threshold =
+        MediaQuery.of(context).size.height - expandedAppBarHeight;
     return new Scaffold(
       backgroundColor: _category.centerShapeColor,
       body: new NotificationListener<ScrollNotification>(
         onNotification: _handleScrollNotification,
         child: new CustomScrollView(
+          physics: new SnappingScrollPhysics(midScrollOffset: threshold),
           slivers: [
             new SliverAppBar(
               pinned: true,
               title: new Text(
                 _categoryTitle,
+                style: new TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20.0,
+                ),
               ),
-              expandedHeight: 256.0,
+              expandedHeight: expandedAppBarHeight,
               leading: _buildBackButton(),
               backgroundColor: _category.centerShapeColor.withAlpha(255),
               flexibleSpace: new FlexibleSpaceBar(

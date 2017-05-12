@@ -241,7 +241,6 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
       body: new CustomScrollView(
         slivers: [
           new SliverAppBar(
-            backgroundColor: const Color(0xFF3D3D3D),
             pinned: true,
             leading: new Material(
               color: const Color(0x00FFFFFF),
@@ -254,18 +253,22 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
             flexibleSpace: new FlexibleSpaceBar(
               background: new Hero(
                 tag: "platform.hero",
-                child: new Stack(
-                  children: [
-                    new OverflowBox(
-                      maxWidth: MediaQuery.of(context).size.width,
-                      child: new Image(
-                        fit: BoxFit.cover,
-                        image: new AssetImage(
-                            "assets/images/platform_detail_hero.png"),
+                child: new Material(
+                  child: new Stack(
+                    children: [
+                      new Positioned.fill(
+                        child: new OverflowBox(
+                          maxWidth: MediaQuery.of(context).size.width,
+                          child: new Image(
+                            fit: BoxFit.cover,
+                            image: new AssetImage(
+                                "assets/images/platform_hero_ios.png"),
+                          ),
+                        ),
                       ),
-                    ),
-                    _buildHeroContent(),
-                  ],
+                      _buildHeroContent(),
+                    ],
+                  ),
                 ),
               ),
             ),

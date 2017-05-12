@@ -38,7 +38,7 @@ class PlatformDemoState extends State<PlatformDemo>
   Widget build(BuildContext context) {
     _heroImageString = Theme.of(context).platform == TargetPlatform.iOS
         ? "assets/images/platform_hero_ios.png"
-        : "assets/images/platform_hero_android.png";
+        : "assets/images/platform_hero_ios.png";
     _configureThemes();
     _buildBottomSheet();
     return new Theme(
@@ -340,43 +340,44 @@ class PlatformDemoState extends State<PlatformDemo>
           position: animation,
           child: new Hero(
             tag: "platform.hero",
-            child: new Container(
-              child: new Stack(
-                children: [
-                  new Positioned.fill(
-                    child: new OverflowBox(
-                        maxWidth: MediaQuery.of(context).size.width,
-                        child: heroImage,
-                    ),
-                  ),
-                  new Center(
-                    child: new Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        new Text(
-                          "FEATURED",
-                          style: new TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        ),
-                        new Padding(
-                          padding: const EdgeInsets.only(top: 5.0),
-                          child: new Text(
-                            "GEOMETRIC DINING CHAIR",
+            child: new Material(
+              child: new Container(
+                child: new Stack(
+                  children: [
+                    new Positioned.fill(
+                        child: new OverflowBox(
+                      maxWidth: MediaQuery.of(context).size.width,
+                      child: heroImage,
+                    )),
+                    new Center(
+                      child: new Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          new Text(
+                            "FEATURED",
                             style: new TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w600,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w500,
                               color: Colors.white,
                             ),
                           ),
-                        ),
-                      ],
+                          new Padding(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: new Text(
+                              "GEOMETRIC DINING CHAIR",
+                              style: new TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -498,10 +499,9 @@ class PlatformDemoState extends State<PlatformDemo>
   _tappedHero() {
     Navigator.push(
       context,
-      new PageRouteBuilder<Null>(
+      new MaterialPageRoute<Null>(
         settings: new RouteSettings(),
-        pageBuilder:
-            (BuildContext context, Animation<double> _, Animation<double> __) {
+        builder: (BuildContext context) {
           return new PlatformDetailDemo(targetPlatform: _targetPlatform);
         },
       ),
