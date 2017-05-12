@@ -1,9 +1,11 @@
-// ignore: invalid_constant
+// ignore: const_with_non_constant_argument
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 class PlatformDetailDemo extends StatefulWidget {
@@ -21,15 +23,26 @@ class PlatformDetailDemo extends StatefulWidget {
 
 class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     with TickerProviderStateMixin {
-  static const int _kAnimationInDuration = 600;
+  static final GlobalKey<ScaffoldState> _scaffoldKey =
+      new GlobalKey<ScaffoldState>();
+  static const int _kAnimationInDuration = 300;
+  static const int _kHeartAnimationDuration = 300;
   TargetPlatform _targetPlatform;
 
   ThemeData _themeData;
 
   Animation<double> _scaleInAnimation;
   Animation<FractionalOffset> _slideInAnimation;
+  Animation<double> _heartAnimation;
 
   AnimationController _animationController;
+  AnimationController _heartAnimationController;
+
+  Color _heartColor = Colors.white;
+
+  int _heartCount = 1324;
+
+  String _appBarTitle = "";
 
   _PlatformDetailDemoState({
     TargetPlatform targetPlatform,
@@ -51,6 +64,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
   @override
   dispose() {
     _animationController.dispose();
+    _heartAnimationController.dispose();
     super.dispose();
   }
 
@@ -61,17 +75,72 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     _animationController.forward();
   }
 
+  void showDemoDialog<T>({BuildContext context, Widget child}) {
+    showDialog<T>(
+      context: context,
+      child: child,
+      barrierDismissible: false,
+    )
+        .then<Null>((T value) {});
+  }
+
   Widget _buildBottomButton() {
     double buttonBorderRadius =
         _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
     double margin = _targetPlatform == TargetPlatform.iOS ? 8.0 : 0.0;
-    Color color = _targetPlatform == TargetPlatform.iOS
+    Color borderColor = _targetPlatform == TargetPlatform.iOS
         ? Colors.white
-        : const Color(0XFF3D3D3D);
+        : const Color(0xFF3D3D3D);
+    Color textColor = _targetPlatform == TargetPlatform.iOS
+        ? const Color(0xFF3D3D3D)
+        : Colors.white;
+    Text addToCartText = new Text(
+      "ADD TO CART",
+      style: new TextStyle(
+        fontSize: 16.0,
+        fontWeight: FontWeight.bold,
+        color: textColor,
+      ),
+    );
+    CupertinoButton cupertinoButton = new CupertinoButton(
+      color: _themeData.buttonColor,
+      child: addToCartText,
+      onPressed: (() {
+        showDemoDialog(
+          context: context,
+          child: new CupertinoAlertDialog(
+              title: const Text('Modern Furniture'),
+              content: const Text('Added to cart!'),
+              actions: <Widget>[
+                new CupertinoDialogAction(
+                    child: const Text('Keep Shopping',
+                        style: const TextStyle(fontWeight: FontWeight.w600)),
+                    onPressed: () {
+                      Navigator.pop(context, 'Keep Shopping');
+                    }),
+              ]),
+        );
+      }),
+    );
+    FlatButton androidButton = new FlatButton(
+      color: _themeData.buttonColor,
+      child: addToCartText,
+      onPressed: () {
+        _scaffoldKey.currentState.showSnackBar(
+          const SnackBar(content: const Text('Added to cart!')),
+        );
+      },
+    );
+    Widget platformButton =
+        _targetPlatform == TargetPlatform.iOS ? cupertinoButton : androidButton;
     return new Container(
       decoration: new BoxDecoration(
         borderRadius: new BorderRadius.circular(buttonBorderRadius),
-        color: color,
+        border: new Border.all(
+          color: const Color(0xFF3D3D3D),
+          width: 1.0,
+        ),
+        color: borderColor,
       ),
       margin: new EdgeInsets.all(margin),
       child: new Row(
@@ -79,18 +148,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
           new Expanded(
             child: new Container(
               height: 50.0,
-              child: new FlatButton(
-                color: _themeData.buttonColor,
-                child: new Text(
-                  "ADD TO CART",
-                  style: new TextStyle(
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                onPressed: () {},
-              ),
+              child: platformButton,
             ),
           ),
         ],
@@ -99,6 +157,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
   }
 
   Widget _buildHeroContent() {
+    NumberFormat heart = new NumberFormat("#,###", "en_US");
     return new Container(
       child: new Stack(
         children: [
@@ -107,34 +166,33 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
               color: const Color(0x40333333),
             ),
           ),
-          new Center(
-            child: new ScaleTransition(
-              scale: _scaleInAnimation,
-              child: new Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Text(
-                    "THE GEO COLLECTION",
+          new Positioned(
+            top: 75.0,
+            right: 50.0,
+            child: new Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new Text(
+                  "THE GEO COLLECTION",
+                  style: new TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+                new Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: new Text(
+                    "GEOMETRIC DINING CHAIR",
                     style: new TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  new Padding(
-                    padding: const EdgeInsets.only(top: 15.0),
-                    child: new Text(
-                      "GEOMETRIC DINING CHAIR",
-                      style: new TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           new Positioned(
@@ -144,16 +202,30 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
               scale: _scaleInAnimation,
               child: new Row(
                 children: [
-                  new Image.asset("assets/icons/ic_platform_heart.png"),
-                  new Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: new Text(
-                      "1324",
-                      style: new TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
+                  new ScaleTransition(
+                    scale: _heartAnimation,
+                    child: new IconButton(
+                      icon: new Icon(Icons.favorite, color: _heartColor),
+                      color: _heartColor,
+                      onPressed: (() {
+                        setState(() {
+                          _heartColor = _heartColor == Colors.red
+                              ? Colors.white
+                              : Colors.red;
+                          _heartCount += _heartColor == Colors.red ? 1 : -1;
+                          _heartAnimationController.forward().whenComplete(() {
+                            _heartAnimationController.reverse();
+                          });
+                        });
+                      }),
+                    ),
+                  ),
+                  new Text(
+                    heart.format(_heartCount).toString(),
+                    style: new TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -162,18 +234,28 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
           ),
           new Positioned(
             right: 30.0,
-            bottom: 20.0,
+            bottom: 35.0,
             child: new ScaleTransition(
               scale: _scaleInAnimation,
               child: new Container(
+                decoration: new BoxDecoration(
+                  color: _targetPlatform == TargetPlatform.iOS
+                      ? Colors.white
+                      : const Color(0xFFF5A623),
+                  border: new Border.all(
+                    color: const Color(0xFFF5A623),
+                    width: 1.0,
+                  ),
+                ),
                 padding: const EdgeInsets.all(10.0),
-                color: const Color(0xFFF5A623),
                 child: new Text(
                   "\$321",
                   style: new TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white,
+                    color: _targetPlatform == TargetPlatform.iOS
+                        ? const Color(0xFFF5A623)
+                        : Colors.white,
                   ),
                 ),
               ),
@@ -187,34 +269,90 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
   List<Widget> _buildListContent() {
     List<Widget> cells = [];
     final textContainer = new Padding(
-      padding: const EdgeInsets.only(top: 25.0, left: 45.0, right: 45.0),
+      padding: const EdgeInsets.only(top: 30.0, left: 45.0, right: 45.0),
       child: new SlideTransition(
         position: _slideInAnimation,
         child: new Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            new Align(
-              alignment: FractionalOffset.centerLeft,
-              child: new Padding(
-                padding: const EdgeInsets.only(bottom: 25.0),
-                child: new Text(
-                  "About The Geometric\nDining Chair",
-                  textAlign: TextAlign.left,
-                  style: new TextStyle(
-                    color: const Color(0xFF4A4A4A),
-                    fontWeight: FontWeight.w900,
-                    fontSize: 16.0,
-                    height: 1.5,
-                  ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: new Text(
+                "About The Geometric\nDining Chair",
+                textAlign: TextAlign.left,
+                style: new TextStyle(
+                  color: const Color(0xFF4A4A4A),
+                  fontWeight: FontWeight.w900,
+                  fontSize: 16.0,
+                  height: 1.5,
                 ),
               ),
             ),
-            new Text(
-              "A chair is a piece of furniture with a raised surface supported by legs, commonly used to seat a single person. Chairs are supported most often by four legs and have a back; however, a chair can have three legs or can have a different shape.",
-              style: new TextStyle(
-                color: const Color(0xFF4A4A4A),
-                fontWeight: FontWeight.w400,
-                fontSize: 16.0,
-                height: 1.5,
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: new Text(
+                "A chair is a piece of furniture with a raised surface supported by legs, commonly used to seat a single person. Chairs are supported most often by four legs and have a back; however, a chair can have three legs or can have a different shape.",
+                style: new TextStyle(
+                  color: const Color(0xFF4A4A4A),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16.0,
+                  height: 1.5,
+                ),
+              ),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: new Text(
+                "Product Dimensions",
+                style: new TextStyle(
+                  color: const Color(0xFF4A4A4A),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16.0,
+                  height: 1.5,
+                ),
+              ),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: new Text(
+                "Tested for: 243 lb\n"
+                    "Width: 16 7/8 \"\n"
+                    "Depth: 20 1/2 \"\n"
+                    "Height: 35 7/8 \"\n"
+                    "Seat width: 16 1/8 \"\n"
+                    "Seat depth: 15 \"\n"
+                    "Seat height: 17 3/8 \"\n",
+                style: new TextStyle(
+                  color: const Color(0xFF4A4A4A),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16.0,
+                  height: 1.5,
+                ),
+              ),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: new Text(
+                "Care Instructions",
+                style: new TextStyle(
+                  color: const Color(0xFF4A4A4A),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16.0,
+                  height: 1.5,
+                ),
+              ),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: new Text(
+                "Wipe clean using a damp cloth and a mild cleaner.\n"
+                    "Wipe dry with a clean cloth.\n",
+                style: new TextStyle(
+                  color: const Color(0xFF4A4A4A),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16.0,
+                  height: 1.5,
+                ),
               ),
             ),
           ],
@@ -230,8 +368,12 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
       duration: const Duration(milliseconds: _kAnimationInDuration),
       vsync: this,
     );
+    _heartAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kHeartAnimationDuration),
+      vsync: this,
+    );
     _scaleInAnimation = _initAnimation(
-        from: 0.0,
+        from: 0.01,
         to: 1.0,
         curve: Curves.easeOut,
         controller: _animationController);
@@ -240,6 +382,11 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeOut,
         controller: _animationController);
+    _heartAnimation = _initAnimation(
+        from: 1.0,
+        to: 1.5,
+        curve: Curves.easeOut,
+        controller: _heartAnimationController);
   }
 
   _configureThemes() {
@@ -252,9 +399,16 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
         _targetPlatform == TargetPlatform.iOS
             ? iOSButtonTextStyle
             : androidButtonTextStyle;
+    Color buttonColor = _targetPlatform == TargetPlatform.iOS
+        ? Colors.white
+        : const Color(0xFF3D3D3D);
+    Color splashColor = _targetPlatform == TargetPlatform.iOS
+        ? const Color(0xFF3D3D3D)
+        : Colors.white;
     _themeData = new ThemeData(
       primaryColor: Colors.white,
-      buttonColor: const Color(0xFF3D3D3D),
+      buttonColor: buttonColor,
+      splashColor: splashColor,
       iconTheme: const IconThemeData(color: const Color(0xFF4A4A4A)),
       brightness: Brightness.light,
       platform: _targetPlatform,
@@ -263,51 +417,82 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
 
   Widget _contentWidget() {
     return new Scaffold(
-      body: new CustomScrollView(
-        slivers: [
-          new SliverAppBar(
-            pinned: true,
-            leading: new Material(
-              color: const Color(0x00FFFFFF),
-              child: new ScaleTransition(
-                scale: _scaleInAnimation,
-                child: new CloseButton(),
+      key: _scaffoldKey,
+      body: new NotificationListener<ScrollNotification>(
+        onNotification: _handleScrollNotification,
+        child: new CustomScrollView(
+          slivers: [
+            new SliverAppBar(
+              backgroundColor: const Color(0xFF3D3D3D),
+              pinned: true,
+              title: new Text(
+                _appBarTitle,
+                style: new TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20.0,
+                ),
               ),
-            ),
-            expandedHeight: MediaQuery.of(context).size.height * 0.5,
-            flexibleSpace: new FlexibleSpaceBar(
-              background: new Hero(
-                tag: "platform.hero",
-                child: new Material(
-                  child: new Stack(
-                    children: [
-                      new Positioned.fill(
-                        child: new OverflowBox(
-                          maxWidth: MediaQuery.of(context).size.width,
-                          child: new Image(
-                            fit: BoxFit.cover,
-                            image: new AssetImage(
-                                "assets/images/platform_hero.png"),
+              leading: new Material(
+                color: const Color(0x00FFFFFF),
+                child: new ScaleTransition(
+                  scale: _scaleInAnimation,
+                  child: new CloseButton(),
+                ),
+              ),
+              expandedHeight: MediaQuery.of(context).size.height * 0.5,
+              flexibleSpace: new FlexibleSpaceBar(
+                background: new Hero(
+                  tag: "platform.hero",
+                  child: new Material(
+                    child: new Stack(
+                      children: [
+                        new Positioned.fill(
+                          child: new OverflowBox(
+                            maxWidth: MediaQuery.of(context).size.width,
+                            child: new Image(
+                              fit: BoxFit.cover,
+                              image: new AssetImage(
+                                  "assets/images/platform_hero.png"),
+                            ),
                           ),
                         ),
-                      ),
-                      _buildHeroContent(),
-                    ],
+                        _buildHeroContent(),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          new SliverList(
-            delegate: new SliverChildListDelegate(_buildListContent()),
-          ),
-        ],
+            new SliverList(
+              delegate: new SliverChildListDelegate(_buildListContent()),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: new Material(
         elevation: 10.0,
         child: _buildBottomButton(),
       ),
     );
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    String title = "Geometric Dining Chair";
+    double visibleStatsHeight = notification.metrics.pixels;
+    double screenHeight =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    double visiblePercentage = visibleStatsHeight / screenHeight;
+    if (visiblePercentage > 0.45 && _appBarTitle != title) {
+      setState(() {
+        _appBarTitle = title;
+      });
+    } else if (visiblePercentage < 0.45 && _appBarTitle.isNotEmpty) {
+      setState(() {
+        _appBarTitle = "";
+      });
+    }
+    return false;
   }
 
   Animation<double> _initAnimation(

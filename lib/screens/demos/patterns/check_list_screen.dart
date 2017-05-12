@@ -194,6 +194,7 @@ class _PatternsListState extends State<PatternsList>
         mainAxisSize: MainAxisSize.max,
         children: [
           new Material(
+            color: new Color(0xFFF7F7F7),
             child: new IconButton(
               icon: new Icon(
                 Icons.add,
