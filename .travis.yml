@@ -57,8 +57,7 @@ matrix:
         - ./flutter/bin/flutter doctor
       script:
         - ./flutter/bin/flutter test
-        # TODO(yjbanov): enable this after figuring out provisioning pofiles
-        # - ./flutter/bin/flutter -v build ios
+        - ./flutter/bin/flutter -v build ios --no-codesign
 
 cache:
   directories:
