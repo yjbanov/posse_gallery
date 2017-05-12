@@ -1,4 +1,4 @@
-// ignore: invalid_constant
+// ignore: const_with_non_constant_argument
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -23,7 +23,9 @@ class PlatformDetailDemo extends StatefulWidget {
 
 class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     with TickerProviderStateMixin {
-  static const int _kAnimationInDuration = 600;
+  static final GlobalKey<ScaffoldState> _scaffoldKey =
+      new GlobalKey<ScaffoldState>();
+  static const int _kAnimationInDuration = 300;
   static const int _kHeartAnimationDuration = 300;
   TargetPlatform _targetPlatform;
 
@@ -75,7 +77,9 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     double buttonBorderRadius =
         _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
     double margin = _targetPlatform == TargetPlatform.iOS ? 8.0 : 0.0;
-    Color borderColor = const Color(0xFF3D3D3D);
+    Color borderColor = _targetPlatform == TargetPlatform.iOS
+        ? Colors.white
+        : const Color(0xFF3D3D3D);
     Color textColor = _targetPlatform == TargetPlatform.iOS
         ? const Color(0xFF3D3D3D)
         : Colors.white;
@@ -88,19 +92,43 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
       ),
     );
     CupertinoButton cupertinoButton = new CupertinoButton(
+      color: _themeData.buttonColor,
       child: addToCartText,
-      onPressed: (() {}),
+      onPressed: (() {
+        showDemoDialog(
+          context: context,
+          child: new CupertinoAlertDialog(
+              title: const Text('Modern Furniture'),
+              content: const Text('Added to cart!'),
+              actions: <Widget>[
+                new CupertinoDialogAction(
+                    child: const Text('Keep Shopping',
+                        style: const TextStyle(fontWeight: FontWeight.w600)),
+                    onPressed: () {
+                      Navigator.pop(context, 'Keep Shopping');
+                    }),
+              ]),
+        );
+      }),
     );
     FlatButton androidButton = new FlatButton(
       color: _themeData.buttonColor,
       child: addToCartText,
-      onPressed: () {},
+      onPressed: () {
+        _scaffoldKey.currentState.showSnackBar(
+          const SnackBar(content: const Text('Added to cart!')),
+        );
+      },
     );
     Widget platformButton =
         _targetPlatform == TargetPlatform.iOS ? cupertinoButton : androidButton;
     return new Container(
       decoration: new BoxDecoration(
         borderRadius: new BorderRadius.circular(buttonBorderRadius),
+        border: new Border.all(
+          color: const Color(0xFF3D3D3D),
+          width: 1.0,
+        ),
         color: borderColor,
       ),
       margin: new EdgeInsets.all(margin),
@@ -117,6 +145,15 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     );
   }
 
+  void showDemoDialog<T>({BuildContext context, Widget child}) {
+    showDialog<T>(
+      context: context,
+      child: child,
+      barrierDismissible: false,
+    )
+        .then<Null>((T value) {});
+  }
+
   Widget _buildHeroContent() {
     NumberFormat heart = new NumberFormat("#,###", "en_US");
     return new Container(
@@ -127,7 +164,9 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
               color: const Color(0x40333333),
             ),
           ),
-          new Center(
+          new Positioned(
+            top: 75.0,
+            right: 50.0,
             child: new ScaleTransition(
               scale: _scaleInAnimation,
               child: new Column(
@@ -201,21 +240,23 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
               scale: _scaleInAnimation,
               child: new Container(
                 decoration: new BoxDecoration(
-                  border: new Border(
-                    left: new BorderSide(
-                      color: const Color(0xFFF5A623),
-                      width: 1.0,
-                    ),
+                  color: _targetPlatform == TargetPlatform.iOS
+                      ? Colors.white
+                      : const Color(0xFFF5A623),
+                  border: new Border.all(
+                    color: const Color(0xFFF5A623),
+                    width: 1.0,
                   ),
                 ),
                 padding: const EdgeInsets.all(10.0),
-                color: const Color(0xFFF5A623),
                 child: new Text(
                   "\$321",
                   style: new TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white,
+                    color: _targetPlatform == TargetPlatform.iOS
+                        ? const Color(0xFFF5A623)
+                        : Colors.white,
                   ),
                 ),
               ),
@@ -277,7 +318,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
       vsync: this,
     );
     _scaleInAnimation = _initAnimation(
-        from: 0.0,
+        from: 0.01,
         to: 1.0,
         curve: Curves.easeOut,
         controller: _animationController);
@@ -303,9 +344,16 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
         _targetPlatform == TargetPlatform.iOS
             ? iOSButtonTextStyle
             : androidButtonTextStyle;
+    Color buttonColor = _targetPlatform == TargetPlatform.iOS
+        ? Colors.white
+        : const Color(0xFF3D3D3D);
+    Color splashColor = _targetPlatform == TargetPlatform.iOS
+        ? const Color(0xFF3D3D3D)
+        : Colors.white;
     _themeData = new ThemeData(
       primaryColor: Colors.white,
-      buttonColor: const Color(0xFF3D3D3D),
+      buttonColor: buttonColor,
+      splashColor: splashColor,
       iconTheme: const IconThemeData(color: const Color(0xFF4A4A4A)),
       brightness: Brightness.light,
       platform: _targetPlatform,
@@ -314,6 +362,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
 
   Widget _contentWidget() {
     return new Scaffold(
+      key: _scaffoldKey,
       body: new CustomScrollView(
         slivers: [
           new SliverAppBar(

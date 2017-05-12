@@ -307,7 +307,9 @@ class PlatformDemoState extends State<PlatformDemo>
                       maxWidth: MediaQuery.of(context).size.width,
                       child: heroImage,
                     )),
-                    new Center(
+                    new Positioned(
+                      top: 50.0,
+                      right: 50.0,
                       child: new Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,

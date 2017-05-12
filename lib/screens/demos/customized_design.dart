@@ -633,22 +633,22 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       controller: _textAnimationController,
     );
     _statsAnimationOne = _initAnimation(
-        from: 0.0,
+        from: 0.01,
         to: 1.0,
         curve: Curves.easeOut,
         controller: _statsAnimationControllerOne);
     _statsAnimationTwo = _initAnimation(
-        from: 0.0,
+        from: 0.01,
         to: 1.0,
         curve: Curves.easeOut,
         controller: _statsAnimationControllerTwo);
     _statsAnimationThree = _initAnimation(
-        from: 0.0,
+        from: 0.01,
         to: 1.0,
         curve: Curves.easeOut,
         controller: _statsAnimationControllerThree);
     _statsAnimationFour = _initAnimation(
-        from: 0.0,
+        from: 0.01,
         to: 1.0,
         curve: Curves.easeOut,
         controller: _statsAnimationControllerFour);
