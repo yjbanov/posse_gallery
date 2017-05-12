@@ -36,9 +36,7 @@ class PlatformDemoState extends State<PlatformDemo>
 
   @override
   Widget build(BuildContext context) {
-    _heroImageString = Theme.of(context).platform == TargetPlatform.iOS
-        ? "assets/images/platform_hero_ios.png"
-        : "assets/images/platform_hero_ios.png";
+    _heroImageString = "assets/images/platform_hero.png";
     _configureThemes();
     _buildBottomSheet();
     return new Theme(
@@ -279,46 +277,6 @@ class PlatformDemoState extends State<PlatformDemo>
     );
   }
 
-  _buildRadioButtons() {
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        new Column(
-          children: [
-            new Radio<int>(
-                value: 0,
-                groupValue: _radioValue,
-                onChanged: _handleRadioValueChanged),
-            new Text(
-              "iOS",
-              style: new TextStyle(
-                fontSize: 14.0,
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFFAAAAAA),
-              ),
-            ),
-          ],
-        ),
-        new Column(
-          children: [
-            new Radio<int>(
-                value: 1,
-                groupValue: _radioValue,
-                onChanged: _handleRadioValueChanged),
-            new Text(
-              "ANDROID",
-              style: new TextStyle(
-                fontSize: 14.0,
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFFAAAAAA),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
   Widget _buildHeroWidget() {
     FractionalOffset offset = new FractionalOffset(1.5, 0.0);
     Animation<FractionalOffset> animation = _initSlideAnimation(
@@ -383,6 +341,46 @@ class PlatformDemoState extends State<PlatformDemo>
           ),
         ),
       ),
+    );
+  }
+
+  _buildRadioButtons() {
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        new Column(
+          children: [
+            new Radio<int>(
+                value: 0,
+                groupValue: _radioValue,
+                onChanged: _handleRadioValueChanged),
+            new Text(
+              "iOS",
+              style: new TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFFAAAAAA),
+              ),
+            ),
+          ],
+        ),
+        new Column(
+          children: [
+            new Radio<int>(
+                value: 1,
+                groupValue: _radioValue,
+                onChanged: _handleRadioValueChanged),
+            new Text(
+              "ANDROID",
+              style: new TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFFAAAAAA),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 

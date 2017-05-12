@@ -63,7 +63,7 @@ flutter:
     - assets/images/custom_hero.png
     - assets/images/custom_path.png
     - assets/images/custom_runner_bg.png
-    - assets/images/platform_hero_ios.png
+    - assets/images/platform_hero.png
     - assets/images/platform_hero_android.png
     - assets/images/platform_detail_hero.png
     - assets/images/platform_lamp.png

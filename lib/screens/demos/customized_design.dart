@@ -691,20 +691,13 @@ class _CustomizedDesignState extends State<CustomizedDesign>
           showTrailing: false,
           child: new CustomScrollView(
             controller: _scrollController,
-            physics: new SnappingScrollPhysics(
-                midScrollOffset:
-                    screenHeight - MediaQuery.of(context).padding.top),
+            physics: new SnappingScrollPhysics(midScrollOffset: screenHeight),
             shrinkWrap: true,
             slivers: [
               new SliverAppBar(
                 pinned: false,
                 title: new Text(
                   backTitle,
-                  style: new TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20.0,
-                  ),
                 ),
                 expandedHeight: screenHeight -
                     _kDetailTabHeight -

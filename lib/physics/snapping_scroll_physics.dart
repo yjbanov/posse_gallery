@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/src/widgets/scroll_metrics.dart';
-import 'package:flutter/src/widgets/scroll_physics.dart';
-import 'package:meta/meta.dart';
 import 'dart:math' as math;
+
+import 'package:flutter/widgets.dart';
+import 'package:meta/meta.dart';
 
 class SnappingScrollPhysics extends ClampingScrollPhysics {
   final double midScrollOffset;
