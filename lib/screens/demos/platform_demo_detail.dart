@@ -42,6 +42,8 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
 
   int _heartCount = 1324;
 
+  String _appBarTitle = "";
+
   _PlatformDetailDemoState({
     TargetPlatform targetPlatform,
   })
@@ -73,6 +75,15 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     _animationController.forward();
   }
 
+  void showDemoDialog<T>({BuildContext context, Widget child}) {
+    showDialog<T>(
+      context: context,
+      child: child,
+      barrierDismissible: false,
+    )
+        .then<Null>((T value) {});
+  }
+
   Widget _buildBottomButton() {
     double buttonBorderRadius =
         _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
@@ -86,7 +97,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     Text addToCartText = new Text(
       "ADD TO CART",
       style: new TextStyle(
-        fontSize: 12.0,
+        fontSize: 16.0,
         fontWeight: FontWeight.bold,
         color: textColor,
       ),
@@ -145,15 +156,6 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     );
   }
 
-  void showDemoDialog<T>({BuildContext context, Widget child}) {
-    showDialog<T>(
-      context: context,
-      child: child,
-      barrierDismissible: false,
-    )
-        .then<Null>((T value) {});
-  }
-
   Widget _buildHeroContent() {
     NumberFormat heart = new NumberFormat("#,###", "en_US");
     return new Container(
@@ -167,33 +169,30 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
           new Positioned(
             top: 75.0,
             right: 50.0,
-            child: new ScaleTransition(
-              scale: _scaleInAnimation,
-              child: new Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  new Text(
-                    "THE GEO COLLECTION",
+            child: new Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new Text(
+                  "THE GEO COLLECTION",
+                  style: new TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+                new Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: new Text(
+                    "GEOMETRIC DINING CHAIR",
                     style: new TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  new Padding(
-                    padding: const EdgeInsets.only(top: 15.0),
-                    child: new Text(
-                      "GEOMETRIC DINING CHAIR",
-                      style: new TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           new Positioned(
@@ -270,34 +269,90 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
   List<Widget> _buildListContent() {
     List<Widget> cells = [];
     final textContainer = new Padding(
-      padding: const EdgeInsets.only(top: 25.0, left: 45.0, right: 45.0),
+      padding: const EdgeInsets.only(top: 30.0, left: 45.0, right: 45.0),
       child: new SlideTransition(
         position: _slideInAnimation,
         child: new Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            new Align(
-              alignment: FractionalOffset.centerLeft,
-              child: new Padding(
-                padding: const EdgeInsets.only(bottom: 25.0),
-                child: new Text(
-                  "About The Geometric\nDining Chair",
-                  textAlign: TextAlign.left,
-                  style: new TextStyle(
-                    color: const Color(0xFF4A4A4A),
-                    fontWeight: FontWeight.w900,
-                    fontSize: 16.0,
-                    height: 1.5,
-                  ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: new Text(
+                "About The Geometric\nDining Chair",
+                textAlign: TextAlign.left,
+                style: new TextStyle(
+                  color: const Color(0xFF4A4A4A),
+                  fontWeight: FontWeight.w900,
+                  fontSize: 16.0,
+                  height: 1.5,
                 ),
               ),
             ),
-            new Text(
-              "A chair is a piece of furniture with a raised surface supported by legs, commonly used to seat a single person. Chairs are supported most often by four legs and have a back; however, a chair can have three legs or can have a different shape.",
-              style: new TextStyle(
-                color: const Color(0xFF4A4A4A),
-                fontWeight: FontWeight.w400,
-                fontSize: 16.0,
-                height: 1.5,
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: new Text(
+                "A chair is a piece of furniture with a raised surface supported by legs, commonly used to seat a single person. Chairs are supported most often by four legs and have a back; however, a chair can have three legs or can have a different shape.",
+                style: new TextStyle(
+                  color: const Color(0xFF4A4A4A),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16.0,
+                  height: 1.5,
+                ),
+              ),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: new Text(
+                "Product Dimensions",
+                style: new TextStyle(
+                  color: const Color(0xFF4A4A4A),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16.0,
+                  height: 1.5,
+                ),
+              ),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: new Text(
+                "Tested for: 243 lb\n"
+                    "Width: 16 7/8 \"\n"
+                    "Depth: 20 1/2 \"\n"
+                    "Height: 35 7/8 \"\n"
+                    "Seat width: 16 1/8 \"\n"
+                    "Seat depth: 15 \"\n"
+                    "Seat height: 17 3/8 \"\n",
+                style: new TextStyle(
+                  color: const Color(0xFF4A4A4A),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16.0,
+                  height: 1.5,
+                ),
+              ),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: new Text(
+                "Care Instructions",
+                style: new TextStyle(
+                  color: const Color(0xFF4A4A4A),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16.0,
+                  height: 1.5,
+                ),
+              ),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: new Text(
+                "Wipe clean using a damp cloth and a mild cleaner.\n"
+                    "Wipe dry with a clean cloth.\n",
+                style: new TextStyle(
+                  color: const Color(0xFF4A4A4A),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16.0,
+                  height: 1.5,
+                ),
               ),
             ),
           ],
@@ -363,51 +418,81 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
   Widget _contentWidget() {
     return new Scaffold(
       key: _scaffoldKey,
-      body: new CustomScrollView(
-        slivers: [
-          new SliverAppBar(
-            pinned: true,
-            leading: new Material(
-              color: const Color(0x00FFFFFF),
-              child: new ScaleTransition(
-                scale: _scaleInAnimation,
-                child: new CloseButton(),
+      body: new NotificationListener<ScrollNotification>(
+        onNotification: _handleScrollNotification,
+        child: new CustomScrollView(
+          slivers: [
+            new SliverAppBar(
+              backgroundColor: const Color(0xFF3D3D3D),
+              pinned: true,
+              title: new Text(
+                _appBarTitle,
+                style: new TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20.0,
+                ),
               ),
-            ),
-            expandedHeight: MediaQuery.of(context).size.height * 0.5,
-            flexibleSpace: new FlexibleSpaceBar(
-              background: new Hero(
-                tag: "platform.hero",
-                child: new Material(
-                  child: new Stack(
-                    children: [
-                      new Positioned.fill(
-                        child: new OverflowBox(
-                          maxWidth: MediaQuery.of(context).size.width,
-                          child: new Image(
-                            fit: BoxFit.cover,
-                            image: new AssetImage(
-                                "assets/images/platform_hero.png"),
+              leading: new Material(
+                color: const Color(0x00FFFFFF),
+                child: new ScaleTransition(
+                  scale: _scaleInAnimation,
+                  child: new CloseButton(),
+                ),
+              ),
+              expandedHeight: MediaQuery.of(context).size.height * 0.5,
+              flexibleSpace: new FlexibleSpaceBar(
+                background: new Hero(
+                  tag: "platform.hero",
+                  child: new Material(
+                    child: new Stack(
+                      children: [
+                        new Positioned.fill(
+                          child: new OverflowBox(
+                            maxWidth: MediaQuery.of(context).size.width,
+                            child: new Image(
+                              fit: BoxFit.cover,
+                              image: new AssetImage(
+                                  "assets/images/platform_hero.png"),
+                            ),
                           ),
                         ),
-                      ),
-                      _buildHeroContent(),
-                    ],
+                        _buildHeroContent(),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          new SliverList(
-            delegate: new SliverChildListDelegate(_buildListContent()),
-          ),
-        ],
+            new SliverList(
+              delegate: new SliverChildListDelegate(_buildListContent()),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: new Material(
         elevation: 10.0,
         child: _buildBottomButton(),
       ),
     );
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    String title = "Geometric Dining Chair";
+    double visibleStatsHeight = notification.metrics.pixels;
+    double screenHeight =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    double visiblePercentage = visibleStatsHeight / screenHeight;
+    if (visiblePercentage > 0.45 && _appBarTitle != title) {
+      setState(() {
+        _appBarTitle = title;
+      });
+    } else if (visiblePercentage < 0.45 && _appBarTitle.isNotEmpty) {
+      setState(() {
+        _appBarTitle = "";
+      });
+    }
+    return false;
   }
 
   Animation<double> _initAnimation(
