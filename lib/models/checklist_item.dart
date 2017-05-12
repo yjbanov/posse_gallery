@@ -3,8 +3,9 @@
 // found in the LICENSE file.
 
 class ChecklistItem {
-  ChecklistItem({this.title, this.isSelected});
+  ChecklistItem({this.title, this.note, this.isSelected});
 
   String title;
+  String note;
   bool isSelected;
 }

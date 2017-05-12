@@ -8,7 +8,7 @@ import 'package:posse_gallery/models/app_category.dart';
 import 'package:posse_gallery/models/category_item.dart';
 import 'package:posse_gallery/screens/demos/assets_demo.dart';
 import 'package:posse_gallery/screens/demos/customized_design.dart';
-import 'package:posse_gallery/screens/demos/patterns_list.dart';
+import 'package:posse_gallery/screens/demos/patterns/check_list_screen.dart';
 import 'package:posse_gallery/screens/demos/platform_demo.dart';
 import 'package:posse_gallery/screens/warm_welcome_screen.dart';
 

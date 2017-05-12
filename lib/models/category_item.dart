@@ -11,7 +11,8 @@ class CategoryItem {
       this.routeName,
       this.color,
       this.widget,
-      this.needsFullScreen});
+      this.needsFullScreen,
+      this.showMoreButton = false});
 
   final String title;
   final String iconUri;
@@ -19,4 +20,5 @@ class CategoryItem {
   final Color color;
   final Widget widget;
   final bool needsFullScreen;
+  final bool showMoreButton;
 }

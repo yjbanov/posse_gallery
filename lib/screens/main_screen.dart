@@ -49,13 +49,40 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     super.initState();
     _configureAnimation();
     _animationController.forward();
+    setState((){
+      _cells = <Widget>[];
+      _cells.add(_buildTopSection());
+      _cells.addAll(_loadCategories());
+      _cells.add(new ConstrainedBox(constraints: new BoxConstraints.expand(height: 30.0)));
+      _cells.add(new MainLinkCell(
+        "Debug Stuff",
+        "Toggle settings and options.",
+        "assets/icons/ic_feed_settings.png",
+      ));
+      _cells.add(new MainLinkCell(
+        "Flutter",
+        "Visit the Flutter web site for more information on Flutter and how to get started.",
+        "assets/icons/ic_feed_flutter.png",
+      ));
+      _cells.add(new MainLinkCell(
+        "Flutter Docs",
+        "Visit the Flutter web site for more information on Flutter and how to get started.",
+        "assets/icons/ic_feed_docs.png",
+      ));
+      _cells.add(new MainLinkCell(
+        "Posse",
+        "Check out Posse's website.",
+        "assets/icons/ic_feed_posse.png",
+      ));
+      _cells.add(new ConstrainedBox(constraints: new BoxConstraints.expand(height: 40.0)));
+    });
   }
 
   Widget _buildTopSection() {
     return new ConstrainedBox(
       constraints: new BoxConstraints.expand(height: 200.0),
       child: new Padding(
-          padding: new EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+          padding: new EdgeInsets.only(top: 25.0),
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,33 +109,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildListView() {
-
-    _cells = <Widget>[];
-    _cells.add(_buildTopSection());
-    _cells.addAll(_loadCategories());
-    _cells.add(new ConstrainedBox(constraints: new BoxConstraints.expand(height: 30.0)));
-    _cells.add(new MainLinkCell(
-      "Debug Stuff",
-      "Toggle settings and options.",
-      "assets/icons/ic_feed_settings.png",
-    ));
-    _cells.add(new MainLinkCell(
-      "Flutter",
-      "Visit the Flutter web site for more information on Flutter and how to get started.",
-      "assets/icons/ic_feed_flutter.png",
-    ));
-    _cells.add(new MainLinkCell(
-      "Flutter Docs",
-      "Visit the Flutter web site for more information on Flutter and how to get started.",
-      "assets/icons/ic_feed_docs.png",
-    ));
-    _cells.add(new MainLinkCell(
-      "Posse",
-      "Check out Posse's website.",
-      "assets/icons/ic_feed_posse.png",
-    ));
-    _cells.add(new ConstrainedBox(constraints: new BoxConstraints.expand(height: 40.0)));
-
     return new Padding(
       padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: new ListView(
