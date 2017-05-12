@@ -87,7 +87,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         ? TextAlign.center
         : TextAlign.left;
     return new Container(
-      height: 76.0,
+      height: 90.0,
       padding: new EdgeInsets.only(top: statusBarHeight),
       child: new Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -99,7 +99,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
               style: new TextStyle(
                 color: selectedTheme.textTheme.title.color,
                 fontWeight: FontWeight.w500,
-                fontSize: 16.0,
+                fontSize: 20.0,
               ),
               textAlign: titleTextAlignment,
             ),
@@ -279,13 +279,12 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   pressedNextButton() {
     Navigator.push(
       context,
-      new PageRouteBuilder<Null>(
-        settings: new RouteSettings(),
-        pageBuilder:
-            (BuildContext context, Animation<double> _, Animation<double> __) {
-          return new AssetsDetailDemo(themeIndex: tabController.index);
-        },
-      ),
+        new MaterialPageRoute<Null>(
+            settings: new RouteSettings(),
+            builder: (BuildContext context) {
+              return new AssetsDetailDemo(themeIndex: tabController.index);
+            },
+        ),
     );
   }
 
@@ -334,7 +333,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
       return new BoxDecoration(
         gradient: new RadialGradient(
           center: FractionalOffset.center,
-          radius: 0.5,
+          radius: 0.6,
           colors: [
             Colors.white,
             const Color(0xFFF68D99),

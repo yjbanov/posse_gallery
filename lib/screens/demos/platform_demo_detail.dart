@@ -61,6 +61,43 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     _animationController.forward();
   }
 
+  Widget _buildBottomButton() {
+    double buttonBorderRadius =
+        _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
+    double margin = _targetPlatform == TargetPlatform.iOS ? 8.0 : 0.0;
+    Color color = _targetPlatform == TargetPlatform.iOS
+        ? Colors.white
+        : const Color(0XFF3D3D3D);
+    return new Container(
+      decoration: new BoxDecoration(
+        borderRadius: new BorderRadius.circular(buttonBorderRadius),
+        color: color,
+      ),
+      margin: new EdgeInsets.all(margin),
+      child: new Row(
+        children: [
+          new Expanded(
+            child: new Container(
+              height: 50.0,
+              child: new FlatButton(
+                color: _themeData.buttonColor,
+                child: new Text(
+                  "ADD TO CART",
+                  style: new TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {},
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildHeroContent() {
     return new Container(
       child: new Stack(
@@ -205,18 +242,6 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
         controller: _animationController);
   }
 
-  Animation<FractionalOffset> _initSlideAnimation(
-      {@required FractionalOffset from,
-      @required FractionalOffset to,
-      @required Curve curve,
-      @required AnimationController controller}) {
-    final CurvedAnimation animation = new CurvedAnimation(
-      parent: controller,
-      curve: curve,
-    );
-    return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
-  }
-
   _configureThemes() {
     TextTheme textTheme = Theme.of(context).textTheme;
     TextStyle iOSButtonTextStyle = textTheme.button.copyWith(
@@ -241,7 +266,6 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
       body: new CustomScrollView(
         slivers: [
           new SliverAppBar(
-            backgroundColor: const Color(0xFF3D3D3D),
             pinned: true,
             leading: new Material(
               color: const Color(0x00FFFFFF),
@@ -252,22 +276,25 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
             ),
             expandedHeight: MediaQuery.of(context).size.height * 0.5,
             flexibleSpace: new FlexibleSpaceBar(
-              background: new Stack(
-                children: [
-                  new Hero(
-                    tag: "platform.hero",
-                    child: new OverflowBox(
-                      maxWidth: double.INFINITY,
-                      maxHeight: double.INFINITY,
-                      child: new Image(
-                        width: MediaQuery.of(context).size.width,
-                        image: new AssetImage(
-                            "assets/images/platform_detail_hero.png"),
+              background: new Hero(
+                tag: "platform.hero",
+                child: new Material(
+                  child: new Stack(
+                    children: [
+                      new Positioned.fill(
+                        child: new OverflowBox(
+                          maxWidth: MediaQuery.of(context).size.width,
+                          child: new Image(
+                            fit: BoxFit.cover,
+                            image: new AssetImage(
+                                "assets/images/platform_hero.png"),
+                          ),
+                        ),
                       ),
-                    ),
+                      _buildHeroContent(),
+                    ],
                   ),
-                  _buildHeroContent(),
-                ],
+                ),
               ),
             ),
           ),
@@ -283,41 +310,6 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     );
   }
 
-  Widget _buildBottomButton() {
-    double buttonBorderRadius =
-        _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
-    double margin = _targetPlatform == TargetPlatform.iOS ? 8.0 : 0.0;
-    Color color = _targetPlatform == TargetPlatform.iOS ? Colors.white : const Color(0XFF3D3D3D);
-    return new Container(
-      decoration: new BoxDecoration(
-        borderRadius: new BorderRadius.circular(buttonBorderRadius),
-        color: color,
-      ),
-      margin: new EdgeInsets.all(margin),
-      child: new Row(
-        children: [
-          new Expanded(
-            child: new Container(
-              height: 50.0,
-              child: new FlatButton(
-                color: _themeData.buttonColor,
-                child: new Text(
-                  "ADD TO CART",
-                  style: new TextStyle(
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                onPressed: () {},
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Animation<double> _initAnimation(
       {@required double from,
       @required double to,
@@ -328,5 +320,17 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
       curve: curve,
     );
     return new Tween<double>(begin: from, end: to).animate(animation);
+  }
+
+  Animation<FractionalOffset> _initSlideAnimation(
+      {@required FractionalOffset from,
+      @required FractionalOffset to,
+      @required Curve curve,
+      @required AnimationController controller}) {
+    final CurvedAnimation animation = new CurvedAnimation(
+      parent: controller,
+      curve: curve,
+    );
+    return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
   }
 }
