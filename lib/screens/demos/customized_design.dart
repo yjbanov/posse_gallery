@@ -3,10 +3,10 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+import 'package:posse_gallery/physics/snapping_scroll_physics.dart';
 
 class CustomizedDesign extends StatefulWidget {
   @override
@@ -177,9 +177,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   Widget _buildBackButton() {
-    TargetPlatform platform = Theme
-        .of(context)
-        .platform;
+    TargetPlatform platform = Theme.of(context).platform;
     final IconData backIcon = platform == TargetPlatform.android
         ? Icons.arrow_back
         : Icons.arrow_back_ios;
@@ -236,14 +234,14 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       child: new Stack(
         children: [
           new Positioned(
-              top: 0.0,
-              right: 0.0,
-              child: new FadeTransition(
-                opacity: _runnerFadeAnimation,
-                child: new Image(
-                  image: new AssetImage("assets/images/custom_runner_bg.png"),
-                ),
+            top: 0.0,
+            right: 0.0,
+            child: new FadeTransition(
+              opacity: _runnerFadeAnimation,
+              child: new Image(
+                image: new AssetImage("assets/images/custom_runner_bg.png"),
               ),
+            ),
           ),
           new Positioned(
             right: 18.0,
@@ -665,9 +663,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   _configureThemes() {
-    _targetPlatform = Theme
-        .of(context)
-        .platform;
+    _targetPlatform = Theme.of(context).platform;
     _platformTextAlignment = _targetPlatform == TargetPlatform.android
         ? TextAlign.left
         : TextAlign.center;
@@ -690,30 +686,32 @@ class _CustomizedDesignState extends State<CustomizedDesign>
         onNotification: _handleScrollNotification,
         child: new GlowingOverscrollIndicator(
           color: const Color(0x00FFFFFF),
-            axisDirection: AxisDirection.down,
-            showLeading: false,
-            showTrailing: false,
+          axisDirection: AxisDirection.down,
+          showLeading: false,
+          showTrailing: false,
           child: new CustomScrollView(
-              controller: _scrollController,
-              physics: new _SnappingScrollPhysics(midScrollOffset: screenHeight),
-              shrinkWrap: true,
-              slivers: [
-                new SliverAppBar(
-                    pinned: false,
-                    title: new Text(backTitle),
-                    expandedHeight: screenHeight -
-                        _kDetailTabHeight -
-                        MediaQuery.of(context).padding.top,
-                    leading: _buildBackButton(),
-                    backgroundColor: const Color(0xFF212024),
-                    flexibleSpace: new FlexibleSpaceBar(
-                        background: _buildBody(),
-                    ),
+            controller: _scrollController,
+            physics: new SnappingScrollPhysics(midScrollOffset: screenHeight),
+            shrinkWrap: true,
+            slivers: [
+              new SliverAppBar(
+                pinned: false,
+                title: new Text(
+                  backTitle,
                 ),
-                new SliverList(
-                    delegate: new SliverChildListDelegate(_stats),
+                expandedHeight: screenHeight -
+                    _kDetailTabHeight -
+                    MediaQuery.of(context).padding.top,
+                leading: _buildBackButton(),
+                backgroundColor: const Color(0xFF212024),
+                flexibleSpace: new FlexibleSpaceBar(
+                  background: _buildBody(),
                 ),
-              ],
+              ),
+              new SliverList(
+                delegate: new SliverChildListDelegate(_stats),
+              ),
+            ],
           ),
         ),
       ),
@@ -726,14 +724,9 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     }
     if (notification is ScrollNotification) {
       double visibleStatsHeight = notification.metrics.pixels;
-      double screenHeight = MediaQuery
-          .of(context)
-          .size
-          .height -
-          _kDetailTabHeight - MediaQuery
-          .of(context)
-          .padding
-          .top;
+      double screenHeight = MediaQuery.of(context).size.height -
+          _kDetailTabHeight -
+          MediaQuery.of(context).padding.top;
       double opacity = visibleStatsHeight / screenHeight;
       double calculatedOpacity = 1.0 - opacity;
       if (calculatedOpacity > 1.0) {
@@ -800,53 +793,5 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     setState(() {
       _runCounter += 1;
     });
-  }
-}
-
-class _SnappingScrollPhysics extends ClampingScrollPhysics {
-  final double midScrollOffset;
-
-  _SnappingScrollPhysics({
-    ScrollPhysics parent,
-    @required this.midScrollOffset,
-  }) : assert(midScrollOffset != null),
-        super(parent: parent);
-
-  @override
-  _SnappingScrollPhysics applyTo(ScrollPhysics ancestor) {
-    return new _SnappingScrollPhysics(parent: buildParent(ancestor),  midScrollOffset: midScrollOffset);
-  }
-
-  @override
-  Simulation createBallisticSimulation(ScrollMetrics position, double dragVelocity) {
-    final Simulation simulation = super.createBallisticSimulation(position, dragVelocity);
-    final double offset = position.pixels;
-
-    if (simulation != null) {
-      final double simulationEnd = simulation.x(double.INFINITY);
-      if (simulationEnd >= midScrollOffset)
-        return simulation;
-      if (dragVelocity > 0.0)
-        return _toMidScrollOffsetSimulation(offset, dragVelocity);
-      if (dragVelocity < 0.0)
-        return _toZeroScrollOffsetSimulation(offset, dragVelocity);
-    } else {
-      final double snapThreshold = midScrollOffset / 2.0;
-      if (offset >=  snapThreshold && offset < midScrollOffset)
-        return _toMidScrollOffsetSimulation(offset, dragVelocity);
-      if (offset > 0.0 && offset < snapThreshold)
-        return _toZeroScrollOffsetSimulation(offset, dragVelocity);
-    }
-    return simulation;
-  }
-
-  Simulation _toMidScrollOffsetSimulation(double offset, double dragVelocity) {
-    final double velocity = math.max(dragVelocity, minFlingVelocity);
-    return new ScrollSpringSimulation(spring, offset, midScrollOffset, velocity, tolerance: tolerance);
-  }
-
-  Simulation _toZeroScrollOffsetSimulation(double offset, double dragVelocity) {
-    final double velocity = math.max(dragVelocity, minFlingVelocity);
-    return new ScrollSpringSimulation(spring, offset, 0.0, velocity, tolerance: tolerance);
   }
 }

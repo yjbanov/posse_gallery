@@ -36,9 +36,7 @@ class PlatformDemoState extends State<PlatformDemo>
 
   @override
   Widget build(BuildContext context) {
-    _heroImageString = Theme.of(context).platform == TargetPlatform.iOS
-        ? "assets/images/platform_hero_ios.png"
-        : "assets/images/platform_hero_android.png";
+    _heroImageString = "assets/images/platform_hero.png";
     _configureThemes();
     _buildBottomSheet();
     return new Theme(
@@ -83,7 +81,7 @@ class PlatformDemoState extends State<PlatformDemo>
               style: new TextStyle(
                 color: _themeData.textTheme.title.color,
                 fontWeight: FontWeight.w500,
-                fontSize: 16.0,
+                fontSize: 20.0,
               ),
               textAlign: _platformTextAlignment,
             ),
@@ -279,6 +277,73 @@ class PlatformDemoState extends State<PlatformDemo>
     );
   }
 
+  Widget _buildHeroWidget() {
+    FractionalOffset offset = new FractionalOffset(1.5, 0.0);
+    Animation<FractionalOffset> animation = _initSlideAnimation(
+      from: offset,
+      to: const FractionalOffset(0.0, 0.0),
+      curve: Curves.easeOut,
+      controller: _animationController,
+    );
+    Image heroImage = new Image(
+      fit: BoxFit.cover,
+      image: new AssetImage(_heroImageString),
+    );
+    return new Expanded(
+      child: new GestureDetector(
+        onTap: (() {
+          _tappedHero();
+        }),
+        child: new SlideTransition(
+          position: animation,
+          child: new Hero(
+            tag: "platform.hero",
+            child: new Material(
+              child: new Container(
+                child: new Stack(
+                  children: [
+                    new Positioned.fill(
+                        child: new OverflowBox(
+                      maxWidth: MediaQuery.of(context).size.width,
+                      child: heroImage,
+                    )),
+                    new Center(
+                      child: new Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          new Text(
+                            "FEATURED",
+                            style: new TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                          new Padding(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: new Text(
+                              "GEOMETRIC DINING CHAIR",
+                              style: new TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   _buildRadioButtons() {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -316,72 +381,6 @@ class PlatformDemoState extends State<PlatformDemo>
           ],
         ),
       ],
-    );
-  }
-
-  Widget _buildHeroWidget() {
-    FractionalOffset offset = new FractionalOffset(1.5, 0.0);
-    Animation<FractionalOffset> animation = _initSlideAnimation(
-      from: offset,
-      to: const FractionalOffset(0.0, 0.0),
-      curve: Curves.easeOut,
-      controller: _animationController,
-    );
-    Image heroImage = new Image(
-      fit: BoxFit.cover,
-        image: new AssetImage(_heroImageString),
-    );
-    return new Expanded(
-      child: new GestureDetector(
-        onTap: (() {
-          _tappedHero();
-        }),
-        child: new SlideTransition(
-          position: animation,
-          child: new Container(
-            child: new Stack(
-              children: [
-                new Positioned.fill(
-                  child: new Hero(
-                    tag: "platform.hero",
-                      child: new OverflowBox(
-                        maxWidth: MediaQuery.of(context).size.width,
-                        child: heroImage,
-                      )
-                  ),
-                ),
-                new Center(
-                  child: new Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      new Text(
-                        "FEATURED",
-                        style: new TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                      new Padding(
-                        padding: const EdgeInsets.only(top: 5.0),
-                        child: new Text(
-                          "GEOMETRIC DINING CHAIR",
-                          style: new TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 
