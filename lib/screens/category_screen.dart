@@ -198,7 +198,7 @@ class _CategoryScreenState extends State<CategoryScreen>
   Widget _contentWidget() {
     double expandedAppBarHeight = 256.0;
     double threshold =
-        MediaQuery.of(context).size.height - expandedAppBarHeight;
+        MediaQuery.of(context).size.height - expandedAppBarHeight - MediaQuery.of(context).padding.top;
     return new Scaffold(
       backgroundColor: _category.centerShapeColor,
       body: new NotificationListener<ScrollNotification>(
