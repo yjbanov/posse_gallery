@@ -52,6 +52,7 @@ matrix:
         - ./flutter/bin/flutter doctor
       script:
         - ./flutter/bin/flutter test
+        - ./flutter/bin/flutter -v build ios
 
 cache:
   directories:
