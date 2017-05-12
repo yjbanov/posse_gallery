@@ -44,6 +44,10 @@ flutter:
     - assets/icons/ic_plug_in_photo.png
     - assets/icons/ic_plug_in_service.png
     - assets/icons/ic_search.png
+    - assets/icons/ic_feed_flutter.png
+    - assets/icons/ic_feed_posse.png
+    - assets/icons/ic_feed_settings.png
+    - assets/icons/ic_feed_docs.png
     - assets/images/brand_apple_pie.png
     - assets/images/brand_cinnamon.png
     - assets/images/brand_egg.png
