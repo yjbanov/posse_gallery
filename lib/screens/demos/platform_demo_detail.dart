@@ -24,7 +24,7 @@ class PlatformDetailDemo extends StatefulWidget {
 class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     with TickerProviderStateMixin {
   static final GlobalKey<ScaffoldState> _scaffoldKey =
-      new GlobalKey<ScaffoldState>();
+  new GlobalKey<ScaffoldState>();
   static const int _kAnimationInDuration = 300;
   static const int _kHeartAnimationDuration = 300;
   TargetPlatform _targetPlatform;
@@ -86,7 +86,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
 
   Widget _buildBottomButton() {
     double buttonBorderRadius =
-        _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
+    _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
     double margin = _targetPlatform == TargetPlatform.iOS ? 8.0 : 0.0;
     Color borderColor = _targetPlatform == TargetPlatform.iOS
         ? Colors.white
@@ -132,7 +132,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
       },
     );
     Widget platformButton =
-        _targetPlatform == TargetPlatform.iOS ? cupertinoButton : androidButton;
+    _targetPlatform == TargetPlatform.iOS ? cupertinoButton : androidButton;
     return new Container(
       decoration: new BoxDecoration(
         borderRadius: new BorderRadius.circular(buttonBorderRadius),
@@ -266,6 +266,45 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     );
   }
 
+  _detailsTableRow(String itemString, String valueString, {bool showBottomBorder = true}) {
+    return new TableRow(
+      children: [
+        new Padding(
+          padding: new EdgeInsets.only(top: 12.0, bottom: 12.0),
+          child: new Text(
+            itemString,
+            style: new TextStyle(
+              color: new Color(0xFF777777),
+            )
+          ),
+        ),
+        new Padding(
+          padding: new EdgeInsets.only(left: 8.0, top: 12.0, bottom: 12.0),
+          child: new Text(valueString),
+        ),
+      ],
+      decoration: (showBottomBorder ?
+          new BoxDecoration(
+            border: new Border(bottom: new BorderSide(color: new Color(0xFFF1F1F1))),
+          ) : null),
+    );
+  }
+
+  _buildDetailsTable() {
+    Table detailTable = new Table(
+      children: [
+        _detailsTableRow("Tested For", "243 lb"),
+        _detailsTableRow("Width", "16 7/8 \""),
+        _detailsTableRow("Depth", "20 1/2 \""),
+        _detailsTableRow("Height", "35 7/8 \""),
+        _detailsTableRow("Seat Width", "16 1/8 \""),
+        _detailsTableRow("Seat Depth", "15 \""),
+        _detailsTableRow("Seat Height", "17 3/8 \"", showBottomBorder: false),
+      ],
+    );
+    return detailTable;
+  }
+
   List<Widget> _buildListContent() {
     List<Widget> cells = [];
     final textContainer = new Padding(
@@ -314,21 +353,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
             ),
             new Padding(
               padding: const EdgeInsets.only(bottom: 30.0),
-              child: new Text(
-                "Tested for: 243 lb\n"
-                    "Width: 16 7/8 \"\n"
-                    "Depth: 20 1/2 \"\n"
-                    "Height: 35 7/8 \"\n"
-                    "Seat width: 16 1/8 \"\n"
-                    "Seat depth: 15 \"\n"
-                    "Seat height: 17 3/8 \"\n",
-                style: new TextStyle(
-                  color: const Color(0xFF4A4A4A),
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16.0,
-                  height: 1.5,
-                ),
-              ),
+              child: _buildDetailsTable(),
             ),
             new Padding(
               padding: const EdgeInsets.only(bottom: 10.0),
@@ -345,8 +370,8 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
             new Padding(
               padding: const EdgeInsets.only(bottom: 30.0),
               child: new Text(
-                "Wipe clean using a damp cloth and a mild cleaner.\n"
-                    "Wipe dry with a clean cloth.\n",
+                "- Wipe clean using a damp cloth and a mild cleaner.\n"
+                "- Wipe dry with a clean cloth.\n",
                 style: new TextStyle(
                   color: const Color(0xFF4A4A4A),
                   fontWeight: FontWeight.w400,
@@ -390,15 +415,17 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
   }
 
   _configureThemes() {
-    TextTheme textTheme = Theme.of(context).textTheme;
+    TextTheme textTheme = Theme
+        .of(context)
+        .textTheme;
     TextStyle iOSButtonTextStyle = textTheme.button.copyWith(
         fontSize: 14.0, color: Colors.white, fontWeight: FontWeight.bold);
     TextStyle androidButtonTextStyle = textTheme.button.copyWith(
         fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.normal);
     TextStyle targetPlatformButtonTextStyle =
-        _targetPlatform == TargetPlatform.iOS
-            ? iOSButtonTextStyle
-            : androidButtonTextStyle;
+    _targetPlatform == TargetPlatform.iOS
+        ? iOSButtonTextStyle
+        : androidButtonTextStyle;
     Color buttonColor = _targetPlatform == TargetPlatform.iOS
         ? Colors.white
         : const Color(0xFF3D3D3D);
@@ -440,7 +467,10 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
                   child: new CloseButton(),
                 ),
               ),
-              expandedHeight: MediaQuery.of(context).size.height * 0.5,
+              expandedHeight: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.5,
               flexibleSpace: new FlexibleSpaceBar(
                 background: new Hero(
                   tag: "platform.hero",
@@ -449,7 +479,10 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
                       children: [
                         new Positioned.fill(
                           child: new OverflowBox(
-                            maxWidth: MediaQuery.of(context).size.width,
+                            maxWidth: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
                             child: new Image(
                               fit: BoxFit.cover,
                               image: new AssetImage(
@@ -481,7 +514,13 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     String title = "Geometric Dining Chair";
     double visibleStatsHeight = notification.metrics.pixels;
     double screenHeight =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+        MediaQuery
+            .of(context)
+            .size
+            .height - MediaQuery
+            .of(context)
+            .padding
+            .top;
     double visiblePercentage = visibleStatsHeight / screenHeight;
     if (visiblePercentage > 0.45 && _appBarTitle != title) {
       setState(() {
@@ -495,11 +534,10 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     return false;
   }
 
-  Animation<double> _initAnimation(
-      {@required double from,
-      @required double to,
-      @required Curve curve,
-      @required AnimationController controller}) {
+  Animation<double> _initAnimation({@required double from,
+    @required double to,
+    @required Curve curve,
+    @required AnimationController controller}) {
     final CurvedAnimation animation = new CurvedAnimation(
       parent: controller,
       curve: curve,
@@ -507,11 +545,10 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
-  Animation<FractionalOffset> _initSlideAnimation(
-      {@required FractionalOffset from,
-      @required FractionalOffset to,
-      @required Curve curve,
-      @required AnimationController controller}) {
+  Animation<FractionalOffset> _initSlideAnimation({@required FractionalOffset from,
+    @required FractionalOffset to,
+    @required Curve curve,
+    @required AnimationController controller}) {
     final CurvedAnimation animation = new CurvedAnimation(
       parent: controller,
       curve: curve,
