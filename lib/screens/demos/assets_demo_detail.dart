@@ -22,8 +22,9 @@ class AssetsDetailDemo extends AssetsDemo {
 
 class _AssetsDetailDemoState extends AssetsDemoState {
   static const int _kSlideInDuration = 500;
+  static const int _kFadeOutDuration = 400;
   static const int _kFadeInDuration = 500;
-  static const int _kSizeInDuration = 500;
+  static const int _kSizeInDuration = 400;
 
   int _themeIndex = 0;
 
@@ -32,10 +33,12 @@ class _AssetsDetailDemoState extends AssetsDemoState {
   Animation<FractionalOffset> _slideInDownAnimation;
   Animation<FractionalOffset> _slideInUpAnimation;
   Animation<double> _fadeInAnimation;
+  Animation<double> _fadeOutAnimation;
   Animation<double> _sizeInAnimation;
 
   AnimationController _slideInAnimationController;
   AnimationController _fadeInAnimationController;
+  AnimationController _fadeOutAnimationController;
   AnimationController _sizeInAnimationController;
 
   _AssetsDetailDemoState({
@@ -52,61 +55,66 @@ class _AssetsDetailDemoState extends AssetsDemoState {
         children: [
           new Padding(
             padding: const EdgeInsets.only(top: 15.0, bottom: 20.0),
-            child: new Column(
-              children: [
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+            child: new FadeTransition(
+                opacity: _fadeOutAnimation,
+                child: new Column(
                   children: [
-                    new SlideTransition(
-                      position: _slideInRightAnimation,
-                      child: new Padding(
-                        padding: const EdgeInsets.only(top: 14.0, right: 10.0),
-                        child: new Image(
-                          height: imageHeight,
-                          image: new AssetImage("assets/images/brand_egg.png"),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        new SlideTransition(
+                          position: _slideInRightAnimation,
+                          child: new Padding(
+                            padding:
+                                const EdgeInsets.only(top: 14.0, right: 10.0),
+                            child: new Image(
+                              height: imageHeight,
+                              image:
+                                  new AssetImage("assets/images/brand_egg.png"),
+                            ),
+                          ),
                         ),
-                      ),
+                        new SlideTransition(
+                          position: _slideInDownAnimation,
+                          child: new Padding(
+                            padding: const EdgeInsets.only(left: 15.0),
+                            child: new Image(
+                              height: MediaQuery.of(context).size.width * 0.35,
+                              image: new AssetImage(
+                                  "assets/images/brand_flour.png"),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    new SlideTransition(
-                      position: _slideInDownAnimation,
-                      child: new Padding(
-                        padding: const EdgeInsets.only(left: 15.0),
-                        child: new Image(
-                          height: MediaQuery.of(context).size.width * 0.35,
-                          image:
-                              new AssetImage("assets/images/brand_flour.png"),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        new SlideTransition(
+                          position: _slideInUpAnimation,
+                          child: new Padding(
+                            padding: const EdgeInsets.only(top: 12.0),
+                            child: new Image(
+                              height: imageHeight,
+                              image: new AssetImage(
+                                  "assets/images/brand_cinnamon.png"),
+                            ),
+                          ),
                         ),
-                      ),
+                        new SlideTransition(
+                          position: _slideInLeftAnimation,
+                          child: new Image(
+                            height: imageHeight,
+                            image:
+                                new AssetImage("assets/images/brand_salt.png"),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
-                ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    new SlideTransition(
-                      position: _slideInUpAnimation,
-                      child: new Padding(
-                        padding: const EdgeInsets.only(top: 12.0),
-                        child: new Image(
-                          height: imageHeight,
-                          image: new AssetImage(
-                              "assets/images/brand_cinnamon.png"),
-                        ),
-                      ),
-                    ),
-                    new SlideTransition(
-                      position: _slideInLeftAnimation,
-                      child: new Image(
-                        height: imageHeight,
-                        image: new AssetImage("assets/images/brand_salt.png"),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                )),
           ),
           new FadeTransition(
             opacity: _fadeInAnimation,
@@ -137,10 +145,11 @@ class _AssetsDetailDemoState extends AssetsDemoState {
                       "1 tablespoon of cinnamon",
                   textAlign: TextAlign.center,
                   style: new TextStyle(
-                      color: selectedTheme.textTheme.body1.color,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.normal,
-                      height: 1.6),
+                    color: selectedTheme.textTheme.body1.color,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.normal,
+                    height: 1.6,
+                  ),
                 ),
               ),
             ),
@@ -154,6 +163,7 @@ class _AssetsDetailDemoState extends AssetsDemoState {
   dispose() {
     _slideInAnimationController.dispose();
     _fadeInAnimationController.dispose();
+    _fadeOutAnimationController.dispose();
     _sizeInAnimationController.dispose();
     super.dispose();
   }
@@ -172,6 +182,16 @@ class _AssetsDetailDemoState extends AssetsDemoState {
   @override
   pressedNextButton() {}
 
+  @override
+  tappedBackButton() {
+    _slideInAnimationController.reverse();
+    _fadeOutAnimationController.forward();
+    _fadeInAnimationController.reverse();
+    _sizeInAnimationController.reverse().whenComplete(() {
+      Navigator.of(context).pop();
+    });
+  }
+
   _configureAnimation() {
     _slideInAnimationController = new AnimationController(
       duration: const Duration(milliseconds: _kSlideInDuration),
@@ -181,27 +201,31 @@ class _AssetsDetailDemoState extends AssetsDemoState {
       duration: const Duration(milliseconds: _kFadeInDuration),
       vsync: this,
     );
+    _fadeOutAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kFadeOutDuration),
+      vsync: this,
+    );
     _sizeInAnimationController = new AnimationController(
       duration: const Duration(milliseconds: _kSizeInDuration),
       vsync: this,
     );
     _slideInLeftAnimation = _initSlideAnimation(
-        from: const FractionalOffset(1.5, 0.0),
+        from: const FractionalOffset(2.0, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeInOut,
         controller: _slideInAnimationController);
     _slideInRightAnimation = _initSlideAnimation(
-        from: const FractionalOffset(-1.5, 0.0),
+        from: const FractionalOffset(-2.0, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeInOut,
         controller: _slideInAnimationController);
     _slideInUpAnimation = _initSlideAnimation(
-        from: const FractionalOffset(0.0, 1.0),
+        from: const FractionalOffset(0.0, 2.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.decelerate,
         controller: _slideInAnimationController);
     _slideInDownAnimation = _initSlideAnimation(
-        from: const FractionalOffset(0.0, -1.0),
+        from: const FractionalOffset(0.0, -4.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.decelerate,
         controller: _slideInAnimationController);
@@ -210,6 +234,11 @@ class _AssetsDetailDemoState extends AssetsDemoState {
         to: 1.0,
         curve: Curves.linear,
         controller: _fadeInAnimationController);
+    _fadeOutAnimation = _initAnimation(
+        from: 1.0,
+        to: 0.0,
+        curve: Curves.easeIn,
+        controller: _fadeOutAnimationController);
     _sizeInAnimation = _initAnimation(
         from: 0.0,
         to: 1.0,

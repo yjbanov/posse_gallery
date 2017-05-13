@@ -13,8 +13,8 @@ class AssetsDemo extends StatefulWidget {
 }
 
 class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
-  static const int _kHeroAnimationDuration = 800;
-  static const int _kFadeInAnimationDuration = 800;
+  static const int _kHeroAnimationDuration = 600;
+  static const int _kFadeInAnimationDuration = 600;
   ThemeData selectedTheme;
   ThemeData luxuryThemeData;
   ThemeData playfulThemeData;
@@ -86,13 +86,24 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     TextAlign titleTextAlignment = targetPlatform == TargetPlatform.iOS
         ? TextAlign.center
         : TextAlign.left;
+    final IconData backIcon = targetPlatform == TargetPlatform.iOS
+        ? Icons.arrow_back_ios
+        : Icons.arrow_back;
     return new Container(
       height: 90.0,
       padding: new EdgeInsets.only(top: statusBarHeight),
       child: new Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          new BackButton(),
+          new IconButton(
+            icon: new Icon(
+              backIcon,
+              color: selectedTheme.iconTheme.color,
+            ),
+            onPressed: () {
+              tappedBackButton();
+            },
+          ),
           new Expanded(
             child: new Text(
               appBarTitle,
@@ -279,12 +290,12 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   pressedNextButton() {
     Navigator.push(
       context,
-        new MaterialPageRoute<Null>(
-            settings: new RouteSettings(),
-            builder: (BuildContext context) {
-              return new AssetsDetailDemo(themeIndex: tabController.index);
-            },
-        ),
+      new MaterialPageRoute<Null>(
+        settings: new RouteSettings(),
+        builder: (BuildContext context) {
+          return new AssetsDetailDemo(themeIndex: tabController.index);
+        },
+      ),
     );
   }
 
@@ -326,6 +337,12 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+
+  tappedBackButton() {
+    _heroAnimationController.reverse().whenComplete(() {
+      Navigator.of(context).pop();
+    });
   }
 
   _buildRadialGradient() {
