@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/cupertino/button.dart';
 import 'package:meta/meta.dart';
+import 'package:posse_gallery/config/constants.dart';
 import 'package:posse_gallery/screens/demos/assets_demo_detail.dart';
 
 class AssetsDemo extends StatefulWidget {
@@ -33,6 +34,9 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
 
   String appBarTitle = "My Recipe Book";
   String bottomButtonTitle = "View Recipe";
+
+  bool showMoreButton = false;
+  bool showNextButton = false;
 
   TabController tabController;
 
@@ -84,39 +88,52 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
 
   Widget buildAppBar() {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
+    TargetPlatform targetPlatform = Theme.of(context).platform;
     TextAlign titleTextAlignment = targetPlatform == TargetPlatform.iOS
         ? TextAlign.center
         : TextAlign.left;
-    final IconData backIcon = targetPlatform == TargetPlatform.iOS
-        ? Icons.arrow_back_ios
-        : Icons.arrow_back;
-    return new Container(
-      height: 90.0,
-      padding: new EdgeInsets.only(top: statusBarHeight),
-      child: new Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          new IconButton(
-            icon: new Icon(
-              backIcon,
-              color: selectedTheme.iconTheme.color,
-            ),
-            onPressed: () {
-              tappedBackButton();
-            },
+    bool isAndroid = targetPlatform == TargetPlatform.android;
+    final IconData backIcon =
+        isAndroid ? Icons.arrow_back : Icons.arrow_back_ios;
+
+    final topWidgets = <Widget>[
+      new Positioned(
+        top: 0.0,
+        bottom: 0.0,
+        left: 5.0,
+        child: new IconButton(
+          icon: new Icon(
+            backIcon,
+            color: selectedTheme.iconTheme.color,
           ),
-          new Expanded(
-            child: new Text(
-              appBarTitle,
-              style: new TextStyle(
-                color: selectedTheme.textTheme.title.color,
-                fontWeight: FontWeight.w500,
-                fontSize: 20.0,
-              ),
-              textAlign: titleTextAlignment,
+          onPressed: () {
+            tappedBackButton();
+          },
+        ),
+      ),
+      new Positioned.fill(
+        left: 60.0,
+        right: 60.0,
+        child: new Center(
+          child: new Text(
+            appBarTitle,
+            style: new TextStyle(
+              color: selectedTheme.textTheme.title.color,
+              fontWeight: FontWeight.w500,
+              fontSize: 20.0,
             ),
+            textAlign: titleTextAlignment,
           ),
-          new IconButton(
+        ),
+      ),
+    ];
+    if (showMoreButton) {
+      topWidgets.add(
+        new Positioned(
+          right: 5.0,
+          top: 0.0,
+          bottom: 0.0,
+          child: new IconButton(
             icon: new Icon(
               Icons.more_vert,
               color: selectedTheme.iconTheme.color,
@@ -129,8 +146,30 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
                 },
               );
             },
-          )
-        ],
+          ),
+        ),
+      );
+    }
+    if (isAndroid) {
+      var shadowWidget = new Positioned(
+          top: 0.0,
+          left: 0.0,
+          right: 0.0,
+          child: new Container(
+            height: 4.0,
+            color: new Color(0x11000000),
+          ));
+      topWidgets.insert(0, shadowWidget);
+    }
+
+    return new Padding(
+      padding: new EdgeInsets.only(top: statusBarHeight),
+      child: new ConstrainedBox(
+        constraints:
+            new BoxConstraints.expand(height: Constants.TopSectionHeight),
+        child: new Stack(
+          children: topWidgets,
+        ),
       ),
     );
   }
@@ -317,6 +356,10 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     super.initState();
     _configureUI();
     _registerObservables();
+    setState(() {
+      showMoreButton = true;
+      showNextButton = true;
+    });
   }
 
   void showDemoDialog<T>({BuildContext context, Widget child}) {
@@ -509,12 +552,14 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   }
 
   Widget _contentWidget() {
+    List<Widget> widgets = [];
+    widgets.add(buildAppBar());
+    widgets.add(buildBody());
+    if (showNextButton) {
+      widgets.add(buildBottomButton());
+    }
     return new Column(
-      children: [
-        buildAppBar(),
-        buildBody(),
-        buildBottomButton(),
-      ],
+      children: widgets,
     );
   }
 
