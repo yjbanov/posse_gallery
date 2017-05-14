@@ -9,7 +9,6 @@ import 'package:posse_gallery/managers/category_manager.dart';
 import 'package:posse_gallery/managers/route_manager.dart';
 import 'package:posse_gallery/models/app_category.dart';
 import 'package:posse_gallery/screens/category_screen.dart';
-import 'package:posse_gallery/screens/search_screen.dart';
 import 'package:posse_gallery/views/cells/main_link_cell.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -101,7 +100,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     return new ConstrainedBox(
       constraints: new BoxConstraints.expand(height: 200.0),
       child: new Padding(
-        padding: new EdgeInsets.only(top: 25.0),
+        padding: new EdgeInsets.only(top: 25.0, right: 20.0),
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,13 +109,13 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             new Padding(
               padding: new EdgeInsets.only(left: 10.0),
               child: new Text(
-                "FLUTTER GALLERY",
+                "Flutter Gallery",
                 textAlign: TextAlign.center,
                 style: new TextStyle(
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w400,
                   letterSpacing: 1.5,
                   height: 1.3,
-                  fontSize: 16.0,
+                  fontSize: 26.0,
                   color: const Color(0xFF666666),
                 ),
               ),
@@ -128,11 +127,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildListView() {
-    return new Padding(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-      child: new ListView(
-        children: _cells,
-      ),
+    return new ListView(
+      children: _cells,
     );
   }
 
