@@ -5,10 +5,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:posse_gallery/config/application.dart';
 import 'package:posse_gallery/managers/category_manager.dart';
-import 'package:posse_gallery/managers/route_manager.dart';
 import 'package:posse_gallery/models/app_category.dart';
-import 'package:posse_gallery/screens/category_screen.dart';
 import 'package:posse_gallery/views/cells/main_link_cell.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -246,19 +245,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                   highlightColor: Colors.white.withAlpha(30),
                   splashColor: Colors.white.withAlpha(20),
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute<Null>(
-                        fullscreenDialog: true,
-                        settings:
-                        new RouteSettings(name: "/category/$routeName"),
-                        builder: (BuildContext context) {
-                          return new CategoryScreen(
-                            category: RouteManager.retrieveCategory(routeName),
-                          );
-                        },
-                      ),
-                    );
+                    _tappedCategoryCell(routeName);
                   },
                 ),
               ),
@@ -320,5 +307,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       categoryIndex += 1;
     }
     return categoryCells;
+  }
+
+  // actions
+  void _tappedCategoryCell(String routeKey) {
+    Application.router.navigateTo(context, "/category/$routeKey");
   }
 }

@@ -3,7 +3,9 @@
 // found in the LICENSE file.
 
 import 'package:posse_gallery/config/app_settings.dart';
+import 'package:fluro/fluro.dart';
 
 class Application {
   static PersistedAppSettings settings;
+  static Router router;
 }
