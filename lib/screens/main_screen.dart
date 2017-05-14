@@ -3,7 +3,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/services/system_chrome.dart';
 import 'package:meta/meta.dart';
 import 'package:posse_gallery/config/application.dart';
 import 'package:posse_gallery/managers/category_manager.dart';
@@ -26,6 +28,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return new Material(
       color: new Color(0xFFEEEEEE),
       child: new Center(
@@ -58,7 +61,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         "Toggle settings and options.",
         "assets/icons/ic_feed_settings.png",
         tapped: () {
-
+          _tappedDebugItem();
         },
       ));
       _cells.add(new MainLinkCell(
@@ -271,6 +274,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     @required FractionalOffset to,
     @required Curve curve,
     @required AnimationController controller}) {
+    controller.duration = new Duration(milliseconds: 750);
     final CurvedAnimation animation = new CurvedAnimation(
       parent: controller,
       curve: curve,
@@ -292,7 +296,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       Animation<FractionalOffset> animation = _initSlideAnimation(
         from: new FractionalOffset(1.5, 0.0),
         to: const FractionalOffset(0.0, 0.0),
-        curve: Curves.easeOut,
+        curve: new Interval(0.35 + ((categoryIndex - 1) * 0.15), 1.0, curve: Curves.easeOut),
         controller: animationController,
       );
       final categoryContainer = new SlideTransition(
@@ -311,6 +315,34 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   // actions
   void _tappedCategoryCell(String routeKey) {
-    Application.router.navigateTo(context, "/category/$routeKey");
+    Application.router.navigateTo(context, "/category/$routeKey", transition: TransitionType.nativeModal);
+  }
+
+  void _tappedDebugItem() {
+    var transition = (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+//      return new FadeTransition(
+//        opacity: animation,
+//        child: new SlideTransition(
+//          position: new FractionalOffsetTween(
+//            begin: new FractionalOffset(0.0, 0.35),
+//            end: new FractionalOffset(0.0, 0.0),
+//          ).animate(animation),
+//          child: child,
+//        ),
+//      );
+      Animation curvedAnimation = new CurvedAnimation(
+        parent: animation,
+        curve: new Interval(0.18, 1.0, curve: Curves.easeIn),
+      );
+      return new SlideTransition(
+          position: new FractionalOffsetTween(
+            begin: new FractionalOffset(0.0, 0.38),
+            end: new FractionalOffset(0.0, 0.0),
+          ).animate(animation),
+          child: new FadeTransition(opacity: curvedAnimation, child: child),
+      );
+    };
+    Application.router.navigateTo(context, "/debug", transition: TransitionType.custom,
+        transitionDuration: new Duration(milliseconds: 170), transitionBuilder: transition);
   }
 }

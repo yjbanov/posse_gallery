@@ -6,6 +6,7 @@ import 'package:posse_gallery/managers/category_manager.dart';
 import 'package:posse_gallery/models/app_category.dart';
 import 'package:posse_gallery/models/category_item.dart';
 import 'package:posse_gallery/screens/category_screen.dart';
+import 'package:posse_gallery/screens/debug/debug_options_screen.dart';
 import 'package:posse_gallery/screens/main_screen.dart';
 import 'package:fluro/fluro.dart';
 
@@ -21,11 +22,16 @@ class RouteManager {
   void configureRoutes(Router router) {
     router.define("/", handler: rootHandler);
     router.define("/category/:category", handler: categoryHandler);
+    router.define("/debug", handler: debugMenuHandler);
   }
 
   // handlers
   RouteHandler rootHandler = (Map<String, String> params) {
     return new MainScreen();
+  };
+
+  RouteHandler debugMenuHandler = (Map<String, String> params) {
+    return new DebugOptionsScreen();
   };
 
   RouteHandler categoryHandler = (Map<String, String> params) {

@@ -8,4 +8,6 @@ import 'package:fluro/fluro.dart';
 class Application {
   static PersistedAppSettings settings;
   static Router router;
+  static bool enablePerformanceOverlay = false;
+  static bool checkerboardRasterCacheImages = false;
 }
