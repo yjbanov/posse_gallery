@@ -4,6 +4,8 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/src/cupertino/button.dart';
+import 'package:flutter/src/cupertino/dialog.dart';
 import 'package:meta/meta.dart';
 import 'package:posse_gallery/screens/demos/assets_demo_detail.dart';
 
@@ -13,8 +15,8 @@ class AssetsDemo extends StatefulWidget {
 }
 
 class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
-  static const int _kHeroAnimationDuration = 600;
-  static const int _kFadeInAnimationDuration = 600;
+  static const int _kHeroAnimationDuration = 500;
+  static const int _kFadeInAnimationDuration = 400;
   ThemeData selectedTheme;
   ThemeData luxuryThemeData;
   ThemeData playfulThemeData;
@@ -30,8 +32,8 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   AnimationController _heroAnimationController;
   AnimationController _fadeInAnimationController;
 
-  String appBarTitle;
-  String bottomButtonTitle;
+  String appBarTitle = "My Recipe Book";
+  String bottomButtonTitle = "View Recipe";
 
   TabController tabController;
 
@@ -145,16 +147,19 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
             padding: const EdgeInsets.only(right: 20.0),
             child: new SlideTransition(
               position: _slideInAnimation,
-              child: new RotationTransition(
-                turns: _rotationAnimation,
-                child: new Container(
-                  decoration: _buildRadialGradient(),
-                  child: new Padding(
-                    padding: const EdgeInsets.only(top: 25.0, bottom: 15.0),
-                    child: new Image(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      image:
-                          new AssetImage("assets/images/brand_apple_pie.png"),
+              child: new FadeTransition(
+                opacity: _fadeInAnimation,
+                child: new RotationTransition(
+                  turns: _rotationAnimation,
+                  child: new Container(
+                    decoration: _buildRadialGradient(),
+                    child: new Padding(
+                      padding: const EdgeInsets.only(top: 25.0, bottom: 15.0),
+                      child: new Image(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        image:
+                            new AssetImage("assets/images/brand_apple_pie.png"),
+                      ),
                     ),
                   ),
                 ),
@@ -233,36 +238,79 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     );
   }
 
+  void showDemoDialog<T>({BuildContext context, Widget child}) {
+    showDialog<T>(
+      context: context,
+      child: child,
+      barrierDismissible: false,
+    )
+        .then<Null>((T value) {});
+  }
+
   Widget buildBottomButton() {
-    targetPlatform = Theme.of(context).platform;
-    if (targetPlatform == TargetPlatform.iOS) {
-      bottomButtonTitle.toUpperCase();
+    if (targetPlatform == TargetPlatform.android) {
+      bottomButtonTitle = bottomButtonTitle.toUpperCase();
     }
     double buttonBorderRadius =
-        targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
+        targetPlatform == TargetPlatform.iOS ? 9.0 : 0.0;
+    double margin = targetPlatform == TargetPlatform.iOS ? 8.0 : 0.0;
+    Color borderColor =
+        targetPlatform == TargetPlatform.iOS && selectedTheme == luxuryThemeData
+            ? const Color(0xFF5FAD2C)
+            : selectedTheme.buttonColor;
+    Color cupertinoTextColor = selectedTheme == luxuryThemeData
+        ? const Color(0xFF5FAD2C)
+        : Colors.white;
+    Color cupertinoButtonColor =
+        selectedTheme == luxuryThemeData
+            ? Colors.white
+            : selectedTheme.buttonColor;
+    CupertinoButton cupertinoButton = new CupertinoButton(
+      color: cupertinoButtonColor,
+      child: new Text(
+        bottomButtonTitle,
+        textAlign: TextAlign.center,
+        style: new TextStyle(
+          fontSize: 16.0,
+          fontWeight: FontWeight.normal,
+          color: cupertinoTextColor,
+        ),
+      ),
+      onPressed: (() {
+        tappedNextButton();
+      }),
+    );
+    FlatButton androidButton = new FlatButton(
+        color: selectedTheme.buttonColor,
+        child: new Text(
+          bottomButtonTitle,
+          textAlign: TextAlign.center,
+          style: new TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.normal,
+            color: Colors.white,
+          ),
+        ),
+        onPressed: () {
+          tappedNextButton();
+        });
+    Widget platformButton =
+        targetPlatform == TargetPlatform.iOS ? cupertinoButton : androidButton;
     return new Container(
       decoration: new BoxDecoration(
         borderRadius: new BorderRadius.circular(buttonBorderRadius),
+        border: new Border.all(
+          color: borderColor,
+          width: 1.0,
+        ),
       ),
-      margin: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+      margin: new EdgeInsets.all(margin),
       child: new Row(
         children: [
           new Expanded(
             child: new Container(
               height: 50.0,
-              child: new FlatButton(
-                color: selectedTheme.buttonColor,
-                child: new Text(
-                  bottomButtonTitle,
-                  textAlign: TextAlign.center,
-                  style: new TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                onPressed: pressedNextButton,
-              ),
+              child: platformButton,
             ),
           ),
         ],
@@ -279,15 +327,11 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
   @override
   initState() {
     super.initState();
-
-    appBarTitle = "My Recipe Book";
-    bottomButtonTitle = "View Recipe";
-
     _configureUI();
     _registerObservables();
   }
 
-  pressedNextButton() {
+  tappedNextButton() {
     Navigator.push(
       context,
       new MaterialPageRoute<Null>(
@@ -297,6 +341,13 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         },
       ),
     );
+  }
+
+  tappedBackButton() {
+    _heroAnimationController.reverse();
+    _fadeInAnimationController.reverse().whenComplete(() {
+      Navigator.of(context).pop();
+    });
   }
 
   Widget _buildBottomSheet() {
@@ -339,18 +390,12 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     );
   }
 
-  tappedBackButton() {
-    _heroAnimationController.reverse().whenComplete(() {
-      Navigator.of(context).pop();
-    });
-  }
-
   _buildRadialGradient() {
     if (tabController.index == 1) {
       return new BoxDecoration(
         gradient: new RadialGradient(
           center: FractionalOffset.center,
-          radius: 0.6,
+          radius: 0.51,
           colors: [
             Colors.white,
             const Color(0xFFF68D99),
@@ -427,7 +472,9 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         luxuryTextTheme.button.copyWith(color: Colors.white);
     luxuryThemeData = new ThemeData(
       primaryColor: Colors.white,
-      buttonColor: const Color(0xFF5FAD2C),
+      buttonColor: targetPlatform == TargetPlatform.iOS
+          ? Colors.white
+          : const Color(0xFF5FAD2C),
       iconTheme: const IconThemeData(color: const Color(0xFFD1D1D1)),
       textTheme: new TextTheme(
         title: luxuryTitleTextStyle,

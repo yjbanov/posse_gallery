@@ -22,23 +22,26 @@ class AssetsDetailDemo extends AssetsDemo {
 
 class _AssetsDetailDemoState extends AssetsDemoState {
   static const int _kSlideInDuration = 500;
-  static const int _kFadeOutDuration = 400;
+  static const int _kFadeOutDuration = 675;
   static const int _kFadeInDuration = 500;
   static const int _kSizeInDuration = 400;
 
-  int _themeIndex = 0;
+  static final GlobalKey<ScaffoldState> _scaffoldKey =
+      new GlobalKey<ScaffoldState>();
 
+  int _themeIndex = 0;
   Animation<FractionalOffset> _slideInLeftAnimation;
   Animation<FractionalOffset> _slideInRightAnimation;
   Animation<FractionalOffset> _slideInDownAnimation;
   Animation<FractionalOffset> _slideInUpAnimation;
   Animation<double> _fadeInAnimation;
   Animation<double> _fadeOutAnimation;
-  Animation<double> _sizeInAnimation;
 
+  Animation<double> _sizeInAnimation;
   AnimationController _slideInAnimationController;
   AnimationController _fadeInAnimationController;
   AnimationController _fadeOutAnimationController;
+
   AnimationController _sizeInAnimationController;
 
   _AssetsDetailDemoState({
@@ -180,14 +183,15 @@ class _AssetsDetailDemoState extends AssetsDemoState {
   }
 
   @override
-  pressedNextButton() {}
+  tappedNextButton() {}
 
   @override
   tappedBackButton() {
-    _slideInAnimationController.reverse();
-    _fadeOutAnimationController.forward();
-    _fadeInAnimationController.reverse();
     _sizeInAnimationController.reverse().whenComplete(() {
+      _slideInAnimationController.reverse();
+    });
+    _fadeInAnimationController.reverse();
+    _fadeOutAnimationController.forward().whenComplete(() {
       Navigator.of(context).pop();
     });
   }

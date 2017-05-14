@@ -86,9 +86,9 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
 
   Widget _buildBottomButton() {
     double buttonBorderRadius =
-        _targetPlatform == TargetPlatform.iOS ? 2.0 : 0.0;
+        _targetPlatform == TargetPlatform.iOS ? 8.0 : 0.0;
     double margin = _targetPlatform == TargetPlatform.iOS ? 8.0 : 0.0;
-    Color borderColor = _targetPlatform == TargetPlatform.iOS
+    Color buttonColor = _targetPlatform == TargetPlatform.iOS
         ? Colors.white
         : const Color(0xFF3D3D3D);
     Color textColor = _targetPlatform == TargetPlatform.iOS
@@ -140,7 +140,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
           color: const Color(0xFF3D3D3D),
           width: 1.0,
         ),
-        color: borderColor,
+        color: buttonColor,
       ),
       margin: new EdgeInsets.all(margin),
       child: new Row(
