@@ -5,7 +5,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/cupertino/button.dart';
-import 'package:flutter/src/cupertino/dialog.dart';
 import 'package:meta/meta.dart';
 import 'package:posse_gallery/screens/demos/assets_demo_detail.dart';
 
@@ -238,22 +237,12 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     );
   }
 
-  void showDemoDialog<T>({BuildContext context, Widget child}) {
-    showDialog<T>(
-      context: context,
-      child: child,
-      barrierDismissible: false,
-    )
-        .then<Null>((T value) {});
-  }
-
   Widget buildBottomButton() {
     if (targetPlatform == TargetPlatform.android) {
       bottomButtonTitle = bottomButtonTitle.toUpperCase();
     }
     double buttonBorderRadius =
         targetPlatform == TargetPlatform.iOS ? 9.0 : 0.0;
-    double margin = targetPlatform == TargetPlatform.iOS ? 8.0 : 0.0;
     Color borderColor =
         targetPlatform == TargetPlatform.iOS && selectedTheme == luxuryThemeData
             ? const Color(0xFF5FAD2C)
@@ -261,10 +250,9 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     Color cupertinoTextColor = selectedTheme == luxuryThemeData
         ? const Color(0xFF5FAD2C)
         : Colors.white;
-    Color cupertinoButtonColor =
-        selectedTheme == luxuryThemeData
-            ? Colors.white
-            : selectedTheme.buttonColor;
+    Color cupertinoButtonColor = selectedTheme == luxuryThemeData
+        ? Colors.white
+        : selectedTheme.buttonColor;
     CupertinoButton cupertinoButton = new CupertinoButton(
       color: cupertinoButtonColor,
       child: new Text(
@@ -304,7 +292,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
           width: 1.0,
         ),
       ),
-      margin: new EdgeInsets.all(margin),
+      margin: new EdgeInsets.all(8.0),
       child: new Row(
         children: [
           new Expanded(
@@ -331,6 +319,22 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     _registerObservables();
   }
 
+  void showDemoDialog<T>({BuildContext context, Widget child}) {
+    showDialog<T>(
+      context: context,
+      child: child,
+      barrierDismissible: false,
+    )
+        .then<Null>((T value) {});
+  }
+
+  tappedBackButton() {
+    _heroAnimationController.reverse();
+    _fadeInAnimationController.reverse().whenComplete(() {
+      Navigator.of(context).pop();
+    });
+  }
+
   tappedNextButton() {
     Navigator.push(
       context,
@@ -341,13 +345,6 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         },
       ),
     );
-  }
-
-  tappedBackButton() {
-    _heroAnimationController.reverse();
-    _fadeInAnimationController.reverse().whenComplete(() {
-      Navigator.of(context).pop();
-    });
   }
 
   Widget _buildBottomSheet() {

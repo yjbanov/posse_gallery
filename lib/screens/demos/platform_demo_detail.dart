@@ -156,6 +156,21 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     );
   }
 
+  _buildDetailsTable() {
+    Table detailTable = new Table(
+      children: [
+        _detailsTableRow("Tested For", "243 lb"),
+        _detailsTableRow("Width", "16 7/8 \""),
+        _detailsTableRow("Depth", "20 1/2 \""),
+        _detailsTableRow("Height", "35 7/8 \""),
+        _detailsTableRow("Seat Width", "16 1/8 \""),
+        _detailsTableRow("Seat Depth", "15 \""),
+        _detailsTableRow("Seat Height", "17 3/8 \"", showBottomBorder: false),
+      ],
+    );
+    return detailTable;
+  }
+
   Widget _buildHeroContent() {
     NumberFormat heart = new NumberFormat("#,###", "en_US");
     return new Container(
@@ -314,21 +329,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
             ),
             new Padding(
               padding: const EdgeInsets.only(bottom: 30.0),
-              child: new Text(
-                "Tested for: 243 lb\n"
-                    "Width: 16 7/8 \"\n"
-                    "Depth: 20 1/2 \"\n"
-                    "Height: 35 7/8 \"\n"
-                    "Seat width: 16 1/8 \"\n"
-                    "Seat depth: 15 \"\n"
-                    "Seat height: 17 3/8 \"\n",
-                style: new TextStyle(
-                  color: const Color(0xFF4A4A4A),
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16.0,
-                  height: 1.5,
-                ),
-              ),
+              child: _buildDetailsTable(),
             ),
             new Padding(
               padding: const EdgeInsets.only(bottom: 10.0),
@@ -345,8 +346,8 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
             new Padding(
               padding: const EdgeInsets.only(bottom: 30.0),
               child: new Text(
-                "Wipe clean using a damp cloth and a mild cleaner.\n"
-                    "Wipe dry with a clean cloth.\n",
+                "- Wipe clean using a damp cloth and a mild cleaner.\n"
+                    "- Wipe dry with a clean cloth.\n",
                 style: new TextStyle(
                   color: const Color(0xFF4A4A4A),
                   fontWeight: FontWeight.w400,
@@ -474,6 +475,31 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
         elevation: 10.0,
         child: _buildBottomButton(),
       ),
+    );
+  }
+
+  _detailsTableRow(String itemString, String valueString,
+      {bool showBottomBorder = true}) {
+    return new TableRow(
+      children: [
+        new Padding(
+          padding: new EdgeInsets.only(top: 12.0, bottom: 12.0),
+          child: new Text(itemString,
+              style: new TextStyle(
+                color: new Color(0xFF777777),
+              )),
+        ),
+        new Padding(
+          padding: new EdgeInsets.only(left: 8.0, top: 12.0, bottom: 12.0),
+          child: new Text(valueString),
+        ),
+      ],
+      decoration: (showBottomBorder
+          ? new BoxDecoration(
+              border: new Border(
+                  bottom: new BorderSide(color: new Color(0xFFF1F1F1))),
+            )
+          : null),
     );
   }
 
