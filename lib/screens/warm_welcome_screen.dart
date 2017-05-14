@@ -25,7 +25,7 @@ class WarmWelcomeScreen extends StatefulWidget {
 
 class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     with TickerProviderStateMixin {
-  static const double _kSwipeThreshold = 40.0;
+  static const double _kSwipeThreshold = 200.0;
 
   static const int _kAnimateOutDuration = 400;
   static const int _kAnimateInDuration = 600;
