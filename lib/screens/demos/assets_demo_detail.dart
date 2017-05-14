@@ -57,7 +57,7 @@ class _AssetsDetailDemoState extends AssetsDemoState {
       child: new Column(
         children: [
           new Padding(
-            padding: const EdgeInsets.only(top: 15.0, bottom: 20.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 30.0),
             child: new FadeTransition(
                 opacity: _fadeOutAnimation,
                 child: new Column(
@@ -122,13 +122,13 @@ class _AssetsDetailDemoState extends AssetsDemoState {
           new FadeTransition(
             opacity: _fadeInAnimation,
             child: new Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
+              padding: const EdgeInsets.only(bottom: 25.0),
               child: new Text(
                 "INGREDIENTS",
                 style: new TextStyle(
                   color: selectedTheme.textTheme.title.color,
                   fontSize: 14.0,
-                  fontWeight: FontWeight.w300,
+                  fontWeight: FontWeight.w500,
                   letterSpacing: 2.0,
                 ),
               ),
@@ -140,18 +140,20 @@ class _AssetsDetailDemoState extends AssetsDemoState {
               sizeFactor: _sizeInAnimation,
               child: new Center(
                 child: new Text(
-                  "2 Cups all-purpose flour\n"
+                  "6 cups sliced, peeled apples\n"
+                      "2 cups all-purpose flour\n"
                       "3/4 teaspoon salt\n"
                       "1 cup vegetable shortening\n"
                       "1 egg\n"
                       "2 tablespoons of cold water\n"
-                      "1 tablespoon of cinnamon",
+                      "1 tablespoon of cinnamon\n"
+                      "1 tablespoon lemon juice",
                   textAlign: TextAlign.center,
                   style: new TextStyle(
                     color: selectedTheme.textTheme.body1.color,
                     fontSize: 14.0,
                     fontWeight: FontWeight.normal,
-                    height: 1.6,
+                    height: 1.75,
                   ),
                 ),
               ),
@@ -176,14 +178,13 @@ class _AssetsDetailDemoState extends AssetsDemoState {
     super.initState();
     _configureAnimation();
     setState(() {
+      showNextButton = false;
+      showMoreButton = false;
       tabController.index = _themeIndex;
       appBarTitle = "Classic Apple Pie";
       bottomButtonTitle = "Step 1: Make Crust";
     });
   }
-
-  @override
-  tappedNextButton() {}
 
   @override
   tappedBackButton() {
@@ -195,6 +196,9 @@ class _AssetsDetailDemoState extends AssetsDemoState {
       Navigator.of(context).pop();
     });
   }
+
+  @override
+  tappedNextButton() {}
 
   _configureAnimation() {
     _slideInAnimationController = new AnimationController(
