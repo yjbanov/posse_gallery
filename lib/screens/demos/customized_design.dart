@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
@@ -18,20 +19,24 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   static const int _kAnimateHeroFadeDuration = 1000;
   static const int _kAnimateTextDuration = 400;
   static const double _kDetailTabHeight = 70.0;
-  static const int _kStatsAnimationDuration = 100;
+  static const int _kStatsFirstAnimationDuration = 500;
+  static const int _kStatsAnimationDuration = 175;
   static const int _kRotationAnimationDuration = 100;
-  static const int _kAnimateRunnerHeroFadeDuration = 400;
+  static const int _kAnimateRunnerHeroFadeDuration = 450;
+  static const int _kAnimateNumberCounterDuration = 1000;
+
+  static const int _kStartingElevationCount = 8365;
+  static const int _kStartingRunCount = 158;
 
   List<Widget> _stats;
   TargetPlatform _targetPlatform;
   TextAlign _platformTextAlignment;
   ThemeData _themeData;
   double _statsOpacity = 1.0;
-  double _mileCounter = 643.6;
-  int _elevationCounter = 8365;
-  int _runCounter = 158;
-  bool _hasAnimatedCounters = false;
+  int _elevationCounter = _kStartingElevationCount;
+  int _runCounter = _kStartingRunCount;
   bool _isStatsBoxFullScreen = false;
+  bool _hasRunAnimation = false;
 
   Animation<double> _heroFadeInAnimation;
   Animation<double> _textFadeInAnimation;
@@ -41,6 +46,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   Animation<double> _statsAnimationFour;
   Animation<double> _rotationAnimation;
   Animation<double> _runnerFadeAnimation;
+  Animation<double> _numberCounterAnimation;
 
   AnimationController _heroAnimationController;
   AnimationController _textAnimationController;
@@ -50,6 +56,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   AnimationController _statsAnimationControllerFour;
   AnimationController _rotationAnimationController;
   AnimationController _runnerAnimationController;
+  AnimationController _numberCounterAnimationController;
 
   ScrollController _scrollController = new ScrollController();
 
@@ -76,6 +83,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     _statsAnimationControllerFour.dispose();
     _rotationAnimationController.dispose();
     _runnerAnimationController.dispose();
+    _numberCounterAnimationController.dispose();
     super.dispose();
   }
 
@@ -89,11 +97,11 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   _animateCounters() {
-    if (!_hasAnimatedCounters) {
+    if (!_hasRunAnimation) {
       _animateRunCounter();
       _animateElevationCounter();
       _animateMileCounter();
-      _hasAnimatedCounters = true;
+      _hasRunAnimation = true;
     }
   }
 
@@ -103,8 +111,19 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   _animateMileCounter() {
-    Duration duration = new Duration(milliseconds: 700);
-    return new Timer(duration, _updateMileCounter);
+    setState(() {
+      _numberCounterAnimation = new Tween<double>(
+        begin: 0.0,
+        end: 646.3,
+      )
+          .animate(
+        new CurvedAnimation(
+          curve: Curves.fastOutSlowIn,
+          parent: _numberCounterAnimationController,
+        ),
+      );
+    });
+    _numberCounterAnimationController.forward(from: 0.0);
   }
 
   _animateRunCounter() {
@@ -302,14 +321,14 @@ class _CustomizedDesignState extends State<CustomizedDesign>
               ),
             ),
           ),
-//          new Positioned(
-//            right: 10.0,
-//            bottom: 60.0,
-//            child: new ScaleTransition(
-//              scale: _statsAnimationFour,
-//              child: new Icon(Icons.event, color: const Color(0xFF02CEA1)),
-//            ),
-//          ),
+          //          new Positioned(
+          //            right: 10.0,
+          //            bottom: 60.0,
+          //            child: new ScaleTransition(
+          //              scale: _statsAnimationFour,
+          //              child: new Icon(Icons.event, color: const Color(0xFF02CEA1)),
+          //            ),
+          //          ),
           new Positioned(
             left: 0.0,
             bottom: 15.0,
@@ -473,14 +492,19 @@ class _CustomizedDesignState extends State<CustomizedDesign>
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                new Text(
-                  _mileCounter.toString(),
-                  style: new TextStyle(
-                    fontSize: 82.0,
-                    fontWeight: FontWeight.w900,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.black,
-                  ),
+                new AnimatedBuilder(
+                  animation: _numberCounterAnimation,
+                  builder: (BuildContext context, Widget child) {
+                    return new Text(
+                      _numberCounterAnimation.value.toStringAsFixed(1),
+                      style: new TextStyle(
+                        fontSize: 82.0,
+                        fontWeight: FontWeight.w900,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.black,
+                      ),
+                    );
+                  },
                 ),
                 new Text(
                   "TOTAL MILES",
@@ -597,7 +621,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       vsync: this,
     );
     _statsAnimationControllerOne = new AnimationController(
-      duration: const Duration(milliseconds: _kStatsAnimationDuration),
+      duration: const Duration(milliseconds: _kStatsFirstAnimationDuration),
       vsync: this,
     );
     _statsAnimationControllerTwo = new AnimationController(
@@ -620,6 +644,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       duration: const Duration(milliseconds: _kAnimateRunnerHeroFadeDuration),
       vsync: this,
     );
+    _numberCounterAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kAnimateNumberCounterDuration),
+      vsync: this,
+    );
     _heroFadeInAnimation = _initAnimation(
       from: 0.0,
       to: 1.0,
@@ -635,7 +663,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     _statsAnimationOne = _initAnimation(
         from: 0.01,
         to: 1.0,
-        curve: Curves.easeOut,
+        curve: const Interval(0.2, 1.0, curve: Curves.easeOut),
         controller: _statsAnimationControllerOne);
     _statsAnimationTwo = _initAnimation(
         from: 0.01,
@@ -662,6 +690,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
         to: 1.0,
         curve: Curves.easeOut,
         controller: _runnerAnimationController);
+    _numberCounterAnimation = _numberCounterAnimationController;
   }
 
   _configureThemes() {
@@ -740,19 +769,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       }
     }
     if (_statsOpacity == 0.0) {
-      _rotationAnimationController.forward().whenComplete(() {
-        _isStatsBoxFullScreen = true;
-      });
-      _runnerAnimationController.forward();
-      _statsAnimationControllerOne.forward().whenComplete(() {
-        _statsAnimationControllerTwo.forward().whenComplete(() {
-          _statsAnimationControllerThree.forward().whenComplete(() {
-            _statsAnimationControllerFour.forward().whenComplete(() {
-              _animateCounters();
-            });
-          });
-        });
-      });
+      _startAnimation();
     } else if (_statsOpacity == 1.0) {
       _rotationAnimationController.reverse().whenComplete(() {
         _isStatsBoxFullScreen = false;
@@ -762,6 +779,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       _statsAnimationControllerThree.value = 0.0;
       _statsAnimationControllerFour.value = 0.0;
       _runnerAnimationController.value = 0.0;
+      _numberCounterAnimationController.value = 0.0;
+      _runCounter = _kStartingRunCount;
+      _elevationCounter = _kStartingElevationCount;
+      _hasRunAnimation = false;
     }
     setState(() {});
     return false;
@@ -779,15 +800,30 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
-  _updateElevationCounter() {
-    setState(() {
-      _elevationCounter += 356;
+  _startAnimation() {
+    _rotationAnimationController.forward().whenComplete(() {
+      _isStatsBoxFullScreen = true;
+    });
+    _runnerAnimationController.forward();
+    _statsAnimationControllerOne.forward().whenComplete(() {
+      _statsAnimationControllerTwo.forward().whenComplete(() {
+        _statsAnimationControllerThree.forward().whenComplete(() {
+          _statsAnimationControllerFour.forward().whenComplete(() {
+            _animateCounters();
+          });
+        });
+      });
     });
   }
 
-  _updateMileCounter() {
+  _startAnimationDelay() {
+    Duration duration = new Duration(milliseconds: 1000);
+    return new Timer(duration, _startAnimation());
+  }
+
+  _updateElevationCounter() {
     setState(() {
-      _mileCounter += 7.3;
+      _elevationCounter += 356;
     });
   }
 
