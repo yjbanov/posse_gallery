@@ -2,28 +2,52 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/widgets.dart';
 import 'package:posse_gallery/managers/category_manager.dart';
 import 'package:posse_gallery/models/app_category.dart';
 import 'package:posse_gallery/models/category_item.dart';
 import 'package:posse_gallery/screens/category_screen.dart';
-import 'package:posse_gallery/screens/item_screen.dart';
+import 'package:posse_gallery/screens/debug/debug_options_screen.dart';
 import 'package:posse_gallery/screens/main_screen.dart';
-import 'package:posse_gallery/screens/search_screen.dart';
+import 'package:fluro/fluro.dart';
 
 class RouteManager {
+
   RouteManager() {
-    _routes = _routesMap;
     _categories = new CategoryManager().categories();
   }
 
-  static Map<String, WidgetBuilder> _routes;
   static List<AppCategory> _categories;
 
-  Map<String, WidgetBuilder> routes() {
-    return _routes;
+  // route configuration
+  void configureRoutes(Router router) {
+    router.define("/", handler: rootHandler);
+    router.define("/category/:category", handler: categoryHandler);
+    router.define("/debug", handler: debugMenuHandler);
   }
 
+  // handlers
+  RouteHandler rootHandler = (Map<String, String> params) {
+    return new MainScreen();
+  };
+
+  RouteHandler debugMenuHandler = (Map<String, String> params) {
+    return new DebugOptionsScreen();
+  };
+
+  RouteHandler categoryHandler = (Map<String, String> params) {
+    String categoryName = params["category"];
+    AppCategory category;
+    if (categoryName != null) {
+      category = retrieveCategory(categoryName);
+    }
+    if (category != null) {
+      return new CategoryScreen(category: category);
+    } else {
+      // TODO - show invalid category / not found screen
+    }
+  };
+
+  // helpers
   static AppCategory retrieveCategory(String routeName) {
     for (AppCategory category in _categories) {
       if (category.routeName == routeName) {
@@ -41,23 +65,4 @@ class RouteManager {
     }
     return null;
   }
-
-  final Map<String, WidgetBuilder> _routesMap = {
-    '/main': (BuildContext context) => new MainScreen(),
-    '/search': (BuildContext context) => new SearchScreen(),
-    '/category': (BuildContext context) => new CategoryScreen(),
-    '/category/customized_design': (BuildContext context) =>
-        new CategoryScreen(category: retrieveCategory("customized_design")),
-    '/category/layout_positioning': (BuildContext context) =>
-        new CategoryScreen(category: retrieveCategory("layout_positioning")),
-    '/category/animation': (BuildContext context) =>
-        new CategoryScreen(category: retrieveCategory("animation")),
-    '/category/patterns': (BuildContext context) =>
-        new CategoryScreen(category: retrieveCategory("patterns")),
-    '/category/plug_ins': (BuildContext context) =>
-        new CategoryScreen(category: retrieveCategory("plug_ins")),
-    '/category/design_components': (BuildContext context) =>
-        new CategoryScreen(category: retrieveCategory("design_components")),
-    '/item': (BuildContext context) => new ItemScreen(),
-  };
 }
