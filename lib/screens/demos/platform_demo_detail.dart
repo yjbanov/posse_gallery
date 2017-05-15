@@ -26,6 +26,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
   static final GlobalKey<ScaffoldState> _scaffoldKey =
       new GlobalKey<ScaffoldState>();
   static const int _kAnimationInDuration = 300;
+  static const int _kSlideInAnimationDuration = 250;
   static const int _kHeartAnimationDuration = 300;
   TargetPlatform _targetPlatform;
 
@@ -36,6 +37,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
   Animation<double> _heartAnimation;
 
   AnimationController _animationController;
+  AnimationController _slideInAnimationController;
   AnimationController _heartAnimationController;
 
   Color _heartColor = Colors.white;
@@ -64,6 +66,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
   @override
   dispose() {
     _animationController.dispose();
+    _slideInAnimationController.dispose();
     _heartAnimationController.dispose();
     super.dispose();
   }
@@ -73,6 +76,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     super.initState();
     _configureAnimation();
     _animationController.forward();
+    _slideInAnimationController.forward();
   }
 
   void showDemoDialog<T>({BuildContext context, Widget child}) {
@@ -369,6 +373,10 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
       duration: const Duration(milliseconds: _kAnimationInDuration),
       vsync: this,
     );
+    _slideInAnimationController = new AnimationController(
+        duration: const Duration(milliseconds: _kSlideInAnimationDuration),
+        vsync: this,
+    );
     _heartAnimationController = new AnimationController(
       duration: const Duration(milliseconds: _kHeartAnimationDuration),
       vsync: this,
@@ -379,10 +387,10 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
         curve: Curves.easeOut,
         controller: _animationController);
     _slideInAnimation = _initSlideAnimation(
-        from: const FractionalOffset(0.0, 2.0),
+        from: const FractionalOffset(0.0, 0.0),
         to: const FractionalOffset(0.0, 0.0),
-        curve: Curves.easeOut,
-        controller: _animationController);
+        curve: Curves.easeIn,
+        controller: _slideInAnimationController);
     _heartAnimation = _initAnimation(
         from: 1.0,
         to: 1.5,
