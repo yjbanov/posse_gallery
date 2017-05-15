@@ -537,8 +537,26 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 //        }
       },
       onHorizontalDragEnd: (details) {
-//        _currentStep += 1;
-//        _startAnimation();
+        double interpolationValue = (_swipeAmount / _kSwipeThreshold);
+        _swipeAmount = 0.0;
+        if (interpolationValue <= 0.0 && _currentStep == 0) {
+          return;
+        }
+        if (interpolationValue >= 0.0 && _currentStep == _steps.length - 1) {
+          return;
+        }
+        interpolationValue = interpolationValue.abs();
+        if (interpolationValue < 0.33) {
+          _reverseAnimation();
+        } else {
+          _startAnimation();
+          if (movingNext) {
+            _currentStep += 1;
+          } else {
+            _currentStep -= 1;
+          }
+        }
+
       },
       child: _contentWidget(_nextStep),
     );
@@ -769,5 +787,11 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         });
       }
     });
+  }
+  _reverseAnimation() {
+    _animateOutController.reverse();
+    _slideInAnimationController.reverse();
+    _imageSlideUpAnimationController.reverse();
+    _animateInController.reverse();
   }
 }
