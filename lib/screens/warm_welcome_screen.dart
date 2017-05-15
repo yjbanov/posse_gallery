@@ -163,7 +163,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             child: new Column(
               children: [
                 _buildTitleSection(
-                    title: previousTitle, subtitle: previousSubtitle),
+                    title: _title, subtitle: _subtitle),
                 new Padding(
                   padding: const EdgeInsets.only(top: 40.0),
                   child: new Center(
@@ -187,8 +187,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                 child: new SlideTransition(
                   position: slideInAnimation,
                   child: _buildTitleSection(
-                    title: nextTitle,
-                    subtitle: nextSubtitle,
+                    title: _nextTitle,
+                    subtitle: _nextSubtitle,
                   ),
                 ),
               ),
@@ -493,14 +493,16 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         print("next step: $_nextStep");
         print("interp val: $interpolationValue");
 
-        if (interpolationValue >= 1.0) {
+        if (interpolationValue >= 1.0 || previousNextStep != _nextStep) {
           setState(() {
+            if (interpolationValue >= 1.0) {
+              _currentStep = _nextStep;
+            }
             _swipeAmount = 0.0;
-            _currentStep = _nextStep;
-          });
-        } else if (previousNextStep != _nextStep) {
-          setState(() {
-            _swipeAmount = 0.0;
+            _nextTitle = _steps[_nextStep].title;
+            _nextSubtitle = _steps[_nextStep].subtitle;
+            _title = _steps[_currentStep].title;
+            _subtitle = _steps[_currentStep].subtitle;
           });
         }
 
@@ -535,6 +537,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 //        }
       },
       onHorizontalDragEnd: (details) {
+//        _currentStep += 1;
+//        _startAnimation();
       },
       child: _contentWidget(_nextStep),
     );
