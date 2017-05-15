@@ -204,7 +204,6 @@ class _CategoryScreenState extends State<CategoryScreen>
       body: new NotificationListener<ScrollNotification>(
         onNotification: _handleScrollNotification,
         child: new CustomScrollView(
-          physics: new SnappingScrollPhysics(midScrollOffset: threshold),
           slivers: [
             new SliverAppBar(
               pinned: true,
