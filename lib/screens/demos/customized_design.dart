@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -20,19 +19,24 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   static const int _kAnimateHeroFadeDuration = 1000;
   static const int _kAnimateTextDuration = 400;
   static const double _kDetailTabHeight = 70.0;
-  static const int _kStatsAnimationDuration = 100;
+  static const int _kStatsFirstAnimationDuration = 500;
+  static const int _kStatsAnimationDuration = 175;
   static const int _kRotationAnimationDuration = 100;
-  static const int _kAnimateRunnerHeroFadeDuration = 400;
+  static const int _kAnimateRunnerHeroFadeDuration = 450;
   static const int _kAnimateNumberCounterDuration = 1000;
+
+  static const int _kStartingElevationCount = 8365;
+  static const int _kStartingRunCount = 158;
 
   List<Widget> _stats;
   TargetPlatform _targetPlatform;
   TextAlign _platformTextAlignment;
   ThemeData _themeData;
   double _statsOpacity = 1.0;
-  int _elevationCounter = 8365;
-  int _runCounter = 158;
+  int _elevationCounter = _kStartingElevationCount;
+  int _runCounter = _kStartingRunCount;
   bool _isStatsBoxFullScreen = false;
+  bool _hasRunAnimation = false;
 
   Animation<double> _heroFadeInAnimation;
   Animation<double> _textFadeInAnimation;
@@ -93,9 +97,12 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   _animateCounters() {
-    _animateRunCounter();
-    _animateElevationCounter();
-    _animateMileCounter();
+    if (!_hasRunAnimation) {
+      _animateRunCounter();
+      _animateElevationCounter();
+      _animateMileCounter();
+      _hasRunAnimation = true;
+    }
   }
 
   _animateElevationCounter() {
@@ -614,7 +621,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       vsync: this,
     );
     _statsAnimationControllerOne = new AnimationController(
-      duration: const Duration(milliseconds: _kStatsAnimationDuration),
+      duration: const Duration(milliseconds: _kStatsFirstAnimationDuration),
       vsync: this,
     );
     _statsAnimationControllerTwo = new AnimationController(
@@ -656,7 +663,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     _statsAnimationOne = _initAnimation(
         from: 0.01,
         to: 1.0,
-        curve: Curves.easeOut,
+        curve: const Interval(0.2, 1.0, curve: Curves.easeOut),
         controller: _statsAnimationControllerOne);
     _statsAnimationTwo = _initAnimation(
         from: 0.01,
@@ -762,19 +769,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       }
     }
     if (_statsOpacity == 0.0) {
-      _rotationAnimationController.forward().whenComplete(() {
-        _isStatsBoxFullScreen = true;
-      });
-      _runnerAnimationController.forward();
-      _statsAnimationControllerOne.forward().whenComplete(() {
-        _statsAnimationControllerTwo.forward().whenComplete(() {
-          _statsAnimationControllerThree.forward().whenComplete(() {
-            _statsAnimationControllerFour.forward().whenComplete(() {
-              _animateCounters();
-            });
-          });
-        });
-      });
+      _startAnimation();
     } else if (_statsOpacity == 1.0) {
       _rotationAnimationController.reverse().whenComplete(() {
         _isStatsBoxFullScreen = false;
@@ -785,6 +780,9 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       _statsAnimationControllerFour.value = 0.0;
       _runnerAnimationController.value = 0.0;
       _numberCounterAnimationController.value = 0.0;
+      _runCounter = _kStartingRunCount;
+      _elevationCounter = _kStartingElevationCount;
+      _hasRunAnimation = false;
     }
     setState(() {});
     return false;
@@ -800,6 +798,27 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       curve: curve,
     );
     return new Tween<double>(begin: from, end: to).animate(animation);
+  }
+
+  _startAnimation() {
+    _rotationAnimationController.forward().whenComplete(() {
+      _isStatsBoxFullScreen = true;
+    });
+    _runnerAnimationController.forward();
+    _statsAnimationControllerOne.forward().whenComplete(() {
+      _statsAnimationControllerTwo.forward().whenComplete(() {
+        _statsAnimationControllerThree.forward().whenComplete(() {
+          _statsAnimationControllerFour.forward().whenComplete(() {
+            _animateCounters();
+          });
+        });
+      });
+    });
+  }
+
+  _startAnimationDelay() {
+    Duration duration = new Duration(milliseconds: 1000);
+    return new Timer(duration, _startAnimation());
   }
 
   _updateElevationCounter() {
