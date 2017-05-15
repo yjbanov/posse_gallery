@@ -25,7 +25,7 @@ class WarmWelcomeScreen extends StatefulWidget {
 
 class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     with TickerProviderStateMixin {
-  static const double _kSwipeThreshold = 200.0;
+  static const double _kSwipeThreshold = 160.0;
 
   static const int _kAnimateOutDuration = 400;
   static const int _kAnimateInDuration = 600;
@@ -76,6 +76,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   AnimationController _widgetScaleInController5;
   List<WelcomeStep> _steps;
   int _currentStep = 0;
+  int _nextStep = 1;
   double _bgOffset = 0.0;
   bool movingNext = true;
 
@@ -461,49 +462,81 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   Widget _buildGestureDetector() {
-    int nextStep = _currentStep;
     return new GestureDetector(
       onHorizontalDragUpdate: (details) {
-        if (_swipeAmount < _kSwipeThreshold) {
-          movingNext = details.delta.dx <= 0;
-          _swipeAmount += details.delta.distance.abs();
-          bool didSwipe = (_swipeAmount >= _kSwipeThreshold);
-          bool hasReachedBounds = true;
-          if ((movingNext && _currentStep + 1 < _steps.length) ||
-              (!movingNext && _currentStep - 1 >= 0)) {
-            hasReachedBounds = false;
-          }
-          if (didSwipe &&
-              !hasReachedBounds &&
-              !_animateInController.isAnimating &&
-              !_animateOutController.isAnimating) {
-            _resetAnimationControllers();
-            nextStep += movingNext ? 1 : -1;
-            setState(() {
-              if (nextStep >= 0 && nextStep < _steps.length) {
-                _nextTitle = _steps[nextStep].title;
-                _nextSubtitle = _steps[nextStep].subtitle;
-              }
-              if (movingNext && _currentStep + 1 < _steps.length) {
-                _currentStep += 1;
-                _bgOffset -= MediaQuery.of(context).size.width / 5;
-              } else if (!movingNext && _currentStep - 1 >= 0) {
-                _currentStep -= 1;
-                _bgOffset += MediaQuery.of(context).size.width / 5;
-              }
-              if (_currentStep >= 0 && _currentStep < _steps.length) {
-                _title = _steps[_currentStep].title;
-                _subtitle = _steps[_currentStep].subtitle;
-              }
-            });
-            _startAnimation();
-          }
+        _swipeAmount += -details.delta.dx;
+        double interpolationValue = _swipeAmount / _kSwipeThreshold;
+
+        movingNext = interpolationValue >= 0;
+        if (movingNext && _currentStep == _steps.length - 1 ||
+          !movingNext && _currentStep == 0) {
+          print("User is attempting to swipe out of bounds, return");
+          _swipeAmount = 0.0;
+          return;
         }
+
+        if (!movingNext) {
+          interpolationValue = -interpolationValue;
+        }
+        interpolationValue = interpolationValue.clamp(0.0, 1.0);
+
+        _animateOutController.value = interpolationValue;
+        _slideInAnimationController.value = interpolationValue;
+        _imageSlideUpAnimationController.value = interpolationValue;
+        _animateInController.value = interpolationValue;
+
+        // We may need to set the next animations if the user has reversed directions
+        int previousNextStep = _nextStep;
+        _nextStep = movingNext ? _currentStep + 1 : _currentStep - 1;
+
+        print("current step: $_currentStep");
+        print("next step: $_nextStep");
+        print("interp val: $interpolationValue");
+
+        if (interpolationValue >= 1.0) {
+          setState(() {
+            _swipeAmount = 0.0;
+            _currentStep = _nextStep;
+          });
+        } else if (previousNextStep != _nextStep) {
+          setState(() {
+            _swipeAmount = 0.0;
+          });
+        }
+
+//        if (!_animateInController.isAnimating &&
+//            !_animateOutController.isAnimating &&
+//            interpolationValue >= 1.0) {
+//
+//          _swipeAmount = 0.0;
+//          _currentStep = _nextStep;
+//          setState(() {
+//            if (_nextStep >= 0 && _nextStep < _steps.length) {
+//              _nextTitle = _steps[_nextStep].title;
+//              _nextSubtitle = _steps[_nextStep].subtitle;
+//            }
+//            if (movingNext && _currentStep + 1 < _steps.length) {
+//              _bgOffset -= MediaQuery
+//                  .of(context)
+//                  .size
+//                  .width / 5;
+//            } else if (!movingNext && _currentStep - 1 >= 0) {
+//              _bgOffset += MediaQuery
+//                  .of(context)
+//                  .size
+//                  .width / 5;
+//            }
+//            if (_currentStep >= 0 && _currentStep < _steps.length) {
+//              _title = _steps[_currentStep].title;
+//              _subtitle = _steps[_currentStep].subtitle;
+//            }
+//          });
+//          _resetAnimationControllers();
+//        }
       },
       onHorizontalDragEnd: (details) {
-        _swipeAmount = 0.0;
       },
-      child: _contentWidget(nextStep),
+      child: _contentWidget(_nextStep),
     );
   }
 
