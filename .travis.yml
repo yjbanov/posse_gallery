@@ -1,6 +1,17 @@
 matrix:
+  # This causes the build to complete immediately upon first failure or once
+  # required jobs are green.
+  fast_finish: true
+
+  # Building APK/IPA takes a long time; do not wait for them to finish.
+  allow_failures:
+    - env: JOB=APK
+    - env: JOB=IPA
+
   include:
-    - os: linux
+    # Runs unit tests without emulators.
+    - env: JOB=PR
+      os: linux
       language: generic
       sudo: false
       addons:
@@ -17,7 +28,9 @@ matrix:
       script:
         - ./flutter/bin/flutter test
 
-    - os: linux
+    # Builds an APK.
+    - env: JOB=APK
+      os: linux
       language: android
       licenses:
         - 'android-sdk-preview-license-.+'
@@ -57,11 +70,12 @@ matrix:
       #  - adb shell input keyevent 82 &
         - ./flutter/bin/flutter doctor
       script:
-        - ./flutter/bin/flutter test
       #  - ./flutter/bin/flutter -v run --trace-startup --no-hot
         - ./flutter/bin/flutter -v build apk
 
-    - os: osx
+    # Builds an IPA.
+    - env: JOB=IPA
+      os: osx
       language: generic
       osx_image: xcode8.3
       before_script:
@@ -73,7 +87,6 @@ matrix:
         - ./travis_setup.sh
         - ./flutter/bin/flutter doctor
       script:
-        - ./flutter/bin/flutter test
         - ./flutter/bin/flutter -v build ios --no-codesign
 
 cache:
