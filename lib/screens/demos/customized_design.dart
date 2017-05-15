@@ -3,6 +3,8 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
@@ -21,16 +23,15 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   static const int _kStatsAnimationDuration = 100;
   static const int _kRotationAnimationDuration = 100;
   static const int _kAnimateRunnerHeroFadeDuration = 400;
+  static const int _kAnimateNumberCounterDuration = 1000;
 
   List<Widget> _stats;
   TargetPlatform _targetPlatform;
   TextAlign _platformTextAlignment;
   ThemeData _themeData;
   double _statsOpacity = 1.0;
-  double _mileCounter = 643.6;
   int _elevationCounter = 8365;
   int _runCounter = 158;
-  bool _hasAnimatedCounters = false;
   bool _isStatsBoxFullScreen = false;
 
   Animation<double> _heroFadeInAnimation;
@@ -41,6 +42,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   Animation<double> _statsAnimationFour;
   Animation<double> _rotationAnimation;
   Animation<double> _runnerFadeAnimation;
+  Animation<double> _numberCounterAnimation;
 
   AnimationController _heroAnimationController;
   AnimationController _textAnimationController;
@@ -50,6 +52,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   AnimationController _statsAnimationControllerFour;
   AnimationController _rotationAnimationController;
   AnimationController _runnerAnimationController;
+  AnimationController _numberCounterAnimationController;
 
   ScrollController _scrollController = new ScrollController();
 
@@ -76,6 +79,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     _statsAnimationControllerFour.dispose();
     _rotationAnimationController.dispose();
     _runnerAnimationController.dispose();
+    _numberCounterAnimationController.dispose();
     super.dispose();
   }
 
@@ -89,12 +93,9 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   _animateCounters() {
-    if (!_hasAnimatedCounters) {
-      _animateRunCounter();
-      _animateElevationCounter();
-      _animateMileCounter();
-      _hasAnimatedCounters = true;
-    }
+    _animateRunCounter();
+    _animateElevationCounter();
+    _animateMileCounter();
   }
 
   _animateElevationCounter() {
@@ -103,8 +104,19 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   }
 
   _animateMileCounter() {
-    Duration duration = new Duration(milliseconds: 700);
-    return new Timer(duration, _updateMileCounter);
+    setState(() {
+      _numberCounterAnimation = new Tween<double>(
+        begin: 0.0,
+        end: 646.3,
+      )
+          .animate(
+        new CurvedAnimation(
+          curve: Curves.fastOutSlowIn,
+          parent: _numberCounterAnimationController,
+        ),
+      );
+    });
+    _numberCounterAnimationController.forward(from: 0.0);
   }
 
   _animateRunCounter() {
@@ -302,14 +314,14 @@ class _CustomizedDesignState extends State<CustomizedDesign>
               ),
             ),
           ),
-//          new Positioned(
-//            right: 10.0,
-//            bottom: 60.0,
-//            child: new ScaleTransition(
-//              scale: _statsAnimationFour,
-//              child: new Icon(Icons.event, color: const Color(0xFF02CEA1)),
-//            ),
-//          ),
+          //          new Positioned(
+          //            right: 10.0,
+          //            bottom: 60.0,
+          //            child: new ScaleTransition(
+          //              scale: _statsAnimationFour,
+          //              child: new Icon(Icons.event, color: const Color(0xFF02CEA1)),
+          //            ),
+          //          ),
           new Positioned(
             left: 0.0,
             bottom: 15.0,
@@ -473,14 +485,19 @@ class _CustomizedDesignState extends State<CustomizedDesign>
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                new Text(
-                  _mileCounter.toString(),
-                  style: new TextStyle(
-                    fontSize: 82.0,
-                    fontWeight: FontWeight.w900,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.black,
-                  ),
+                new AnimatedBuilder(
+                  animation: _numberCounterAnimation,
+                  builder: (BuildContext context, Widget child) {
+                    return new Text(
+                      _numberCounterAnimation.value.toStringAsFixed(1),
+                      style: new TextStyle(
+                        fontSize: 82.0,
+                        fontWeight: FontWeight.w900,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.black,
+                      ),
+                    );
+                  },
                 ),
                 new Text(
                   "TOTAL MILES",
@@ -620,6 +637,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       duration: const Duration(milliseconds: _kAnimateRunnerHeroFadeDuration),
       vsync: this,
     );
+    _numberCounterAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kAnimateNumberCounterDuration),
+      vsync: this,
+    );
     _heroFadeInAnimation = _initAnimation(
       from: 0.0,
       to: 1.0,
@@ -662,6 +683,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
         to: 1.0,
         curve: Curves.easeOut,
         controller: _runnerAnimationController);
+    _numberCounterAnimation = _numberCounterAnimationController;
   }
 
   _configureThemes() {
@@ -762,6 +784,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       _statsAnimationControllerThree.value = 0.0;
       _statsAnimationControllerFour.value = 0.0;
       _runnerAnimationController.value = 0.0;
+      _numberCounterAnimationController.value = 0.0;
     }
     setState(() {});
     return false;
@@ -782,12 +805,6 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   _updateElevationCounter() {
     setState(() {
       _elevationCounter += 356;
-    });
-  }
-
-  _updateMileCounter() {
-    setState(() {
-      _mileCounter += 7.3;
     });
   }
 
