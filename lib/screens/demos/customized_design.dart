@@ -47,6 +47,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   Animation<double> _rotationAnimation;
   Animation<double> _runnerFadeAnimation;
   Animation<double> _numberCounterAnimation;
+  Animation<double> _heartAnimation;
 
   AnimationController _heroAnimationController;
   AnimationController _textAnimationController;
@@ -57,6 +58,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
   AnimationController _rotationAnimationController;
   AnimationController _runnerAnimationController;
   AnimationController _numberCounterAnimationController;
+  AnimationController _heartAnimationController;
 
   ScrollController _scrollController = new ScrollController();
 
@@ -84,6 +86,7 @@ class _CustomizedDesignState extends State<CustomizedDesign>
     _rotationAnimationController.dispose();
     _runnerAnimationController.dispose();
     _numberCounterAnimationController.dispose();
+    _heartAnimationController.dispose();
     super.dispose();
   }
 
@@ -405,7 +408,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
             scale: _statsAnimationFour,
             child: new Row(
               children: [
-                new Icon(Icons.favorite, color: Colors.white),
+                new ScaleTransition(
+                  scale: _heartAnimation,
+                  child: new Icon(Icons.favorite, color: Colors.white),
+                ),
                 new Padding(
                   padding: const EdgeInsets.only(left: 4.0),
                   child: new Text(
@@ -636,6 +642,10 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       duration: const Duration(milliseconds: _kStatsAnimationDuration),
       vsync: this,
     );
+    _heartAnimationController = new AnimationController(
+      duration: const Duration(milliseconds: _kStatsAnimationDuration),
+      vsync: this,
+    );
     _rotationAnimationController = new AnimationController(
       duration: const Duration(milliseconds: _kRotationAnimationDuration),
       vsync: this,
@@ -680,6 +690,11 @@ class _CustomizedDesignState extends State<CustomizedDesign>
         to: 1.0,
         curve: Curves.easeOut,
         controller: _statsAnimationControllerFour);
+    _heartAnimation = _initAnimation(
+        from: 1.0,
+        to: 1.25,
+        curve: Curves.easeOut,
+        controller: _heartAnimationController);
     _rotationAnimation = _initAnimation(
         from: 0.0,
         to: 0.5,
@@ -809,6 +824,9 @@ class _CustomizedDesignState extends State<CustomizedDesign>
       _statsAnimationControllerTwo.forward().whenComplete(() {
         _statsAnimationControllerThree.forward().whenComplete(() {
           _statsAnimationControllerFour.forward().whenComplete(() {
+            _heartAnimationController.forward().whenComplete(() {
+              _heartAnimationController.reverse();
+            });
             _animateCounters();
           });
         });

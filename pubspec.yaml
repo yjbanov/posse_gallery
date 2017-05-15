@@ -28,6 +28,9 @@ flutter:
     - assets/icons/ic_assets_smiley.png
     - assets/icons/ic_components.png
     - assets/icons/ic_custom_circle_arrow.png
+    - assets/icons/ic_customized_book.png
+    - assets/icons/ic_customized_furniture.png
+    - assets/icons/ic_customized_runner.png
     - assets/icons/ic_customized_assets.png
     - assets/icons/ic_customized_brand_design.png
     - assets/icons/ic_customized_painting.png

@@ -1,4 +1,4 @@
-  // ignore: invalid_constant
+// ignore: invalid_constant
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -327,6 +327,7 @@ class PlatformDemoState extends State<PlatformDemo>
                               style: new TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w600,
+                                letterSpacing: 0.6,
                                 color: Colors.white,
                               ),
                             ),
