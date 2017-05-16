@@ -507,7 +507,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         }
         interpolationValue = interpolationValue.abs();
 //        print(interpolationValue);
-        if (interpolationValue < 0.1) {
+        if (interpolationValue < 0.05) {
           _reverseAnimation();
           _startSecondaryWidgetAnimation();
         } else {
@@ -629,23 +629,23 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         curve: Curves.linear,
         controller: _animateInController);
     _textSlideInLeftAnimation = _initSlideAnimation(
-        from: const FractionalOffset(1.35, 0.0),
+        from: const FractionalOffset(1.3, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeInOut,
         controller: _slideInAnimationController);
     _textSlideInRightAnimation = _initSlideAnimation(
-        from: const FractionalOffset(-1.35, 0.0),
+        from: const FractionalOffset(-1.3, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeInOut,
         controller: _slideInAnimationController);
     _textSlideOutLeftAnimation = _initSlideAnimation(
         from: const FractionalOffset(0.0, 0.0),
-        to: const FractionalOffset(1.35, 0.0),
+        to: const FractionalOffset(1.3, 0.0),
         curve: Curves.easeInOut,
         controller: _slideOutAnimationController);
     _textSlideOutRightAnimation = _initSlideAnimation(
         from: const FractionalOffset(0.0, 0.0),
-        to: const FractionalOffset(-1.35, 0.0),
+        to: const FractionalOffset(-1.3, 0.0),
         curve: Curves.easeInOut,
         controller: _slideOutAnimationController);
     _widgetScaleInAnimation1 = _initAnimation(
