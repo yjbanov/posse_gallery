@@ -47,12 +47,12 @@ class WelcomeManager {
       subtitle:
           "Now that you’re familiar with the basic structure and principles of the Flutter framework, explore what it can do.",
       imageUris: [
+        "assets/images/welcome_flutter_logo.png",
         "assets/images/welcome_widget_1.png",
         "assets/images/welcome_widget_2.png",
         "assets/images/welcome_widget_3.png",
         "assets/images/welcome_widget_4.png",
         "assets/images/welcome_widget_5.png",
-        "assets/images/welcome_flutter_logo.png",
       ],
     ),
   ];
