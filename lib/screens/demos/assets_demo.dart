@@ -542,6 +542,11 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
       brightness: Brightness.dark,
       platform: targetPlatform,
     );
+    if (selectedTheme == playfulThemeData) {
+      bottomButtonTitle = "Let's get cooking!";
+    } else {
+      bottomButtonTitle = "View Recipe";
+    }
   }
 
   _configureUI() {

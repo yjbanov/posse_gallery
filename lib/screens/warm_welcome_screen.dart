@@ -27,7 +27,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     with TickerProviderStateMixin {
   static const int _kAnimateOutDuration = 400;
   static const int _kAnimateInDuration = 600;
-  static const int _kParallaxAnimationDuration = 600;
+  static const int _kParallaxAnimationDuration = 400;
   static const int _kWidgetScaleInDuration = 200;
   static const int _kImageSlideUpDuration = 500;
   static const int _kSlideInDuration = 600;
@@ -75,7 +75,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   List<WelcomeStep> _steps;
   int _currentStep = 0;
   int _nextStep = 1;
-  double _bgOffset = 0.0;
+  double _bgOffset = -150.0;
   bool movingNext = true;
 
   double _swipeAmount = 0.0;
@@ -94,21 +94,20 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   Widget _contentWidget(int nextStep) {
-//    _tabController = new TabController(initialIndex: 0, length: 5, vsync: this);
     return new Stack(
       children: [
         new Positioned.fill(
           child: _buildBackgroundView(),
         ),
         _buildAnimatedContentView(nextStep: nextStep, movingNext: movingNext),
-//        new Positioned(
-//          left: 0.0,
-//          right: 0.0,
-//          bottom: 120.0,
-//          child: new Center(
-//            child: new TabPageSelector(controller: _tabController),
-//          ),
-//        ),
+        new Positioned(
+          left: 0.0,
+          right: 0.0,
+          bottom: MediaQuery.of(context).size.height * 0.16,
+          child: new Center(
+            child: new TabPageSelector(controller: _tabController),
+          ),
+        ),
         _buildBottomSection(),
       ],
     );
@@ -135,6 +134,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   @override
   initState() {
     super.initState();
+    _tabController = new TabController(initialIndex: 0, length: 4, vsync: this);
     _steps = new WelcomeManager().steps();
     if (_steps[_currentStep] != null) {
       _title = _steps[_currentStep].title;
@@ -200,28 +200,24 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     return new Positioned(
       left: 30.0,
       right: 30.0,
-      top: 55.0,
+      top: 54.0,
       bottom: 0.0,
       child: new Stack(
         children: [
-          new SlideTransition(
-            position: slideOutAnimation,
-            child: new FadeTransition(
-              opacity: _fadeOutAnimation,
-              child: new Column(
-                children: [
-                  _buildTitleSection(
-                    title: _title,
-                    subtitle: _subtitle,
-                  ),
-                  new ScaleTransition(
-                    scale: _scaleOutAnimation,
-                    child: _buildBody(
-                        nextStep: previousStep, imageSize: imageSize),
-                  ),
-                ],
+          new Column(
+            children: [
+              new SlideTransition(
+                position: slideOutAnimation,
+                child: _buildTitleSection(
+                  title: _title,
+                  subtitle: _subtitle,
+                ),
               ),
-            ),
+              new ScaleTransition(
+                scale: _scaleOutAnimation,
+                child: _buildBody(nextStep: previousStep, imageSize: imageSize),
+              ),
+            ],
           ),
           new SlideTransition(
             position: slideInAnimation,
@@ -411,7 +407,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       child: new Container(
         width: 180.0,
         height: 46.0,
-        margin: const EdgeInsets.only(bottom: 40.0),
+        margin: const EdgeInsets.only(bottom: 38.0),
         child: new RaisedButton(
           color: const Color(Constants.ColorPrimary),
           child: new Text(
@@ -444,12 +440,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   Widget _buildGestureDetector() {
     return new GestureDetector(
-      onHorizontalDragStart: (details) {
-//        _reverseSecondaryWidgetAnimations();
-      },
       onHorizontalDragUpdate: (details) {
         _swipeAmount += -details.delta.dx;
-        double interpolationValue = _swipeAmount / MediaQuery.of(context).size.width;
+        double interpolationValue =
+            _swipeAmount / MediaQuery.of(context).size.width;
 //        print(interpolationValue);
         movingNext = interpolationValue >= 0;
         if (movingNext && _currentStep == _steps.length - 1 ||
@@ -484,22 +478,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             _nextSubtitle = _steps[_nextStep].subtitle;
             _title = _steps[_currentStep].title;
             _subtitle = _steps[_currentStep].subtitle;
-//            if (movingNext && _currentStep + 1 < _steps.length) {
-//              _bgOffset -= MediaQuery
-//                  .of(context)
-//                  .size
-//                  .width / 5;
-//            } else if (!movingNext && _currentStep - 1 >= 0) {
-//              _bgOffset += MediaQuery
-//                  .of(context)
-//                  .size
-//                  .width / 5;
-//            }
           });
         }
       },
       onHorizontalDragEnd: (DragEndDetails details) {
-        double interpolationValue = (_swipeAmount / MediaQuery.of(context).size.width);
+        double interpolationValue =
+            (_swipeAmount / MediaQuery.of(context).size.width);
         _swipeAmount = 0.0;
         if (interpolationValue <= 0.0 && _currentStep == 0) {
           return;
@@ -509,13 +493,18 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         }
         interpolationValue = interpolationValue.abs();
 //        print(interpolationValue);
-        if (interpolationValue < 0.33) {
+        if (interpolationValue < 0.05) {
           _reverseAnimation();
           _startSecondaryWidgetAnimation();
         } else {
           _startAnimation();
+//          if (movingNext && _currentStep + 1 < _steps.length) {
+//            _bgOffset -= MediaQuery.of(context).size.width / 5;
+//          } else if (!movingNext && _currentStep - 1 >= 0) {
+//            _bgOffset += MediaQuery.of(context).size.width / 5;
+//          }
           _currentStep += movingNext ? 1 : -1;
-//          _tabController.animateTo(_currentStep);
+          _tabController.animateTo(_currentStep);
         }
       },
       child: _contentWidget(_nextStep),
@@ -622,8 +611,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         controller: _animateInController);
     _scaleOutAnimation = _initAnimation(
         from: 1.0,
-        to: 0.1,
-        curve: Curves.linear,
+        to: 0.0,
+        curve: Curves.easeOut,
         controller: _animateOutController);
     _scaleInAnimation = _initAnimation(
         from: 0.1,
@@ -631,23 +620,23 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         curve: Curves.linear,
         controller: _animateInController);
     _textSlideInLeftAnimation = _initSlideAnimation(
-        from: const FractionalOffset(1.5, 0.0),
+        from: const FractionalOffset(1.3, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeInOut,
         controller: _slideInAnimationController);
     _textSlideInRightAnimation = _initSlideAnimation(
-        from: const FractionalOffset(-1.5, 0.0),
+        from: const FractionalOffset(-1.3, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeInOut,
         controller: _slideInAnimationController);
     _textSlideOutLeftAnimation = _initSlideAnimation(
         from: const FractionalOffset(0.0, 0.0),
-        to: const FractionalOffset(1.5, 0.0),
+        to: const FractionalOffset(1.3, 0.0),
         curve: Curves.easeInOut,
         controller: _slideOutAnimationController);
     _textSlideOutRightAnimation = _initSlideAnimation(
         from: const FractionalOffset(0.0, 0.0),
-        to: const FractionalOffset(-1.5, 0.0),
+        to: const FractionalOffset(-1.3, 0.0),
         curve: Curves.easeInOut,
         controller: _slideOutAnimationController);
     _widgetScaleInAnimation1 = _initAnimation(

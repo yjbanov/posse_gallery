@@ -4,6 +4,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/src/cupertino/dialog.dart';
 import 'package:meta/meta.dart';
 import 'package:posse_gallery/screens/demos/platform_demo_detail.dart';
 
@@ -158,75 +159,145 @@ class PlatformDemoState extends State<PlatformDemo>
       children: [
         new SlideTransition(
           position: _leftPaneAnimation,
-          child: new Container(
-            child: new Stack(
-              children: [
-                new Image(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  image: new AssetImage("assets/images/platform_lamp.png"),
-                ),
-                new Positioned.fill(
-                  child: new Container(
-                    color: const Color(0x40333333),
+          child: new GestureDetector(
+            onTap: (() {
+              if (_targetPlatform == TargetPlatform.iOS) {
+                showDemoDialog(
+                  context: context,
+                  child: new CupertinoAlertDialog(
+                      title: const Text('Coming Soon'),
+                      content: const Text('The Wall Lamp'),
+                      actions: <Widget>[
+                        new CupertinoDialogAction(
+                            child: const Text('Keep Shopping',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600)),
+                            onPressed: () {
+                              Navigator.pop(context, 'Keep Shopping');
+                            }),
+                      ]),
+                );
+              } else if (_targetPlatform == TargetPlatform.android) {
+                showDialog(
+                  context: context,
+                  child: new AlertDialog(
+                      title: const Text('Coming Soon'),
+                      content: new Text('The Wall Lamp'),
+                      actions: <Widget>[
+                        new FlatButton(
+                            child: const Text('OK'),
+                            onPressed: () {
+                              Navigator.pop(context, false);
+                            }),
+                      ]),
+                );
+              }
+            }),
+            child: new Container(
+              child: new Stack(
+                children: [
+                  new Image(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    image: new AssetImage("assets/images/platform_lamp.png"),
                   ),
-                ),
-                new Positioned(
-                  left: 10.0,
-                  top: 0.0,
-                  right: 0.0,
-                  bottom: 12.0,
-                  child: new Align(
-                    alignment: itemTextFractionalOffset,
-                    child: new Text(
-                      "THE\nWALL LAMP",
-                      textAlign: itemTextAlignment,
-                      style: new TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        height: 1.3,
+                  new Positioned.fill(
+                    child: new Container(
+                      color: const Color(0x40333333),
+                    ),
+                  ),
+                  new Positioned(
+                    left: 10.0,
+                    top: 0.0,
+                    right: 0.0,
+                    bottom: 12.0,
+                    child: new Align(
+                      alignment: itemTextFractionalOffset,
+                      child: new Text(
+                        "THE\nWALL LAMP",
+                        textAlign: itemTextAlignment,
+                        style: new TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          height: 1.3,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-        new SlideTransition(
-          position: _rightPaneAnimation,
-          child: new Container(
-            child: new Stack(
-              children: [
-                new Image(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  image: new AssetImage("assets/images/platform_table.png"),
-                ),
-                new Positioned.fill(
-                  child: new Container(
-                    color: const Color(0x40333333),
+        new GestureDetector(
+          onTap: (() {
+            if (_targetPlatform == TargetPlatform.iOS) {
+              showDemoDialog(
+                context: context,
+                child: new CupertinoAlertDialog(
+                    title: const Text('Coming Soon'),
+                    content: const Text('Natural Side Table'),
+                    actions: <Widget>[
+                      new CupertinoDialogAction(
+                          child: const Text('Keep Shopping',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600)),
+                          onPressed: () {
+                            Navigator.pop(context, 'Keep Shopping');
+                          }),
+                    ]),
+              );
+            } else if (_targetPlatform == TargetPlatform.android) {
+              showDialog(
+                context: context,
+                child: new AlertDialog(
+                    title: const Text('Coming Soon'),
+                    content: new Text('Natural Side Table'),
+                    actions: <Widget>[
+                      new FlatButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.pop(context, false);
+                          }),
+                    ]),
+              );
+            }
+          }),
+          child: new SlideTransition(
+            position: _rightPaneAnimation,
+            child: new Container(
+              child: new Stack(
+                children: [
+                  new Image(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    image: new AssetImage("assets/images/platform_table.png"),
                   ),
-                ),
-                new Positioned(
-                  left: 10.0,
-                  top: 0.0,
-                  right: 0.0,
-                  bottom: 12.0,
-                  child: new Align(
-                    alignment: itemTextFractionalOffset,
-                    child: new Text(
-                      "NATURAL\nSIDE TABLE",
-                      textAlign: itemTextAlignment,
-                      style: new TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        height: 1.3,
+                  new Positioned.fill(
+                    child: new Container(
+                      color: const Color(0x40333333),
+                    ),
+                  ),
+                  new Positioned(
+                    left: 10.0,
+                    top: 0.0,
+                    right: 0.0,
+                    bottom: 12.0,
+                    child: new Align(
+                      alignment: itemTextFractionalOffset,
+                      child: new Text(
+                        "NATURAL\nSIDE TABLE",
+                        textAlign: itemTextAlignment,
+                        style: new TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          height: 1.3,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -505,5 +576,14 @@ class PlatformDemoState extends State<PlatformDemo>
         },
       ),
     );
+  }
+
+  showDemoDialog<T>({BuildContext context, Widget child}) {
+    showDialog<T>(
+      context: context,
+      child: child,
+      barrierDismissible: false,
+    )
+        .then<Null>((T value) {});
   }
 }
