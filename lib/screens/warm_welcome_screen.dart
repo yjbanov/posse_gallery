@@ -27,7 +27,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     with TickerProviderStateMixin {
   static const int _kAnimateOutDuration = 400;
   static const int _kAnimateInDuration = 600;
-  static const int _kParallaxAnimationDuration = 600;
+  static const int _kParallaxAnimationDuration = 400;
   static const int _kWidgetScaleInDuration = 200;
   static const int _kImageSlideUpDuration = 500;
   static const int _kSlideInDuration = 600;
@@ -75,7 +75,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   List<WelcomeStep> _steps;
   int _currentStep = 0;
   int _nextStep = 1;
-  double _bgOffset = 0.0;
+  double _bgOffset = -150.0;
   bool movingNext = true;
 
   double _swipeAmount = 0.0;
@@ -206,9 +206,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         children: [
           new Column(
             children: [
-              _buildTitleSection(
-                title: _title,
-                subtitle: _subtitle,
+              new SlideTransition(
+                position: slideOutAnimation,
+                child: _buildTitleSection(
+                  title: _title,
+                  subtitle: _subtitle,
+                ),
               ),
               new ScaleTransition(
                 scale: _scaleOutAnimation,
@@ -466,7 +469,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           setState(() {
             if (interpolationValue >= 1.0) {
               _currentStep = _nextStep;
-//              _tabController.animateTo(_currentStep);
             }
             if (interpolationValue == 1.0) {
               _startSecondaryWidgetAnimation();
@@ -476,17 +478,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             _nextSubtitle = _steps[_nextStep].subtitle;
             _title = _steps[_currentStep].title;
             _subtitle = _steps[_currentStep].subtitle;
-//            if (movingNext && _currentStep + 1 < _steps.length) {
-//              _bgOffset -= MediaQuery
-//                  .of(context)
-//                  .size
-//                  .width / 5;
-//            } else if (!movingNext && _currentStep - 1 >= 0) {
-//              _bgOffset += MediaQuery
-//                  .of(context)
-//                  .size
-//                  .width / 5;
-//            }
           });
         }
       },
@@ -507,6 +498,11 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           _startSecondaryWidgetAnimation();
         } else {
           _startAnimation();
+//          if (movingNext && _currentStep + 1 < _steps.length) {
+//            _bgOffset -= MediaQuery.of(context).size.width / 5;
+//          } else if (!movingNext && _currentStep - 1 >= 0) {
+//            _bgOffset += MediaQuery.of(context).size.width / 5;
+//          }
           _currentStep += movingNext ? 1 : -1;
           _tabController.animateTo(_currentStep);
         }
@@ -615,8 +611,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         controller: _animateInController);
     _scaleOutAnimation = _initAnimation(
         from: 1.0,
-        to: 0.1,
-        curve: Curves.linear,
+        to: 0.0,
+        curve: Curves.easeOut,
         controller: _animateOutController);
     _scaleInAnimation = _initAnimation(
         from: 0.1,
