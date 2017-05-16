@@ -387,7 +387,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
         curve: Curves.easeOut,
         controller: _animationController);
     _slideInAnimation = _initSlideAnimation(
-        from: const FractionalOffset(0.0, 2.0),
+        from: const FractionalOffset(0.0, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeIn,
         controller: _slideInAnimationController);

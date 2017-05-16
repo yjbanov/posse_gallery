@@ -11,6 +11,7 @@ import 'package:posse_gallery/screens/demos/customized_design.dart';
 import 'package:posse_gallery/screens/demos/patterns/check_list_screen.dart';
 import 'package:posse_gallery/screens/demos/platform_demo.dart';
 import 'package:posse_gallery/screens/warm_welcome_screen.dart';
+import 'package:posse_gallery/screens/warm_welcome_screen_2.dart';
 
 class CategoryManager {
   CategoryManager() {
@@ -166,6 +167,14 @@ class CategoryManager {
           widget: new WarmWelcomeScreen(isInitialScreen: false),
           needsFullScreen: true,
         ),
+//        new CategoryItem(
+//          title: "WALKTHROUGH 2.0",
+//          iconUri: "assets/icons/ic_patterns_walkthrough.png",
+//          routeName: "walkthrough2.0",
+//          color: const Color(0xFFD00B13),
+//          widget: new WarmWelcomeScreen2(),
+//          needsFullScreen: true,
+//        ),
 //        new CategoryItem(
 //          title: "EDIT AN IMAGE",
 //          iconUri: "assets/icons/ic_pattern_edit_image.png",
