@@ -71,6 +71,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   AnimationController _widgetScaleInController8;
   AnimationController _widgetScaleInController9;
 
+  TabController _tabController;
+
   List<WelcomeStep> _steps;
   int _currentStep = 0;
   int _nextStep = 1;
@@ -93,12 +95,21 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   Widget _contentWidget(int nextStep) {
+//    _tabController = new TabController(initialIndex: 0, length: 5, vsync: this);
     return new Stack(
       children: [
         new Positioned.fill(
           child: _buildBackgroundView(),
         ),
         _buildAnimatedContentView(nextStep: nextStep, movingNext: movingNext),
+//        new Positioned(
+//          left: 0.0,
+//          right: 0.0,
+//          bottom: 120.0,
+//          child: new Center(
+//            child: new TabPageSelector(controller: _tabController),
+//          ),
+//        ),
         _buildBottomSection(),
       ],
     );
@@ -204,10 +215,11 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                     title: _title,
                     subtitle: _subtitle,
                   ),
-                  _buildBody(
-                      nextStep: previousStep,
-                      imageSize: imageSize,
-                      scale: false),
+                  new ScaleTransition(
+                    scale: _scaleOutAnimation,
+                    child: _buildBody(
+                        nextStep: previousStep, imageSize: imageSize),
+                  ),
                 ],
               ),
             ),
@@ -220,8 +232,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
                   title: _nextTitle,
                   subtitle: _nextSubtitle,
                 ),
-                _buildBody(
-                    nextStep: nextStep, imageSize: imageSize, scale: true),
+                new ScaleTransition(
+                  scale: _scaleInAnimation,
+                  child: _buildBody(nextStep: nextStep, imageSize: imageSize),
+                )
               ],
             ),
           )
@@ -230,23 +244,17 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     );
   }
 
-  Widget _buildBody(
-      {@required int nextStep,
-      @required double imageSize,
-      bool scale = false}) {
+  Widget _buildBody({@required int nextStep, @required double imageSize}) {
     if (nextStep == 2) {
       return new Stack(
         children: [
           new Padding(
             padding: const EdgeInsets.only(top: 40.0),
             child: new Center(
-              child: new ScaleTransition(
-                scale: scale ? _scaleInAnimation : _scaleOutAnimation,
-                child: new Image(
-                  width: imageSize,
-                  height: imageSize,
-                  image: new AssetImage(_steps[nextStep].imageUris[0]),
-                ),
+              child: new Image(
+                width: imageSize,
+                height: imageSize,
+                image: new AssetImage(_steps[nextStep].imageUris[0]),
               ),
             ),
           ),
@@ -372,13 +380,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           new Padding(
             padding: const EdgeInsets.only(top: 40.0),
             child: new Center(
-              child: new ScaleTransition(
-                scale: scale ? _scaleInAnimation : _scaleOutAnimation,
-                child: new Image(
-                  width: imageSize * 0.85,
-                  height: imageSize * 0.85,
-                  image: new AssetImage(_steps[nextStep].imageUris[5]),
-                ),
+              child: new Image(
+                width: imageSize * 0.85,
+                height: imageSize * 0.85,
+                image: new AssetImage(_steps[nextStep].imageUris[5]),
               ),
             ),
           ),
@@ -390,13 +395,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         child: new Center(
           child: new FadeTransition(
             opacity: _fadeInAnimation,
-            child: new ScaleTransition(
-              scale: scale ? _scaleInAnimation : _scaleOutAnimation,
-              child: new Image(
-                width: imageSize,
-                height: imageSize,
-                image: new AssetImage(_steps[nextStep].imageUris[0]),
-              ),
+            child: new Image(
+              width: imageSize,
+              height: imageSize,
+              image: new AssetImage(_steps[nextStep].imageUris[0]),
             ),
           ),
         ),
@@ -511,6 +513,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         } else {
           _startAnimation();
           _currentStep += movingNext ? 1 : -1;
+//          _tabController.animateTo(_currentStep);
         }
       },
       child: _contentWidget(_nextStep),
@@ -617,32 +620,32 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         controller: _animateInController);
     _scaleOutAnimation = _initAnimation(
         from: 1.0,
-        to: 1.0,
-        curve: Curves.linear,
+        to: 0.1,
+        curve: Curves.easeOut,
         controller: _animateOutController);
     _scaleInAnimation = _initAnimation(
-        from: 1.0,
+        from: 0.1,
         to: 1.0,
-        curve: Curves.easeOut,
+        curve: Curves.easeIn,
         controller: _animateInController);
     _textSlideInLeftAnimation = _initSlideAnimation(
-        from: const FractionalOffset(1.5, 0.0),
+        from: const FractionalOffset(1.25, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeInOut,
         controller: _slideInAnimationController);
     _textSlideInRightAnimation = _initSlideAnimation(
-        from: const FractionalOffset(-1.5, 0.0),
+        from: const FractionalOffset(-1.25, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeInOut,
         controller: _slideInAnimationController);
     _textSlideOutLeftAnimation = _initSlideAnimation(
         from: const FractionalOffset(0.0, 0.0),
-        to: const FractionalOffset(1.5, 0.0),
+        to: const FractionalOffset(1.25, 0.0),
         curve: Curves.easeInOut,
         controller: _slideOutAnimationController);
     _textSlideOutRightAnimation = _initSlideAnimation(
         from: const FractionalOffset(0.0, 0.0),
-        to: const FractionalOffset(-1.5, 0.0),
+        to: const FractionalOffset(-1.25, 0.0),
         curve: Curves.easeInOut,
         controller: _slideOutAnimationController);
     _widgetScaleInAnimation1 = _initAnimation(
