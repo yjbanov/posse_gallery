@@ -443,6 +443,9 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   Widget _buildGestureDetector() {
     return new GestureDetector(
+      onHorizontalDragStart: (details) {
+//        _reverseSecondaryWidgetAnimations();
+      },
       onHorizontalDragUpdate: (details) {
         _swipeAmount += -details.delta.dx;
         double interpolationValue = _swipeAmount / _kSwipeThreshold;
@@ -450,7 +453,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         movingNext = interpolationValue >= 0;
         if (movingNext && _currentStep == _steps.length - 1 ||
             !movingNext && _currentStep == 0) {
-//          print("User is attempting to swipe out of bounds, return");
           _swipeAmount = 0.0;
           return;
         }
@@ -466,12 +468,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         _imageSlideUpAnimationController.value = interpolationValue;
         _animateInController.value = interpolationValue;
 
-        // We may need to set the next animations if the user has reversed directions
         int previousNextStep = _nextStep;
         _nextStep = movingNext ? _currentStep + 1 : _currentStep - 1;
-//        print("current step: $_currentStep");
-//        print("next step: $_nextStep");
-//        print("interp val: $interpolationValue");
 
         if (interpolationValue >= 1.0 || previousNextStep != _nextStep) {
           setState(() {
@@ -483,20 +481,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             _nextSubtitle = _steps[_nextStep].subtitle;
             _title = _steps[_currentStep].title;
             _subtitle = _steps[_currentStep].subtitle;
-          });
-        }
-
-//        if (!_animateInController.isAnimating &&
-//            !_animateOutController.isAnimating &&
-//            interpolationValue >= 1.0) {
-//
-//          _swipeAmount = 0.0;
-//          _currentStep = _nextStep;
-//          setState(() {
-//            if (_nextStep >= 0 && _nextStep < _steps.length) {
-//              _nextTitle = _steps[_nextStep].title;
-//              _nextSubtitle = _steps[_nextStep].subtitle;
-//            }
 //            if (movingNext && _currentStep + 1 < _steps.length) {
 //              _bgOffset -= MediaQuery
 //                  .of(context)
@@ -508,13 +492,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 //                  .size
 //                  .width / 5;
 //            }
-//            if (_currentStep >= 0 && _currentStep < _steps.length) {
-//              _title = _steps[_currentStep].title;
-//              _subtitle = _steps[_currentStep].subtitle;
-//            }
-//          });
-//          _resetAnimationControllers();
-//        }
+          });
+        }
       },
       onHorizontalDragEnd: (DragEndDetails details) {
         double interpolationValue = (_swipeAmount / _kSwipeThreshold);
@@ -528,6 +507,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         interpolationValue = interpolationValue.abs();
         if (interpolationValue < 0.33) {
           _reverseAnimation();
+//          _startSecondaryWidgetAnimation();
         } else {
           _startAnimation();
           _currentStep += movingNext ? 1 : -1;
@@ -742,7 +722,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     _slideInAnimationController.reverse();
     _imageSlideUpAnimationController.reverse();
     _animateInController.reverse();
-    _reverseSecondaryWidgetAnimations();
   }
 
   _startAnimation() {
@@ -757,15 +736,18 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   _reverseSecondaryWidgetAnimations() {
-    _widgetScaleInController1.reverse();
-    _widgetScaleInController2.reverse();
-    _widgetScaleInController3.reverse();
-    _widgetScaleInController4.reverse();
-    _widgetScaleInController5.reverse();
-    _widgetScaleInController6.reverse();
-    _widgetScaleInController7.reverse();
-    _widgetScaleInController8.reverse();
-    _widgetScaleInController9.reverse();
+    if (_currentStep == 2) {
+      _widgetScaleInController1.reverse();
+      _widgetScaleInController2.reverse();
+      _widgetScaleInController3.reverse();
+      _widgetScaleInController4.reverse();
+    } else if (_currentStep == 3) {
+      _widgetScaleInController5.reverse();
+      _widgetScaleInController6.reverse();
+      _widgetScaleInController7.reverse();
+      _widgetScaleInController8.reverse();
+      _widgetScaleInController9.reverse();
+    }
   }
 
   _startSecondaryWidgetAnimation() {
