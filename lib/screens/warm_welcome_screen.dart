@@ -94,21 +94,20 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   Widget _contentWidget(int nextStep) {
-//    _tabController = new TabController(initialIndex: 0, length: 5, vsync: this);
     return new Stack(
       children: [
         new Positioned.fill(
           child: _buildBackgroundView(),
         ),
         _buildAnimatedContentView(nextStep: nextStep, movingNext: movingNext),
-//        new Positioned(
-//          left: 0.0,
-//          right: 0.0,
-//          bottom: 120.0,
-//          child: new Center(
-//            child: new TabPageSelector(controller: _tabController),
-//          ),
-//        ),
+        new Positioned(
+          left: 0.0,
+          right: 0.0,
+          bottom: MediaQuery.of(context).size.height * 0.16,
+          child: new Center(
+            child: new TabPageSelector(controller: _tabController),
+          ),
+        ),
         _buildBottomSection(),
       ],
     );
@@ -135,6 +134,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   @override
   initState() {
     super.initState();
+    _tabController = new TabController(initialIndex: 0, length: 4, vsync: this);
     _steps = new WelcomeManager().steps();
     if (_steps[_currentStep] != null) {
       _title = _steps[_currentStep].title;
@@ -200,7 +200,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     return new Positioned(
       left: 30.0,
       right: 30.0,
-      top: 55.0,
+      top: 54.0,
       bottom: 0.0,
       child: new Stack(
         children: [
@@ -411,7 +411,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       child: new Container(
         width: 180.0,
         height: 46.0,
-        margin: const EdgeInsets.only(bottom: 40.0),
+        margin: const EdgeInsets.only(bottom: 38.0),
         child: new RaisedButton(
           color: const Color(Constants.ColorPrimary),
           child: new Text(
@@ -444,9 +444,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   Widget _buildGestureDetector() {
     return new GestureDetector(
-      onHorizontalDragStart: (details) {
-//        _reverseSecondaryWidgetAnimations();
-      },
       onHorizontalDragUpdate: (details) {
         _swipeAmount += -details.delta.dx;
         double interpolationValue = _swipeAmount / MediaQuery.of(context).size.width;
@@ -475,6 +472,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           setState(() {
             if (interpolationValue >= 1.0) {
               _currentStep = _nextStep;
+//              _tabController.animateTo(_currentStep);
             }
             if (interpolationValue == 1.0) {
               _startSecondaryWidgetAnimation();
@@ -515,7 +513,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         } else {
           _startAnimation();
           _currentStep += movingNext ? 1 : -1;
-//          _tabController.animateTo(_currentStep);
+          _tabController.animateTo(_currentStep);
         }
       },
       child: _contentWidget(_nextStep),
