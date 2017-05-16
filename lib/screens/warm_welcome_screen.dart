@@ -25,7 +25,6 @@ class WarmWelcomeScreen extends StatefulWidget {
 
 class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     with TickerProviderStateMixin {
-  static const double _kSwipeThreshold = 160.0;
   static const int _kAnimateOutDuration = 400;
   static const int _kAnimateInDuration = 600;
   static const int _kParallaxAnimationDuration = 600;
@@ -450,8 +449,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       },
       onHorizontalDragUpdate: (details) {
         _swipeAmount += -details.delta.dx;
-        double interpolationValue = _swipeAmount / _kSwipeThreshold;
-
+        double interpolationValue = _swipeAmount / MediaQuery.of(context).size.width;
+//        print(interpolationValue);
         movingNext = interpolationValue >= 0;
         if (movingNext && _currentStep == _steps.length - 1 ||
             !movingNext && _currentStep == 0) {
@@ -472,11 +471,13 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
         int previousNextStep = _nextStep;
         _nextStep = movingNext ? _currentStep + 1 : _currentStep - 1;
-
         if (interpolationValue >= 1.0 || previousNextStep != _nextStep) {
           setState(() {
             if (interpolationValue >= 1.0) {
               _currentStep = _nextStep;
+            }
+            if (interpolationValue == 1.0) {
+              _startSecondaryWidgetAnimation();
             }
             _swipeAmount = 0.0;
             _nextTitle = _steps[_nextStep].title;
@@ -498,7 +499,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         }
       },
       onHorizontalDragEnd: (DragEndDetails details) {
-        double interpolationValue = (_swipeAmount / _kSwipeThreshold);
+        double interpolationValue = (_swipeAmount / MediaQuery.of(context).size.width);
         _swipeAmount = 0.0;
         if (interpolationValue <= 0.0 && _currentStep == 0) {
           return;
@@ -507,9 +508,10 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           return;
         }
         interpolationValue = interpolationValue.abs();
+//        print(interpolationValue);
         if (interpolationValue < 0.33) {
           _reverseAnimation();
-//          _startSecondaryWidgetAnimation();
+          _startSecondaryWidgetAnimation();
         } else {
           _startAnimation();
           _currentStep += movingNext ? 1 : -1;
@@ -621,31 +623,31 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     _scaleOutAnimation = _initAnimation(
         from: 1.0,
         to: 0.1,
-        curve: Curves.easeOut,
+        curve: Curves.linear,
         controller: _animateOutController);
     _scaleInAnimation = _initAnimation(
         from: 0.1,
         to: 1.0,
-        curve: Curves.easeIn,
+        curve: Curves.linear,
         controller: _animateInController);
     _textSlideInLeftAnimation = _initSlideAnimation(
-        from: const FractionalOffset(1.25, 0.0),
+        from: const FractionalOffset(1.5, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeInOut,
         controller: _slideInAnimationController);
     _textSlideInRightAnimation = _initSlideAnimation(
-        from: const FractionalOffset(-1.25, 0.0),
+        from: const FractionalOffset(-1.5, 0.0),
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeInOut,
         controller: _slideInAnimationController);
     _textSlideOutLeftAnimation = _initSlideAnimation(
         from: const FractionalOffset(0.0, 0.0),
-        to: const FractionalOffset(1.25, 0.0),
+        to: const FractionalOffset(1.5, 0.0),
         curve: Curves.easeInOut,
         controller: _slideOutAnimationController);
     _textSlideOutRightAnimation = _initSlideAnimation(
         from: const FractionalOffset(0.0, 0.0),
-        to: const FractionalOffset(-1.25, 0.0),
+        to: const FractionalOffset(-1.5, 0.0),
         curve: Curves.easeInOut,
         controller: _slideOutAnimationController);
     _widgetScaleInAnimation1 = _initAnimation(
@@ -733,6 +735,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     _slideInAnimationController.forward();
     _slideOutAnimationController.forward();
     _imageSlideUpAnimationController.forward();
+//    print("start");
     _animateInController.forward().whenComplete(() {
       _startSecondaryWidgetAnimation();
     });
@@ -754,6 +757,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   _startSecondaryWidgetAnimation() {
+//    print("secondary");
     if (_currentStep == 2) {
       _widgetScaleInController3.forward().whenComplete(() {
         _widgetScaleInController4.forward().whenComplete(() {
