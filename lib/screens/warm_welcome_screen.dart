@@ -26,12 +26,10 @@ class WarmWelcomeScreen extends StatefulWidget {
 class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     with TickerProviderStateMixin {
   static const double _kSwipeThreshold = 160.0;
-
   static const int _kAnimateOutDuration = 400;
   static const int _kAnimateInDuration = 600;
   static const int _kParallaxAnimationDuration = 600;
   static const int _kWidgetScaleInDuration = 200;
-
   static const int _kImageSlideUpDuration = 500;
   static const int _kSlideInDuration = 600;
 
@@ -46,34 +44,32 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   Animation<double> _scaleInAnimation;
   Animation<FractionalOffset> _textSlideInLeftAnimation;
   Animation<FractionalOffset> _textSlideInRightAnimation;
-  Animation<FractionalOffset> _imageSlideUpAnimation;
-
-  Animation<double> _iPhoneScaleInAnimation;
-  Animation<double> _pixelScaleInAnimation;
-
   Animation<double> _widgetScaleInAnimation1;
-
   Animation<double> _widgetScaleInAnimation2;
   Animation<double> _widgetScaleInAnimation3;
-
   Animation<double> _widgetScaleInAnimation4;
-
   Animation<double> _widgetScaleInAnimation5;
+  Animation<double> _widgetScaleInAnimation6;
+  Animation<double> _widgetScaleInAnimation7;
+  Animation<double> _widgetScaleInAnimation8;
+  Animation<double> _widgetScaleInAnimation9;
+
   AnimationController _animateOutController;
   AnimationController _animateInController;
   AnimationController _slideInAnimationController;
   AnimationController _iPhoneAnimationController;
-
   AnimationController _pixelAnimationController;
   AnimationController _imageSlideUpAnimationController;
   AnimationController _widgetScaleInController1;
-
   AnimationController _widgetScaleInController2;
-
   AnimationController _widgetScaleInController3;
-
   AnimationController _widgetScaleInController4;
   AnimationController _widgetScaleInController5;
+  AnimationController _widgetScaleInController6;
+  AnimationController _widgetScaleInController7;
+  AnimationController _widgetScaleInController8;
+  AnimationController _widgetScaleInController9;
+
   List<WelcomeStep> _steps;
   int _currentStep = 0;
   int _nextStep = 1;
@@ -90,8 +86,20 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   @override
   Widget build(BuildContext context) {
     return new Material(
-      color: const Color(0xFFFFFFFF),
+      color: Colors.white,
       child: _buildGestureDetector(),
+    );
+  }
+
+  Widget _contentWidget(int nextStep) {
+    return new Stack(
+      children: [
+        new Positioned.fill(
+          child: _buildBackgroundView(),
+        ),
+        _buildAnimatedContentView(nextStep: nextStep, movingNext: movingNext),
+        _buildBottomSection(),
+      ],
     );
   }
 
@@ -100,12 +108,15 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     _animateOutController.dispose();
     _animateInController.dispose();
     _slideInAnimationController.dispose();
-    _imageSlideUpAnimationController.dispose();
     _widgetScaleInController1.dispose();
     _widgetScaleInController2.dispose();
     _widgetScaleInController3.dispose();
     _widgetScaleInController4.dispose();
     _widgetScaleInController5.dispose();
+    _widgetScaleInController6.dispose();
+    _widgetScaleInController7.dispose();
+    _widgetScaleInController8.dispose();
+    _widgetScaleInController9.dispose();
     super.dispose();
   }
 
@@ -125,16 +136,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   Widget _buildAnimatedContentView({int nextStep, bool movingNext}) {
-    String nextTitle = _title;
-    String nextSubtitle = _subtitle;
-    if (movingNext && _steps[nextStep] != null) {
-      nextTitle = _nextTitle;
-      nextSubtitle = _nextSubtitle;
-    }
     double imageSize = MediaQuery.of(context).size.width * 0.85;
-    if (MediaQuery.of(context).orientation == Orientation.landscape) {
-      imageSize = MediaQuery.of(context).size.height * 0.25;
-    }
     int previousStep = nextStep;
     if (nextStep != 0) {
       previousStep = movingNext ? nextStep - 1 : nextStep + 1;
@@ -142,8 +144,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       previousStep += 1;
     }
     AssetImage previousImage;
-    String previousTitle = _steps[previousStep].title;
-    String previousSubtitle = _steps[previousStep].subtitle;
     if (previousStep == 3) {
       previousImage = new AssetImage(_steps[previousStep].imageUris[5]);
     } else {
@@ -162,8 +162,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             opacity: _fadeOutAnimation,
             child: new Column(
               children: [
-                _buildTitleSection(
-                    title: _title, subtitle: _subtitle),
+                _buildTitleSection(title: _title, subtitle: _subtitle),
                 new Padding(
                   padding: const EdgeInsets.only(top: 40.0),
                   child: new Center(
@@ -314,7 +313,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             top: 35.0,
             left: 20.0,
             child: new ScaleTransition(
-              scale: _widgetScaleInAnimation1,
+              scale: _widgetScaleInAnimation5,
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
@@ -328,7 +327,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             top: 35.0,
             right: 25.0,
             child: new ScaleTransition(
-              scale: _widgetScaleInAnimation2,
+              scale: _widgetScaleInAnimation6,
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
@@ -342,7 +341,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             top: 135.0,
             right: 35.0,
             child: new ScaleTransition(
-              scale: _widgetScaleInAnimation3,
+              scale: _widgetScaleInAnimation7,
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
@@ -356,7 +355,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             bottom: 0.0,
             left: 18.0,
             child: new ScaleTransition(
-              scale: _widgetScaleInAnimation4,
+              scale: _widgetScaleInAnimation8,
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
@@ -370,7 +369,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             bottom: 0.0,
             right: 15.0,
             child: new ScaleTransition(
-              scale: _widgetScaleInAnimation5,
+              scale: _widgetScaleInAnimation9,
               child: new Opacity(
                 opacity: 0.3,
                 child: new Image(
@@ -469,8 +468,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
         movingNext = interpolationValue >= 0;
         if (movingNext && _currentStep == _steps.length - 1 ||
-          !movingNext && _currentStep == 0) {
-          print("User is attempting to swipe out of bounds, return");
+            !movingNext && _currentStep == 0) {
+//          print("User is attempting to swipe out of bounds, return");
           _swipeAmount = 0.0;
           return;
         }
@@ -488,10 +487,9 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         // We may need to set the next animations if the user has reversed directions
         int previousNextStep = _nextStep;
         _nextStep = movingNext ? _currentStep + 1 : _currentStep - 1;
-
-        print("current step: $_currentStep");
-        print("next step: $_nextStep");
-        print("interp val: $interpolationValue");
+//        print("current step: $_currentStep");
+//        print("next step: $_nextStep");
+//        print("interp val: $interpolationValue");
 
         if (interpolationValue >= 1.0 || previousNextStep != _nextStep) {
           setState(() {
@@ -536,7 +534,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 //          _resetAnimationControllers();
 //        }
       },
-      onHorizontalDragEnd: (details) {
+      onHorizontalDragEnd: (DragEndDetails details) {
         double interpolationValue = (_swipeAmount / _kSwipeThreshold);
         _swipeAmount = 0.0;
         if (interpolationValue <= 0.0 && _currentStep == 0) {
@@ -547,16 +545,11 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         }
         interpolationValue = interpolationValue.abs();
         if (interpolationValue < 0.33) {
-          _reverseAnimation();
+            _reverseAnimation();
         } else {
           _startAnimation();
-          if (movingNext) {
-            _currentStep += 1;
-          } else {
-            _currentStep -= 1;
-          }
+          _currentStep += movingNext ? 1 : -1;
         }
-
       },
       child: _contentWidget(_nextStep),
     );
@@ -638,6 +631,22 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       duration: const Duration(milliseconds: _kWidgetScaleInDuration),
       vsync: this,
     );
+    _widgetScaleInController6 = new AnimationController(
+      duration: const Duration(milliseconds: _kWidgetScaleInDuration),
+      vsync: this,
+    );
+    _widgetScaleInController7 = new AnimationController(
+      duration: const Duration(milliseconds: _kWidgetScaleInDuration),
+      vsync: this,
+    );
+    _widgetScaleInController8 = new AnimationController(
+      duration: const Duration(milliseconds: _kWidgetScaleInDuration),
+      vsync: this,
+    );
+    _widgetScaleInController9 = new AnimationController(
+      duration: const Duration(milliseconds: _kWidgetScaleInDuration),
+      vsync: this,
+    );
     _fadeOutAnimation = _initAnimation(
         from: 1.0,
         to: 0.0,
@@ -668,58 +677,51 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         to: const FractionalOffset(0.0, 0.0),
         curve: Curves.easeInOut,
         controller: _slideInAnimationController);
-    _imageSlideUpAnimation = _initSlideAnimation(
-        from: const FractionalOffset(0.0, 1.0),
-        to: const FractionalOffset(0.0, 0.0),
-        curve: Curves.decelerate,
-        controller: _imageSlideUpAnimationController);
-    _iPhoneScaleInAnimation = _initAnimation(
-        from: 0.0,
-        to: 1.0,
-        curve: Curves.easeOut,
-        controller: _iPhoneAnimationController);
-    _pixelScaleInAnimation = _initAnimation(
-        from: 0.0,
-        to: 1.0,
-        curve: Curves.easeOut,
-        controller: _pixelAnimationController);
     _widgetScaleInAnimation1 = _initAnimation(
-        from: 0.0,
+        from: 0.01,
         to: 1.0,
         curve: Curves.decelerate,
         controller: _widgetScaleInController1);
     _widgetScaleInAnimation2 = _initAnimation(
-        from: 0.0,
+        from: 0.01,
         to: 1.0,
         curve: Curves.decelerate,
         controller: _widgetScaleInController2);
     _widgetScaleInAnimation3 = _initAnimation(
-        from: 0.0,
+        from: 0.01,
         to: 1.0,
         curve: Curves.decelerate,
         controller: _widgetScaleInController3);
     _widgetScaleInAnimation4 = _initAnimation(
-        from: 0.0,
+        from: 0.01,
         to: 1.0,
         curve: Curves.decelerate,
         controller: _widgetScaleInController4);
     _widgetScaleInAnimation5 = _initAnimation(
-        from: 0.0,
+        from: 0.01,
         to: 1.0,
         curve: Curves.decelerate,
         controller: _widgetScaleInController5);
-  }
-
-  Widget _contentWidget(int nextStep) {
-    return new Stack(
-      children: [
-        new Positioned.fill(
-          child: _buildBackgroundView(),
-        ),
-        _buildAnimatedContentView(nextStep: nextStep, movingNext: movingNext),
-        _buildBottomSection(),
-      ],
-    );
+    _widgetScaleInAnimation6 = _initAnimation(
+        from: 0.01,
+        to: 1.0,
+        curve: Curves.decelerate,
+        controller: _widgetScaleInController6);
+    _widgetScaleInAnimation7 = _initAnimation(
+        from: 0.01,
+        to: 1.0,
+        curve: Curves.decelerate,
+        controller: _widgetScaleInController7);
+    _widgetScaleInAnimation8 = _initAnimation(
+        from: 0.01,
+        to: 1.0,
+        curve: Curves.decelerate,
+        controller: _widgetScaleInController8);
+    _widgetScaleInAnimation9 = _initAnimation(
+        from: 0.01,
+        to: 1.0,
+        curve: Curves.decelerate,
+        controller: _widgetScaleInController9);
   }
 
   Animation<double> _initAnimation(
@@ -746,52 +748,59 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
   }
 
-  _resetAnimationControllers() {
-    _animateOutController.value = 0.0;
-    _animateInController.value = 0.0;
-    _slideInAnimationController.value = 0.0;
-    _imageSlideUpAnimationController.value = 0.0;
-    _widgetScaleInController1.value = 0.0;
-    _widgetScaleInController2.value = 0.0;
-    _widgetScaleInController3.value = 0.0;
-    _widgetScaleInController4.value = 0.0;
-    _widgetScaleInController5.value = 0.0;
-  }
-
-  _startAnimation() {
-    _animateOutController.forward();
-    _slideInAnimationController.forward();
-    _imageSlideUpAnimationController.forward();
-    _animateInController.forward().whenComplete(() {
-      if (_currentStep == 0) {
-        _iPhoneAnimationController.forward().whenComplete(() {
-          _pixelAnimationController.forward().whenComplete(() {});
-        });
-      } else if (_currentStep == 2) {
-        _widgetScaleInController3.forward().whenComplete(() {
-          _widgetScaleInController4.forward().whenComplete(() {
-            _widgetScaleInController1.forward().whenComplete(() {
-              _widgetScaleInController2.forward().whenComplete(() {});
-            });
-          });
-        });
-      } else if (_currentStep == 3) {
-        _widgetScaleInController5.forward().whenComplete(() {
-          _widgetScaleInController2.forward().whenComplete(() {
-            _widgetScaleInController1.forward().whenComplete(() {
-              _widgetScaleInController3.forward().whenComplete(() {
-                _widgetScaleInController4.forward().whenComplete(() {});
-              });
-            });
-          });
-        });
-      }
-    });
-  }
   _reverseAnimation() {
     _animateOutController.reverse();
     _slideInAnimationController.reverse();
     _imageSlideUpAnimationController.reverse();
     _animateInController.reverse();
+    _reverseSecondaryWidgetAnimations();
+  }
+
+  _startAnimation() {
+    _reverseSecondaryWidgetAnimations();
+    _animateOutController.forward();
+    _slideInAnimationController.forward();
+    _imageSlideUpAnimationController.forward();
+    _animateInController.forward().whenComplete(() {
+      _startSecondaryWidgetAnimation();
+    });
+  }
+
+  _reverseSecondaryWidgetAnimations() {
+    _widgetScaleInController1.reverse();
+    _widgetScaleInController2.reverse();
+    _widgetScaleInController3.reverse();
+    _widgetScaleInController4.reverse();
+    _widgetScaleInController5.reverse();
+    _widgetScaleInController6.reverse();
+    _widgetScaleInController7.reverse();
+    _widgetScaleInController8.reverse();
+    _widgetScaleInController9.reverse();
+  }
+
+  _startSecondaryWidgetAnimation() {
+    if (_currentStep == 0) {
+      _iPhoneAnimationController.forward().whenComplete(() {
+        _pixelAnimationController.forward().whenComplete(() {});
+      });
+    } else if (_currentStep == 2) {
+      _widgetScaleInController3.forward().whenComplete(() {
+        _widgetScaleInController4.forward().whenComplete(() {
+          _widgetScaleInController1.forward().whenComplete(() {
+            _widgetScaleInController2.forward().whenComplete(() {});
+          });
+        });
+      });
+    } else if (_currentStep == 3) {
+      _widgetScaleInController5.forward().whenComplete(() {
+        _widgetScaleInController6.forward().whenComplete(() {
+          _widgetScaleInController7.forward().whenComplete(() {
+            _widgetScaleInController8.forward().whenComplete(() {
+              _widgetScaleInController9.forward().whenComplete(() {});
+            });
+          });
+        });
+      });
+    }
   }
 }
