@@ -450,7 +450,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       onHorizontalDragUpdate: (details) {
         _swipeAmount += -details.delta.dx;
         double interpolationValue = _swipeAmount / MediaQuery.of(context).size.width;
-
+//        print(interpolationValue);
         movingNext = interpolationValue >= 0;
         if (movingNext && _currentStep == _steps.length - 1 ||
             !movingNext && _currentStep == 0) {
@@ -511,7 +511,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 //        print(interpolationValue);
         if (interpolationValue < 0.33) {
           _reverseAnimation();
-//          _startSecondaryWidgetAnimation();
+          _startSecondaryWidgetAnimation();
         } else {
           _startAnimation();
           _currentStep += movingNext ? 1 : -1;
