@@ -204,24 +204,17 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       bottom: 0.0,
       child: new Stack(
         children: [
-          new SlideTransition(
-            position: slideOutAnimation,
-            child: new FadeTransition(
-              opacity: _fadeOutAnimation,
-              child: new Column(
-                children: [
-                  _buildTitleSection(
-                    title: _title,
-                    subtitle: _subtitle,
-                  ),
-                  new ScaleTransition(
-                    scale: _scaleOutAnimation,
-                    child: _buildBody(
-                        nextStep: previousStep, imageSize: imageSize),
-                  ),
-                ],
+          new Column(
+            children: [
+              _buildTitleSection(
+                title: _title,
+                subtitle: _subtitle,
               ),
-            ),
+              new ScaleTransition(
+                scale: _scaleOutAnimation,
+                child: _buildBody(nextStep: previousStep, imageSize: imageSize),
+              ),
+            ],
           ),
           new SlideTransition(
             position: slideInAnimation,
@@ -446,7 +439,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     return new GestureDetector(
       onHorizontalDragUpdate: (details) {
         _swipeAmount += -details.delta.dx;
-        double interpolationValue = _swipeAmount / MediaQuery.of(context).size.width;
+        double interpolationValue =
+            _swipeAmount / MediaQuery.of(context).size.width;
 //        print(interpolationValue);
         movingNext = interpolationValue >= 0;
         if (movingNext && _currentStep == _steps.length - 1 ||
@@ -497,7 +491,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         }
       },
       onHorizontalDragEnd: (DragEndDetails details) {
-        double interpolationValue = (_swipeAmount / MediaQuery.of(context).size.width);
+        double interpolationValue =
+            (_swipeAmount / MediaQuery.of(context).size.width);
         _swipeAmount = 0.0;
         if (interpolationValue <= 0.0 && _currentStep == 0) {
           return;
