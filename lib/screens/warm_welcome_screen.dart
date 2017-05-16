@@ -507,7 +507,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         }
         interpolationValue = interpolationValue.abs();
 //        print(interpolationValue);
-        if (interpolationValue < 0.25) {
+        if (interpolationValue < 0.1) {
           _reverseAnimation();
           _startSecondaryWidgetAnimation();
         } else {
