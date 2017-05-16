@@ -79,7 +79,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     _slideInAnimationController.forward();
   }
 
-  void showDemoDialog<T>({BuildContext context, Widget child}) {
+  showDemoDialog<T>({BuildContext context, Widget child}) {
     showDialog<T>(
       context: context,
       child: child,
