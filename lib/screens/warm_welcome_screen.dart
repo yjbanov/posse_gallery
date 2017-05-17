@@ -1,14 +1,13 @@
+// ignore: invalid_constant
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:posse_gallery/config/constants.dart';
 import 'package:posse_gallery/managers/welcome_manager.dart';
 import 'package:posse_gallery/screens/main_screen.dart';
 
-
 class SecondaryWidgetHolder {
-
-  SecondaryWidgetHolder({this.top, this.right, this.bottom, this.left,
-    @required this.child});
+  SecondaryWidgetHolder(
+      {this.top, this.right, this.bottom, this.left, @required this.child});
 
   double top;
   double right;
@@ -21,7 +20,7 @@ class WarmWelcomeScreen extends StatefulWidget {
   WarmWelcomeScreen({Key key, this.isInitialScreen = true}) : super(key: key);
 
   final bool
-  isInitialScreen; // is the screen being displayed as a demo item or not?
+      isInitialScreen; // is the screen being displayed as a demo item or not?
 
   @override
   _WarmWelcomeScreenState createState() =>
@@ -34,7 +33,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
   static const int _kParallaxAnimationDuration = 400;
   bool isInitialScreen =
-  true; // is the screen being displayed as a demo item or not?
+      true; // is the screen being displayed as a demo item or not?
 
   var _steps = new WelcomeManager().steps();
   TabController _tabController;
@@ -45,7 +44,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   List<AnimationController> _inAnimationControllers = <AnimationController>[];
   List<AnimationController> _outAnimationControllers = <AnimationController>[];
   Map<int, AnimationController> _secondaryAnimationControllers =
-  <int, AnimationController>{};
+      <int, AnimationController>{};
 
   _makeAnimatedContentWidget({Widget child}) {
     // out animation
@@ -104,19 +103,19 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     return inAnimationWrapper;
   }
 
-  _contentWidget({Widget contentChild, String title, String subtitle,
-    bool hasSecondary = false, int pageIndex}) {
+  _contentWidget(
+      {Widget contentChild,
+      String title,
+      String subtitle,
+      bool hasSecondary = false,
+      int pageIndex}) {
     var contentStackChildren = <Widget>[];
     contentStackChildren.add(contentChild);
     if (hasSecondary) {
       contentStackChildren.addAll(_secondaryWidgets(pageIndex));
     }
 
-
     var stackChildren = <Widget>[
-      new Positioned.fill(
-        child: _buildBackgroundView(),
-      ),
       new Positioned.fill(
         top: 65.0,
         child: new Padding(
@@ -143,15 +142,14 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       new Center(
         child: _makeAnimatedContentWidget(
             child: new Container(
-              width: 300.0, height: 300.0,
-              child: new Stack(
-                children: contentStackChildren,
-              ),
-            )
-        ),
+          width: 300.0,
+          height: 300.0,
+          child: new Stack(
+            children: contentStackChildren,
+          ),
+        )),
       ),
     ];
-
 
     return new Stack(
       children: stackChildren,
@@ -169,7 +167,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       );
       _secondaryAnimationControllers[index] = controller;
 
-
       var begins = <double>[0.0, 0.55, 0.25, 0.75];
       var ends = <double>[0.5, 1.0, 0.75, 1.0];
       var scaleAnimations = <int, Animation<double>>{};
@@ -181,91 +178,151 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         final scaleTween = new Tween(
           begin: 0.0,
           end: 1.0,
-        ).animate(scaleAnimation);
+        )
+            .animate(scaleAnimation);
         scaleAnimations[a] = scaleTween;
       }
 
-
       holders = <SecondaryWidgetHolder>[
         new SecondaryWidgetHolder(
-          top: 40.0, left: 10.0,
+          top: 5.0,
+          left: 10.0,
           child: new ScaleTransition(
             scale: scaleAnimations[0],
             child: new Image(
-              height: 40.0, image: new AssetImage(_steps[index].imageUris[1]),
+              height: 55.0,
+              image: new AssetImage(_steps[index].imageUris[1]),
             ),
           ),
         ),
         new SecondaryWidgetHolder(
-          top: 100.0, right: 10.0,
+          top: 70.0,
+          right: 30.0,
           child: new ScaleTransition(
             scale: scaleAnimations[1],
             child: new Image(
-              height: 35.0, image: new AssetImage(_steps[index].imageUris[2]),
+              height: 40.0,
+              image: new AssetImage(_steps[index].imageUris[2]),
             ),
           ),
         ),
         new SecondaryWidgetHolder(
-          bottom: 75.0, left: 30.0,
+          bottom: 80.0,
+          left: 25.0,
           child: new ScaleTransition(
             scale: scaleAnimations[2],
             child: new Image(
-              height: 35.0, image: new AssetImage(_steps[index].imageUris[3]),
+              height: 35.0,
+              image: new AssetImage(_steps[index].imageUris[3]),
             ),
           ),
         ),
         new SecondaryWidgetHolder(
-          bottom: 15.0, left: 60.0,
+          bottom: 30.0,
+          right: 60.0,
           child: new ScaleTransition(
             scale: scaleAnimations[3],
             child: new Image(
-              height: 50.0, image: new AssetImage(_steps[index].imageUris[4]),
+              height: 30.0,
+              image: new AssetImage(_steps[index].imageUris[4]),
             ),
           ),
         ),
       ];
     } else if (index == 3) {
-      final widget1 = new Positioned(
-        top: 35.0,
-        left: 20.0,
-        child: new Image(
-            height: 35.0, image: new AssetImage(_steps[3].imageUris[1])),
+      AnimationController controller = new AnimationController(
+        duration: new Duration(milliseconds: 750),
+        vsync: this,
       );
-      final widget2 = new Positioned(
-        top: 35.0,
-        right: 25.0,
-        child: new Image(
-            height: 60.0, image: new AssetImage(_steps[3].imageUris[2])),
-      );
-      final widget3 = new Positioned(
-        top: 135.0,
-        right: 35.0,
-        child: new Image(
-            height: 35.0, image: new AssetImage(_steps[3].imageUris[3])),
-      );
-      final widget4 = new Positioned(
-        bottom: 0.0,
-        left: 18.0,
-        child: new Image(image: new AssetImage(_steps[3].imageUris[4])),
-      );
-      final widget5 = new Positioned(
-        bottom: 0.0,
-        left: 15.0,
-        child: new Image(image: new AssetImage(_steps[3].imageUris[5])),
-      );
+      _secondaryAnimationControllers[index] = controller;
+
+      var begins = <double>[0.0, 0.55, 0.25, 0.75, 0.3];
+      var ends = <double>[0.5, 1.0, 0.75, 1.0, 0.9];
+      var scaleAnimations = <int, Animation<double>>{};
+      for (int a = 0; a < 5; a++) {
+        Animation<double> scaleAnimation = new CurvedAnimation(
+          parent: controller,
+          curve: new Interval(begins[a], ends[a], curve: Curves.easeIn),
+        );
+        final scaleTween = new Tween(
+          begin: 0.0,
+          end: 1.0,
+        )
+            .animate(scaleAnimation);
+        scaleAnimations[a] = scaleTween;
+      }
+
+      holders = <SecondaryWidgetHolder>[
+        new SecondaryWidgetHolder(
+          top: 35.0,
+          left: 10.0,
+          child: new ScaleTransition(
+            scale: scaleAnimations[0],
+            child: new Image(
+              height: 50.0,
+              image: new AssetImage(_steps[index].imageUris[1]),
+            ),
+          ),
+        ),
+        new SecondaryWidgetHolder(
+          top: 30.0,
+          right: 20.0,
+          child: new ScaleTransition(
+            scale: scaleAnimations[1],
+            child: new Image(
+              height: 60.0,
+              image: new AssetImage(_steps[index].imageUris[2]),
+            ),
+          ),
+        ),
+        new SecondaryWidgetHolder(
+          top: 135.0,
+          right: 35.0,
+          child: new ScaleTransition(
+            scale: scaleAnimations[2],
+            child: new Image(
+              height: 35.0,
+              image: new AssetImage(_steps[index].imageUris[3]),
+            ),
+          ),
+        ),
+        new SecondaryWidgetHolder(
+          bottom: 30.0,
+          left: 18.0,
+          child: new ScaleTransition(
+            scale: scaleAnimations[3],
+            child: new Image(
+              height: 30.0,
+              image: new AssetImage(_steps[index].imageUris[4]),
+            ),
+          ),
+        ),
+        new SecondaryWidgetHolder(
+          bottom: 20.0,
+          right: 30.0,
+          child: new ScaleTransition(
+            scale: scaleAnimations[4],
+            child: new Image(
+              height: 65.0,
+              image: new AssetImage(_steps[index].imageUris[5]),
+            ),
+          ),
+        ),
+      ];
     }
 
     for (int i = 0; i < holders.length; i++) {
       SecondaryWidgetHolder holder = holders[i];
-      widgets.add(new Positioned(
-        top: holder.top,
-        right: holder.right,
-        bottom: holder.bottom,
-        left: holder.left,
-        child: holder.child,
-      ));
+      widgets.add(
+        new Positioned(
+          top: holder.top,
+          right: holder.right,
+          bottom: holder.bottom,
+          left: holder.left,
+          child: holder.child,
+        ),
+      );
     }
-
     return widgets;
   }
 
@@ -315,10 +372,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     int moveDelta = 0;
     double startPixels = 0.0;
     bool updatePage = true;
-    final screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     _inAnimationControllers[0].value = 1.0;
 
@@ -331,34 +385,45 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             moveDelta = 0;
             startPixels = metrics.pixels;
             updatePage = true;
+            var secondaryAnimationController =
+                _secondaryAnimationControllers[_currentPage];
+            if (secondaryAnimationController != null &&
+                secondaryAnimationController.value != 0) {
+              secondaryAnimationController.duration =
+                  new Duration(milliseconds: 150);
+              secondaryAnimationController.reverse();
+            }
           } else if (notification is ScrollUpdateNotification) {
             final PageMetrics metrics = notification.metrics;
             final int page = (metrics.pixels / screenWidth).floor();
-            if (updatePage) {
-              moveDelta = (metrics.pixels > startPixels ? 1 : -1);
-              updatePage = false;
-              var nextPage = (_currentPage + moveDelta)
-                  .clamp(0, _inAnimationControllers.length - 1);
-              _currentPage = nextPage;
-              _tabController.animateTo(_currentPage);
-            }
             final offset = (metrics.pixels - (page * screenWidth))
                 .clamp(0, double.MAX_FINITE);
             _outAnimationControllers[page].value = (offset / screenWidth);
             if (page < (_inAnimationControllers.length - 1)) {
               _inAnimationControllers[page + 1].value = (offset / screenWidth);
             }
+            print(offset);
           } else if (notification is ScrollEndNotification) {
             // TODO - do pop pop animations
-            var secondaryAnimationController = _secondaryAnimationControllers[_currentPage];
+            final PageMetrics metrics = notification.metrics;
+            _currentPage = metrics.page.round();
+            var secondaryAnimationController =
+                _secondaryAnimationControllers[_currentPage];
             if (secondaryAnimationController != null) {
+              secondaryAnimationController.value = 0.0;
+              secondaryAnimationController.duration =
+                  new Duration(milliseconds: 450);
               secondaryAnimationController.forward();
             }
+            _tabController.animateTo(_currentPage);
           }
           return false;
         },
         child: new Stack(
           children: <Widget>[
+            new Positioned.fill(
+              child: _buildBackgroundView(),
+            ),
             new Positioned.fill(
               child: new PageView(
                 children: children,
@@ -410,10 +475,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           duration: new Duration(milliseconds: _kParallaxAnimationDuration),
           curve: const Interval(0.25, 1.0, curve: Curves.easeOut),
           child: new Image(
-            height: MediaQuery
-                .of(context)
-                .size
-                .height,
+            height: MediaQuery.of(context).size.height,
             image: new AssetImage("assets/backgrounds/bg_flutter_welcome.png"),
           ),
         ),
@@ -422,7 +484,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   }
 
   // actions
-  void _tappedContinue() {
+  _tappedContinue() {
     if (isInitialScreen) {
       Navigator.pushReplacement(
         context,

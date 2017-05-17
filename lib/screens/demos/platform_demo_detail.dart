@@ -98,13 +98,21 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     Color textColor = _targetPlatform == TargetPlatform.iOS
         ? const Color(0xFF3D3D3D)
         : Colors.white;
+    TextStyle iOSCartTextStyle = new TextStyle(
+      fontSize: 16.0,
+      fontWeight: FontWeight.normal,
+      color: textColor,
+    );
+    TextStyle androidCartTextStyle = new TextStyle(
+      fontSize: 16.0,
+      fontWeight: FontWeight.bold,
+      color: textColor,
+    );
     Text addToCartText = new Text(
       "ADD TO CART",
-      style: new TextStyle(
-        fontSize: 16.0,
-        fontWeight: FontWeight.bold,
-        color: textColor,
-      ),
+      style: _targetPlatform == TargetPlatform.iOS
+          ? iOSCartTextStyle
+          : androidCartTextStyle,
     );
     CupertinoButton cupertinoButton = new CupertinoButton(
       color: _themeData.buttonColor,
@@ -374,8 +382,8 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
       vsync: this,
     );
     _slideInAnimationController = new AnimationController(
-        duration: const Duration(milliseconds: _kSlideInAnimationDuration),
-        vsync: this,
+      duration: const Duration(milliseconds: _kSlideInAnimationDuration),
+      vsync: this,
     );
     _heartAnimationController = new AnimationController(
       duration: const Duration(milliseconds: _kHeartAnimationDuration),
