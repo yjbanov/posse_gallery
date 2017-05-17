@@ -1,4 +1,5 @@
 // ignore: invalid_constant
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:posse_gallery/config/constants.dart';
@@ -119,7 +120,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       new Positioned.fill(
         top: 65.0,
         child: new Padding(
-          padding: new EdgeInsets.only(left: 60.0, right: 60.0),
+          padding: new EdgeInsets.only(left: 45.0, right: 45.0),
           child: new Column(
             children: <Widget>[
               new Text(
@@ -185,7 +186,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
 
       holders = <SecondaryWidgetHolder>[
         new SecondaryWidgetHolder(
-          top: 5.0,
+          top: 25.0,
           left: 10.0,
           child: new ScaleTransition(
             scale: scaleAnimations[0],
@@ -207,7 +208,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           ),
         ),
         new SecondaryWidgetHolder(
-          bottom: 80.0,
+          bottom: 70.0,
           left: 25.0,
           child: new ScaleTransition(
             scale: scaleAnimations[2],
@@ -218,8 +219,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           ),
         ),
         new SecondaryWidgetHolder(
-          bottom: 30.0,
-          right: 60.0,
+          bottom: 10.0,
+          right: 55.0,
           child: new ScaleTransition(
             scale: scaleAnimations[3],
             child: new Image(
@@ -355,11 +356,15 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     for (int i = 0; i < _steps.length; i++) {
       children.add(
         _contentWidget(
-          contentChild: new Image(
-            width: 280.0,
-            height: 280.0,
-            fit: BoxFit.fitHeight,
-            image: new AssetImage(_steps[i].imageUris[0]),
+          contentChild: new Center(
+            child: new Padding(
+              padding: const EdgeInsets.only(top: 27.0),
+              child: new Image(
+                  width: math.min(280.0, MediaQuery.of(context).size.width),
+                  fit: BoxFit.fitHeight,
+                  image: new AssetImage(_steps[i].imageUris[0]),
+              ),
+            ),
           ),
           title: _steps[i].title,
           subtitle: _steps[i].subtitle,
@@ -431,7 +436,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             new Align(
               alignment: FractionalOffset.bottomCenter,
               child: new Padding(
-                padding: new EdgeInsets.only(bottom: 45.0),
+                padding: new EdgeInsets.only(bottom: 40.0),
                 child: new Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
