@@ -394,7 +394,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
               _inAnimationControllers[page + 1].value = (offset / screenWidth);
             }
             var moveDelta = startPixels < metrics.pixels ? 1 : -1;
-            _parallaxController.value += moveDelta * 0.003;
+            _parallaxController.value += moveDelta * 0.001;
           } else if (notification is ScrollEndNotification) {
             final PageMetrics metrics = notification.metrics;
             _currentPage = metrics.page.round();
@@ -477,7 +477,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
           position: parallaxTween,
           child: new Image(
             height: MediaQuery.of(context).size.height,
-            fit: BoxFit.fitHeight,
+            fit: BoxFit.cover,
             alignment: FractionalOffset.topLeft,
             image: new AssetImage("assets/backgrounds/bg_flutter_welcome.png"),
           ),
