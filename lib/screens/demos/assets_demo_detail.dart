@@ -144,7 +144,6 @@ class _AssetsDetailDemoState extends AssetsDemoState {
                       "2 cups all-purpose flour\n"
                       "3/4 teaspoon salt\n"
                       "1 cup vegetable shortening\n"
-                      "1 egg\n"
                       "2 tablespoons of cold water\n"
                       "1 tablespoon of cinnamon\n"
                       "1 tablespoon lemon juice",
