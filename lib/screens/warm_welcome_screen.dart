@@ -402,7 +402,6 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             if (page < (_inAnimationControllers.length - 1)) {
               _inAnimationControllers[page + 1].value = (offset / screenWidth);
             }
-            print(offset);
           } else if (notification is ScrollEndNotification) {
             // TODO - do pop pop animations
             final PageMetrics metrics = notification.metrics;
