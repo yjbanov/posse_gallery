@@ -44,8 +44,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
   // animations
   List<AnimationController> _inAnimationControllers = <AnimationController>[];
   List<AnimationController> _outAnimationControllers = <AnimationController>[];
-  Map<int, AnimationController> _secondaryAnimationControllers =
-      <int, AnimationController>{};
+  Map<int, AnimationController> _secondaryAnimationControllers = <int, AnimationController>{};
+  AnimationController _parallaxController;
 
   _makeAnimatedContentWidget({Widget child}) {
     // out animation
@@ -60,8 +60,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     final outScaleTween = new Tween(
       begin: 1.0,
       end: 0.0,
-    )
-        .animate(outScaleAnimation);
+    ).animate(outScaleAnimation);
     Animation<double> slideAnimation = new CurvedAnimation(
       parent: outAnimationController,
       curve: Curves.easeOut,
@@ -69,8 +68,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     final outSlideTween = new Tween(
       begin: const FractionalOffset(0.0, 0.0),
       end: const FractionalOffset(1.0, 0.0),
-    )
-        .animate(slideAnimation);
+    ).animate(slideAnimation);
     _outAnimationControllers.add(outAnimationController);
 
     // in animation
@@ -85,8 +83,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     final inScaleTween = new Tween(
       begin: 0.6,
       end: 1.0,
-    )
-        .animate(inScaleAnimation);
+    ).animate(inScaleAnimation);
     _inAnimationControllers.add(inAnimationController);
 
     // widgets
@@ -179,8 +176,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         final scaleTween = new Tween(
           begin: 0.0,
           end: 1.0,
-        )
-            .animate(scaleAnimation);
+        ).animate(scaleAnimation);
         scaleAnimations[a] = scaleTween;
       }
 
@@ -248,8 +244,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         final scaleTween = new Tween(
           begin: 0.0,
           end: 1.0,
-        )
-            .animate(scaleAnimation);
+        ).animate(scaleAnimation);
         scaleAnimations[a] = scaleTween;
       }
 
@@ -374,9 +369,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       );
     }
 
-    int moveDelta = 0;
     double startPixels = 0.0;
-    bool updatePage = true;
     final screenWidth = MediaQuery.of(context).size.width;
 
     _inAnimationControllers[0].value = 1.0;
@@ -387,9 +380,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         onNotification: (ScrollNotification notification) {
           if (notification is ScrollStartNotification) {
             final PageMetrics metrics = notification.metrics;
-            moveDelta = 0;
             startPixels = metrics.pixels;
-            updatePage = true;
             var secondaryAnimationController =
                 _secondaryAnimationControllers[_currentPage];
             if (secondaryAnimationController != null &&
@@ -407,8 +398,9 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             if (page < (_inAnimationControllers.length - 1)) {
               _inAnimationControllers[page + 1].value = (offset / screenWidth);
             }
+            var moveDelta = startPixels < metrics.pixels ? 1 : -1;
+            _parallaxController.value += moveDelta * 0.001;
           } else if (notification is ScrollEndNotification) {
-            // TODO - do pop pop animations
             final PageMetrics metrics = notification.metrics;
             _currentPage = metrics.page.round();
             var secondaryAnimationController =
@@ -426,7 +418,7 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
         child: new Stack(
           children: <Widget>[
             new Positioned.fill(
-              child: _buildBackgroundView(),
+              child: _backgroundView(),
             ),
             new Positioned.fill(
               child: new PageView(
@@ -455,7 +447,21 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
     );
   }
 
-  Widget _buildBackgroundView() {
+  Widget _backgroundView() {
+    _parallaxController = new AnimationController(
+      duration: new Duration(milliseconds: 200),
+      vsync: this,
+    );
+    var parallaxAnimation = new CurvedAnimation(
+      parent: _parallaxController,
+      curve: Curves.easeOut,
+    );
+    final parallaxTween = new Tween(
+      begin: const FractionalOffset(0.0, 0.0),
+      end: const FractionalOffset(-1.0, 0.0),
+    ).animate(parallaxAnimation);
+
+
     return new Stack(
       children: [
         new DecoratedBox(
@@ -472,14 +478,12 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
             ),
           ),
         ),
-        new AnimatedPositioned(
-          top: 0.0,
-          bottom: 0.0,
-          left: _bgOffset,
-          duration: new Duration(milliseconds: _kParallaxAnimationDuration),
-          curve: const Interval(0.25, 1.0, curve: Curves.easeOut),
+        new SlideTransition(
+          position: parallaxTween,
           child: new Image(
             height: MediaQuery.of(context).size.height,
+            fit: BoxFit.cover,
+            alignment: FractionalOffset.topLeft,
             image: new AssetImage("assets/backgrounds/bg_flutter_welcome.png"),
           ),
         ),
