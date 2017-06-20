@@ -11,7 +11,6 @@ import 'package:posse_gallery/screens/main_screen.dart';
 import 'package:fluro/fluro.dart';
 
 class RouteManager {
-
   RouteManager() {
     _categories = new CategoryManager().categories();
   }
@@ -26,15 +25,15 @@ class RouteManager {
   }
 
   // handlers
-  RouteHandler rootHandler = (Map<String, String> params) {
-    return new MainScreen();
-  };
+  Handler rootHandler = new Handler(
+      handlerFunc: (_, Map<String, dynamic> params) => new MainScreen());
 
-  RouteHandler debugMenuHandler = (Map<String, String> params) {
-    return new DebugOptionsScreen();
-  };
+  Handler debugMenuHandler = new Handler(
+      handlerFunc: (_, Map<String, dynamic> params) =>
+          new DebugOptionsScreen());
 
-  RouteHandler categoryHandler = (Map<String, String> params) {
+  Handler categoryHandler =
+      new Handler(handlerFunc: (_, Map<String, dynamic> params) {
     String categoryName = params["category"];
     AppCategory category;
     if (categoryName != null) {
@@ -45,7 +44,7 @@ class RouteManager {
     } else {
       // TODO - show invalid category / not found screen
     }
-  };
+  });
 
   // helpers
   static AppCategory retrieveCategory(String routeName) {
