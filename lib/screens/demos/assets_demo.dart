@@ -26,7 +26,7 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
 
   Animation<double> _rotationAnimation;
   Animation<double> _bodyRotationAnimation;
-  Animation<FractionalOffset> _slideInAnimation;
+  Animation<Offset> _slideInAnimation;
   Animation<double> _fadeInAnimation;
 
   AnimationController _heroAnimationController;
@@ -481,8 +481,8 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
         curve: Curves.easeOut,
         controller: _heroAnimationController);
     _slideInAnimation = _initSlideAnimation(
-        from: const FractionalOffset(-2.0, 0.0),
-        to: const FractionalOffset(0.0, 0.0),
+        from: const Offset(-2.0, 0.0),
+        to: const Offset(0.0, 0.0),
         curve: Curves.decelerate,
         controller: _heroAnimationController);
     _fadeInAnimation = _initAnimation(
@@ -580,16 +580,16 @@ class AssetsDemoState extends State<AssetsDemo> with TickerProviderStateMixin {
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
-  Animation<FractionalOffset> _initSlideAnimation(
-      {@required FractionalOffset from,
-      @required FractionalOffset to,
+  Animation<Offset> _initSlideAnimation(
+      {@required Offset from,
+      @required Offset to,
       @required Curve curve,
       @required AnimationController controller}) {
     final CurvedAnimation animation = new CurvedAnimation(
       parent: controller,
       curve: curve,
     );
-    return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
+    return new Tween<Offset>(begin: from, end: to).animate(animation);
   }
 
   _registerObservables() {

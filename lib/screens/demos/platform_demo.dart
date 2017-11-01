@@ -23,8 +23,8 @@ class PlatformDemoState extends State<PlatformDemo>
 
   int _radioValue = 0;
   Animation<double> _fadeInAnimation;
-  Animation<FractionalOffset> _leftPaneAnimation;
-  Animation<FractionalOffset> _rightPaneAnimation;
+  Animation<Offset> _leftPaneAnimation;
+  Animation<Offset> _rightPaneAnimation;
   Animation<double> _scaleInAnimation;
   Animation<double> _pivotCounterClockwiseAnimation;
   Animation<double> _pivotClockwiseAnimation;
@@ -349,10 +349,10 @@ class PlatformDemoState extends State<PlatformDemo>
   }
 
   Widget _buildHeroWidget() {
-    FractionalOffset offset = new FractionalOffset(1.5, 0.0);
-    Animation<FractionalOffset> animation = _initSlideAnimation(
+    Offset offset = new Offset(1.5, 0.0);
+    Animation<Offset> animation = _initSlideAnimation(
       from: offset,
-      to: const FractionalOffset(0.0, 0.0),
+      to: const Offset(0.0, 0.0),
       curve: Curves.easeOut,
       controller: _animationController,
     );
@@ -474,16 +474,16 @@ class PlatformDemoState extends State<PlatformDemo>
       duration: new Duration(milliseconds: _kAnimationInDuration + 100),
       vsync: this,
     );
-    FractionalOffset offset = new FractionalOffset(1.5, 0.0);
+    Offset offset = new Offset(1.5, 0.0);
     _leftPaneAnimation = _initSlideAnimation(
       from: offset,
-      to: const FractionalOffset(0.0, 0.0),
+      to: const Offset(0.0, 0.0),
       curve: Curves.easeOut,
       controller: _leftPaneAnimationController,
     );
     _rightPaneAnimation = _initSlideAnimation(
       from: offset,
-      to: const FractionalOffset(0.0, 0.0),
+      to: const Offset(0.0, 0.0),
       curve: Curves.easeOut,
       controller: _rightPaneAnimationController,
     );
@@ -554,16 +554,16 @@ class PlatformDemoState extends State<PlatformDemo>
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
-  Animation<FractionalOffset> _initSlideAnimation(
-      {@required FractionalOffset from,
-      @required FractionalOffset to,
+  Animation<Offset> _initSlideAnimation(
+      {@required Offset from,
+      @required Offset to,
       @required Curve curve,
       @required AnimationController controller}) {
     final CurvedAnimation animation = new CurvedAnimation(
       parent: controller,
       curve: curve,
     );
-    return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
+    return new Tween<Offset>(begin: from, end: to).animate(animation);
   }
 
   _tappedHero() {

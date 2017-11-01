@@ -33,7 +33,7 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
   ThemeData _themeData;
 
   Animation<double> _scaleInAnimation;
-  Animation<FractionalOffset> _slideInAnimation;
+  Animation<Offset> _slideInAnimation;
   Animation<double> _heartAnimation;
 
   AnimationController _animationController;
@@ -395,8 +395,8 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
         curve: Curves.easeOut,
         controller: _animationController);
     _slideInAnimation = _initSlideAnimation(
-        from: const FractionalOffset(0.0, 0.0),
-        to: const FractionalOffset(0.0, 0.0),
+        from: const Offset(0.0, 0.0),
+        to: const Offset(0.0, 0.0),
         curve: Curves.easeIn,
         controller: _slideInAnimationController);
     _heartAnimation = _initAnimation(
@@ -549,15 +549,15 @@ class _PlatformDetailDemoState extends State<PlatformDetailDemo>
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
-  Animation<FractionalOffset> _initSlideAnimation(
-      {@required FractionalOffset from,
-      @required FractionalOffset to,
+  Animation<Offset> _initSlideAnimation(
+      {@required Offset from,
+      @required Offset to,
       @required Curve curve,
       @required AnimationController controller}) {
     final CurvedAnimation animation = new CurvedAnimation(
       parent: controller,
       curve: curve,
     );
-    return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
+    return new Tween<Offset>(begin: from, end: to).animate(animation);
   }
 }

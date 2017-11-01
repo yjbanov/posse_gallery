@@ -323,25 +323,25 @@ class _CategoryScreenState extends State<CategoryScreen>
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
-  Animation<FractionalOffset> _initSlideAnimation(
-      {@required FractionalOffset from,
-      @required FractionalOffset to,
+  Animation<Offset> _initSlideAnimation(
+      {@required Offset from,
+      @required Offset to,
       @required Curve curve,
       @required AnimationController controller}) {
     final CurvedAnimation animation = new CurvedAnimation(
       parent: controller,
       curve: curve,
     );
-    return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
+    return new Tween<Offset>(begin: from, end: to).animate(animation);
   }
 
   List<Widget> _loadItems() {
     List<Widget> cells = [];
     for (int i = 0; i < _category.categoryItems.length; i++) {
       CategoryItem item = _category.categoryItems[i];
-      Animation<FractionalOffset> animation = _initSlideAnimation(
-        from: new FractionalOffset(0.0, (i + 1).toDouble()),
-        to: const FractionalOffset(0.0, 0.0),
+      Animation<Offset> animation = _initSlideAnimation(
+        from: new Offset(0.0, (i + 1).toDouble()),
+        to: const Offset(0.0, 0.0),
         curve: Curves.easeOut,
         controller: _animationController,
       );
