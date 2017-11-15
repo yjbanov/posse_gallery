@@ -66,8 +66,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       curve: Curves.easeOut,
     );
     final outSlideTween = new Tween(
-      begin: const FractionalOffset(0.0, 0.0),
-      end: const FractionalOffset(1.0, 0.0),
+      begin: const Offset(0.0, 0.0),
+      end: const Offset(1.0, 0.0),
     ).animate(slideAnimation);
     _outAnimationControllers.add(outAnimationController);
 
@@ -457,8 +457,8 @@ class _WarmWelcomeScreenState extends State<WarmWelcomeScreen>
       curve: Curves.easeOut,
     );
     final parallaxTween = new Tween(
-      begin: const FractionalOffset(0.0, 0.0),
-      end: const FractionalOffset(-1.0, 0.0),
+      begin: const Offset(0.0, 0.0),
+      end: const Offset(-1.0, 0.0),
     ).animate(parallaxAnimation);
 
 

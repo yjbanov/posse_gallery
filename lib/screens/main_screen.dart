@@ -270,8 +270,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
-  Animation<FractionalOffset> _initSlideAnimation({@required FractionalOffset from,
-    @required FractionalOffset to,
+  Animation<Offset> _initSlideAnimation({@required Offset from,
+    @required Offset to,
     @required Curve curve,
     @required AnimationController controller}) {
     controller.duration = new Duration(milliseconds: 750);
@@ -279,7 +279,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       parent: controller,
       curve: curve,
     );
-    return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
+    return new Tween<Offset>(begin: from, end: to).animate(animation);
   }
 
   List<Widget> _loadCategories() {
@@ -293,9 +293,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         new Duration(milliseconds: _kAnimationDuration * categoryIndex),
         vsync: this,
       );
-      Animation<FractionalOffset> animation = _initSlideAnimation(
-        from: new FractionalOffset(1.5, 0.0),
-        to: const FractionalOffset(0.0, 0.0),
+      Animation<Offset> animation = _initSlideAnimation(
+        from: new Offset(1.5, 0.0),
+        to: const Offset(0.0, 0.0),
         curve: new Interval(0.35 + ((categoryIndex - 1) * 0.15), 1.0, curve: Curves.easeOut),
         controller: animationController,
       );
@@ -323,9 +323,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 //      return new FadeTransition(
 //        opacity: animation,
 //        child: new SlideTransition(
-//          position: new FractionalOffsetTween(
-//            begin: new FractionalOffset(0.0, 0.35),
-//            end: new FractionalOffset(0.0, 0.0),
+//          position: new OffsetTween(
+//            begin: new Offset(0.0, 0.35),
+//            end: new Offset(0.0, 0.0),
 //          ).animate(animation),
 //          child: child,
 //        ),
@@ -335,9 +335,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         curve: new Interval(0.18, 1.0, curve: Curves.easeIn),
       );
       return new SlideTransition(
-          position: new FractionalOffsetTween(
-            begin: new FractionalOffset(0.0, 0.38),
-            end: new FractionalOffset(0.0, 0.0),
+          position: new Tween<Offset>(
+            begin: new Offset(0.0, 0.38),
+            end: new Offset(0.0, 0.0),
           ).animate(animation),
           child: new FadeTransition(opacity: curvedAnimation, child: child),
       );

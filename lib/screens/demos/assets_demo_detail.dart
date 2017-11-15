@@ -30,10 +30,10 @@ class _AssetsDetailDemoState extends AssetsDemoState {
       new GlobalKey<ScaffoldState>();
 
   int _themeIndex = 0;
-  Animation<FractionalOffset> _slideInLeftAnimation;
-  Animation<FractionalOffset> _slideInRightAnimation;
-  Animation<FractionalOffset> _slideInDownAnimation;
-  Animation<FractionalOffset> _slideInUpAnimation;
+  Animation<Offset> _slideInLeftAnimation;
+  Animation<Offset> _slideInRightAnimation;
+  Animation<Offset> _slideInDownAnimation;
+  Animation<Offset> _slideInUpAnimation;
   Animation<double> _fadeInAnimation;
   Animation<double> _fadeOutAnimation;
 
@@ -217,23 +217,23 @@ class _AssetsDetailDemoState extends AssetsDemoState {
       vsync: this,
     );
     _slideInLeftAnimation = _initSlideAnimation(
-        from: const FractionalOffset(2.0, 0.0),
-        to: const FractionalOffset(0.0, 0.0),
+        from: const Offset(2.0, 0.0),
+        to: const Offset(0.0, 0.0),
         curve: Curves.easeInOut,
         controller: _slideInAnimationController);
     _slideInRightAnimation = _initSlideAnimation(
-        from: const FractionalOffset(-2.0, 0.0),
-        to: const FractionalOffset(0.0, 0.0),
+        from: const Offset(-2.0, 0.0),
+        to: const Offset(0.0, 0.0),
         curve: Curves.easeInOut,
         controller: _slideInAnimationController);
     _slideInUpAnimation = _initSlideAnimation(
-        from: const FractionalOffset(0.0, 2.0),
-        to: const FractionalOffset(0.0, 0.0),
+        from: const Offset(0.0, 2.0),
+        to: const Offset(0.0, 0.0),
         curve: Curves.decelerate,
         controller: _slideInAnimationController);
     _slideInDownAnimation = _initSlideAnimation(
-        from: const FractionalOffset(0.0, -4.0),
-        to: const FractionalOffset(0.0, 0.0),
+        from: const Offset(0.0, -4.0),
+        to: const Offset(0.0, 0.0),
         curve: Curves.decelerate,
         controller: _slideInAnimationController);
     _fadeInAnimation = _initAnimation(
@@ -265,16 +265,16 @@ class _AssetsDetailDemoState extends AssetsDemoState {
     return new Tween<double>(begin: from, end: to).animate(animation);
   }
 
-  Animation<FractionalOffset> _initSlideAnimation(
-      {@required FractionalOffset from,
-      @required FractionalOffset to,
+  Animation<Offset> _initSlideAnimation(
+      {@required Offset from,
+      @required Offset to,
       @required Curve curve,
       @required AnimationController controller}) {
     final CurvedAnimation animation = new CurvedAnimation(
       parent: controller,
       curve: curve,
     );
-    return new Tween<FractionalOffset>(begin: from, end: to).animate(animation);
+    return new Tween<Offset>(begin: from, end: to).animate(animation);
   }
 
   _startAnimation() {
