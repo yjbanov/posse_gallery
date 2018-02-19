@@ -4,9 +4,9 @@ description: Posse's fancy new gallery for Flutter.
 dependencies:
   flutter:
     sdk: flutter
-  path_provider: "^0.2.0"
-  url_launcher: "^0.4.1"
-  fluro: "^1.1.0"
+  path_provider: "^0.3.1"
+  url_launcher: "^2.0.1"
+  fluro: "^1.2.1"
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -6,7 +6,8 @@
 .DS_Store
 /build
 /captures
+GeneratedPluginRegistrant.java
 
-/gradle
+/gradle/wrapper/gradle-wrapper.jar
 /gradlew
 /gradlew.bat
