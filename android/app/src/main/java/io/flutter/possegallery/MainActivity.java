@@ -1,4 +1,4 @@
-package com.yourcompany.posse_gallery;
+package io.flutter.possegallery;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
