@@ -42,9 +42,9 @@ matrix:
 
     - os: osx
       language: generic
-      osx_image: xcode8.3
+      osx_image: xcode9.2
       before_script:
-        - pip install six
+        - pip2 install six
         - brew update
         - brew install --HEAD libimobiledevice
         - brew install ideviceinstaller
